@@ -1,0 +1,252 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.ddshteam.web</groupId>
+	<artifactId>ddshteam-web-parent</artifactId>
+	<version>1.0.0</version>
+	<packaging>pom</packaging>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.5.7.RELEASE</version>
+	</parent>
+
+	<modules>
+		<module>../ddshteam-web-core</module>
+		<module>../ddshteam-web-system-service</module>
+		<module>../ddshteam-web-system-service-api</module>
+		<module>../ddshteam-web-controller</module>
+	</modules>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>1.8</java.version>
+		<dubbo.version>2.6.0</dubbo.version>
+		<zkclient.version>0.10</zkclient.version>
+		<lombok.version>1.16.18</lombok.version>
+		<spring.boot.version>1.5.7.RELEASE</spring.boot.version>
+		<project.version>1.0.0</project.version>
+		<zookeeper.version>3.4.10</zookeeper.version>
+		<spring.boot.starter.dubbo.version>1.0.0</spring.boot.starter.dubbo.version>
+		<fastjson.version>1.2.44</fastjson.version>
+		<mybatis.spring.boot.starter.version>1.2.2</mybatis.spring.boot.starter.version>
+		<mysql.connector.java.version>6.0.6</mysql.connector.java.version>
+		<junit.version>4.12</junit.version>
+		<commons.io.version>2.5</commons.io.version>
+		<commons-lang3.version>3.6</commons-lang3.version>
+        <ehcache.core.version>2.6.11</ehcache.core.version>
+        <ehcache.version>2.6.11</ehcache.version>
+        <druid.version>1.0.28</druid.version>
+        <mybatis-plus.version>2.1.0</mybatis-plus.version>
+        <jxl.version>2.6.12</jxl.version>
+        <poi.version>3.9</poi.version>
+        <thumbnailator.version>0.4.8</thumbnailator.version>
+        <jsch.version>0.1.53</jsch.version>
+        <pinyin4j.version>2.5.1</pinyin4j.version>
+        <swagger.version>1.5.16</swagger.version>
+        <xfire.version>1.2.6</xfire.version>
+        <zxing.version>3.2.1</zxing.version>
+        <shiro.version>1.4.0</shiro.version>
+        <quartz.version>2.2.3</quartz.version>
+        <lombok.version>1.16.12</lombok.version>
+        <pagehelper.version>4.0.1</pagehelper.version>
+        <guava.version>24.0-jre</guava.version>
+	</properties>
+
+	<dependencyManagement>
+
+		<dependencies>
+		
+			<dependency>
+		         <groupId>com.github.pagehelper</groupId>
+		         <artifactId>pagehelper-spring-boot-starter</artifactId>
+		         <version>1.1.2</version>
+		     </dependency>
+
+			<!-- pagehelper -->
+			<!-- <dependency>
+			    <groupId>com.github.pagehelper</groupId>
+			    <artifactId>pagehelper</artifactId>
+			    <version>${pagehelper.version}</version>
+			</dependency> -->
+			
+			<!-- guava -->
+			<dependency>
+			    <groupId>com.google.guava</groupId>
+			    <artifactId>guava</artifactId>
+			    <version>${guava.version}</version>
+			</dependency>
+			
+			<!-- lombok -->
+		    <dependency>
+		      <groupId>org.projectlombok</groupId>
+		      <artifactId>lombok</artifactId>
+		      <version>${lombok.version}</version>
+		    </dependency>
+		    
+			<!--fastjson -->
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>fastjson</artifactId>
+				<version>${fastjson.version}</version>
+			</dependency>
+
+			<!-- Springboot依赖 -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter</artifactId>
+				<version>${spring.boot.version}</version>
+			</dependency>
+
+			<!-- Springboot-web依赖 -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-web</artifactId>
+				<version>${spring.boot.version}</version>
+			</dependency>
+			<!--mybatis 与SpingBoot整合 -->
+			<dependency>
+				<groupId>org.mybatis.spring.boot</groupId>
+				<artifactId>mybatis-spring-boot-starter</artifactId>
+				<version>${mybatis.spring.boot.starter.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-tomcat</artifactId>
+				<version>${spring.boot.version}</version>
+			</dependency>
+
+			<!--Springboot dubbo 综合配置包 -->
+			<dependency>
+				<groupId>io.dubbo.springboot</groupId>
+				<artifactId>spring-boot-starter-dubbo</artifactId>
+				<version>${spring.boot.starter.dubbo.version}</version>
+			</dependency>
+
+			<!--dubbo -->
+		    <dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>dubbo</artifactId>
+				<version>${dubbo.version}</version>
+			</dependency> 
+
+			<!--zookeeper -->
+			<dependency>
+				<groupId>org.apache.zookeeper</groupId>
+				<artifactId>zookeeper</artifactId>
+				<version>${zookeeper.version}</version>
+				<type>pom</type>
+			</dependency>
+
+			<dependency>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+				<version>${lombok.version}</version>
+				<scope>provided</scope>
+			</dependency>
+
+			<!--第三方ZK客户端 -->
+			<dependency>
+				<groupId>com.101tec</groupId>
+				<artifactId>zkclient</artifactId>
+				<version>${zkclient.version}</version>
+			</dependency>
+
+			<!--引入Mysql -->
+			<dependency>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>${mysql.connector.java.version}</version>
+				<scope>runtime</scope>
+			</dependency>
+			
+			<!--shiro依赖-->
+	        <dependency>
+	            <groupId>org.apache.shiro</groupId>
+	            <artifactId>shiro-core</artifactId>
+	            <version>${shiro.version}</version>
+	            <exclusions>
+	                <exclusion>
+	                    <artifactId>slf4j-api</artifactId>
+	                    <groupId>org.slf4j</groupId>
+	                </exclusion>
+	            </exclusions>
+	        </dependency>
+	        <dependency>
+	            <groupId>org.apache.shiro</groupId>
+	            <artifactId>shiro-spring</artifactId>
+	            <version>${shiro.version}</version>
+	        </dependency>
+
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${junit.version}</version>
+				<scope>test</scope>
+			</dependency>
+
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<plugins>
+			<!-- <plugin> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-maven-plugin</artifactId> 
+				</plugin> -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.0.2</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<!-- <version>2.3.2</version> -->
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<!-- 打包时跳过单元测试 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<testFailureIgnore>true</testFailureIgnore>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<!-- 安装插件 -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-install-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<!-- 发布插件 -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<aggregate>true</aggregate>
+					<charset>UTF-8</charset>
+					<encoding>UTF-8</encoding>
+					<docencoding>UTF-8</docencoding>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

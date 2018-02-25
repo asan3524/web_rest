@@ -1,0 +1,57 @@
+{"properties": [
+  {
+    "name": "spring.dubbo.application.name",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.dubbo.application.name'"
+  },
+  {
+    "name": "spring.dubbo.registry.address",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.dubbo.registry.address'"
+  },
+  {
+    "name": "spring.dubbo.protocol.name",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.dubbo.protocol.name'"
+  },
+  {
+    "name": "spring.dubbo.protocol.port",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.dubbo.protocol.port'"
+  },
+  {
+    "name": "spring.dubbo.protocol.host",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.dubbo.protocol.host'"
+  },
+  {
+    "name": "spring.dubbo.scan",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.dubbo.scan'"
+  },
+  {
+    "name": "spring.dubbo.module.default",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.dubbo.module.default'"
+  },
+  {
+    "name": "spring.upload.maxFileSize",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.upload.maxFileSize'"
+  },
+  {
+    "name": "spring.upload.maxRequestSize",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.upload.maxRequestSize'"
+  },
+  {
+    "name": "whayer.minRequestIntervalTime",
+    "type": "java.lang.String",
+    "description": "A description for 'whayer.minRequestIntervalTime'"
+  },
+  {
+    "name": "whayer.maxMaliciousTimes",
+    "type": "java.lang.String",
+    "description": "A description for 'whayer.maxMaliciousTimes'"
+  }
+]}
