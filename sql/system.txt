@@ -22,9 +22,11 @@ CREATE TABLE `sys_user_info` (
 
 -- ----------------------------
 -- Records of sys_user_info
+-- root pwd bitlife_root_888T3
+-- admin pwd admin
 -- ----------------------------
-INSERT INTO `sys_user_info` VALUES ('0', 'root', 'ezI7JKTYhK28RtFwDvBXeM==', '内置账户', '', '', '', '', null, 1, 0, 1, '2018-02-01 19:22:55');
-INSERT INTO `sys_user_info` VALUES ('1', 'admin', 'icOVyGNzbRKwsM3vlsnl3a==', '管理员', '', '', '', '', null, 0, 1, 1, '2018-02-01 19:22:55');
+INSERT INTO `sys_user_info` VALUES ('0', 'root', '49ef97dcb51daf753be8a0adda157b65', '内置账户', '', '', '', '', null, 1, 0, 1, '2018-02-01 19:22:55');
+INSERT INTO `sys_user_info` VALUES ('1', 'admin', '21232f297a57a5a743894a0e4a801fc3', '管理员', '', '', '', '', null, 0, 1, 1, '2018-02-01 19:22:55');
 
 -- ----------------------------
 -- Table structure for `sys_dep_info` 可选
