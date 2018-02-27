@@ -61,12 +61,13 @@ public interface IInventoryService {
 	 * 2.如果盘点数与库存不一致，更新库存
 	 * 只有当盘点单处于盘点中状态时，物资盘点数才能修改，否则不能修改
 	 * @Title: inventoryGoods
-	 * @param userId
-	 * @param inventoryGoodsId
+	 * @param userId 盘点人ID
+	 * @param inventoryGoodsId 盘点单中物资ID
+	 * @param quantity 盘点实际数量
 	 * @return boolean
 	 * @author lishibang
 	 */
-	public boolean inventoryGoods(String userId, String inventoryGoodsId);
+	public boolean inventoryGoods(String userId, String inventoryGoodsId, int quantity);
 
 	/**
 	 * 只有当盘点单下所有物资都进行盘点（sto_inventory_order_goods.make_status=1）之后，才能制定盘点单结束
