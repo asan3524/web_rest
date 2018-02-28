@@ -117,7 +117,8 @@
 
 	<delete id="deleteMenuById">
 		DELETE FROM sys_menu_info WHERE id=#{menuId};
-		DELETE FROM sys_role_to_menu WHERE menu_id=#{menuId};
+		DELETE
+		FROM sys_role_to_menu WHERE menu_id=#{menuId};
 	</delete>
 
 	<select id="getPermissionByUser" resultType="java.lang.String">
@@ -126,10 +127,12 @@
 		perms
 		from sys_menu_info sm
 		where sm.type = 3 and sm.id in (
-		select distinct menu_id
+		select
+		distinct menu_id
 		from sys_role_to_menu r2m
 		where r2m.role_id in (
-		select role_id
+		select
+		role_id
 		from sys_role_to_user r2u
 		where r2u.user_id=#{userId}
 		)
@@ -142,7 +145,8 @@
 		<include refid="sysMenuFields" />
 		from sys_menu_info sm
 		where sm.type != 3 and sm.id in (
-		select distinct menu_id
+		select distinct
+		menu_id
 		from sys_role_to_menu r2m
 		where r2m.role_id in (
 		select role_id
