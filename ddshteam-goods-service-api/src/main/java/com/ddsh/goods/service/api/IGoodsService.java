@@ -4,10 +4,18 @@ import com.ddsh.goods.service.api.data.GoodsInfoReqData;
 import com.ddsh.goods.service.api.model.GoodsInfo;
 import com.github.pagehelper.PageInfo;
 
+/**
+ * 物质服务
+ * @ClassName: IGoodsService
+ * @author arpgate
+ * @date 2018年2月28日 上午10:55:06
+ * @version v1.0.0
+ * 
+ */
 public interface IGoodsService {
 
 	/**
-	 * 条件检索物资列表
+	 * 分页条件检索物资列表
 	 * @Title: list
 	 * @param pageNum
 	 * @param pageSize
@@ -17,10 +25,37 @@ public interface IGoodsService {
 	 */
 	public PageInfo<GoodsInfo> list(int pageNum, int pageSize, GoodsInfoReqData reqData);
 
+	/**
+	 * 根据物质id获取物质详情
+	 * @Title: get
+	 * @param id
+	 * @return GoodsInfo
+	 * @see 
+	 * @throws
+	 * @author arpgate
+	 */
 	public GoodsInfo get(String id);
 
+	/**
+	 * 物质详情保存
+	 * @Title: save
+	 * @param goodsInfo
+	 * @return boolean
+	 * @see 
+	 * @throws
+	 * @author arpgate
+	 */
 	public boolean save(GoodsInfo goodsInfo);
 
+	/**
+	 * 物质详情更新
+	 * @Title: update
+	 * @param goodsInfo
+	 * @return boolean
+	 * @see 
+	 * @throws
+	 * @author arpgate
+	 */
 	public boolean update(GoodsInfo goodsInfo);
 
 	/**
@@ -32,5 +67,14 @@ public interface IGoodsService {
 	 */
 	public boolean delete(String goodsId);
 
+	/**
+	 * 根据IDs删除物资
+	 * @Title: delete
+	 * @param goodsId
+	 * @return boolean
+	 * @see 
+	 * @throws
+	 * @author arpgate
+	 */
 	public boolean delete(String... goodsId);
 }

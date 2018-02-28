@@ -1,70 +1,65 @@
 package com.ddsh.goods.service.api.model;
 
-import java.io.Serializable;
 import java.util.Date;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.ToString;
+public class GoodsBrandInfo {
+    private String id;
 
-@SuppressWarnings("serial")
-@Builder
-@Data
-@ToString
-public class GoodsBrandInfo implements Serializable {
+    private String code;
 
-	private String id;
-	private String name;
-	private String code;
-	private String parentId;
-	private String remark;
-	private Date createTime;
+    private String name;
 
-	public String getId() {
-		return id;
-	}
+    private String parentId;
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    private String remark;
 
-	public String getName() {
-		return name;
-	}
+    private Date createTime;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public String getCode() {
-		return code;
-	}
+    public void setId(String id) {
+        this.id = id == null ? null : id.trim();
+    }
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+    public String getCode() {
+        return code;
+    }
 
-	public String getParentId() {
-		return parentId;
-	}
+    public void setCode(String code) {
+        this.code = code == null ? null : code.trim();
+    }
 
-	public void setParentId(String parentId) {
-		this.parentId = parentId;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getRemark() {
-		return remark;
-	}
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
+    }
 
-	public void setRemark(String remark) {
-		this.remark = remark;
-	}
+    public String getParentId() {
+        return parentId;
+    }
 
-	public Date getCreateTime() {
-		return createTime;
-	}
+    public void setParentId(String parentId) {
+        this.parentId = parentId == null ? null : parentId.trim();
+    }
 
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
 }

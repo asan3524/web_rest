@@ -1,124 +1,125 @@
 package com.ddsh.goods.service.api.model;
 
-import java.io.Serializable;
 import java.util.Date;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.ToString;
+public class GoodsInfo {
+    private String id;
 
-@SuppressWarnings("serial")
-@Builder
-@Data
-@ToString
-public class GoodsInfo implements Serializable {
+    private String name;
 
-	private String id;
-	private String name;
-	private String code;
-	private String typeId;
-	private String brandId;
-	private String colour;
-	private String unit;
-	private String norm;
-	private String remark;
-	private int status;
-	private int orderNum;
-	private Date createTime;
+    private String code;
 
-	public String getId() {
-		return id;
-	}
+    private String typeId;
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    private String brandId;
 
-	public String getName() {
-		return name;
-	}
+    private String colour;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    private String unit;
 
-	public String getCode() {
-		return code;
-	}
+    private String norm;
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+    private String remark;
 
-	public String getTypeId() {
-		return typeId;
-	}
+    private Integer status;
 
-	public void setTypeId(String typeId) {
-		this.typeId = typeId;
-	}
+    private Integer orderNum;
 
-	public String getBrandId() {
-		return brandId;
-	}
+    private Date createTime;
 
-	public void setBrandId(String brandId) {
-		this.brandId = brandId;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public String getColour() {
-		return colour;
-	}
+    public void setId(String id) {
+        this.id = id == null ? null : id.trim();
+    }
 
-	public void setColour(String colour) {
-		this.colour = colour;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getUnit() {
-		return unit;
-	}
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
+    }
 
-	public void setUnit(String unit) {
-		this.unit = unit;
-	}
+    public String getCode() {
+        return code;
+    }
 
-	public String getNorm() {
-		return norm;
-	}
+    public void setCode(String code) {
+        this.code = code == null ? null : code.trim();
+    }
 
-	public void setNorm(String norm) {
-		this.norm = norm;
-	}
+    public String getTypeId() {
+        return typeId;
+    }
 
-	public String getRemark() {
-		return remark;
-	}
+    public void setTypeId(String typeId) {
+        this.typeId = typeId == null ? null : typeId.trim();
+    }
 
-	public void setRemark(String remark) {
-		this.remark = remark;
-	}
+    public String getBrandId() {
+        return brandId;
+    }
 
-	public int getStatus() {
-		return status;
-	}
+    public void setBrandId(String brandId) {
+        this.brandId = brandId == null ? null : brandId.trim();
+    }
 
-	public void setStatus(int status) {
-		this.status = status;
-	}
+    public String getColour() {
+        return colour;
+    }
 
-	public int getOrderNum() {
-		return orderNum;
-	}
+    public void setColour(String colour) {
+        this.colour = colour == null ? null : colour.trim();
+    }
 
-	public void setOrderNum(int orderNum) {
-		this.orderNum = orderNum;
-	}
+    public String getUnit() {
+        return unit;
+    }
 
-	public Date getCreateTime() {
-		return createTime;
-	}
+    public void setUnit(String unit) {
+        this.unit = unit == null ? null : unit.trim();
+    }
 
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
+    public String getNorm() {
+        return norm;
+    }
+
+    public void setNorm(String norm) {
+        this.norm = norm == null ? null : norm.trim();
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public Integer getOrderNum() {
+        return orderNum;
+    }
+
+    public void setOrderNum(Integer orderNum) {
+        this.orderNum = orderNum;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
 }
