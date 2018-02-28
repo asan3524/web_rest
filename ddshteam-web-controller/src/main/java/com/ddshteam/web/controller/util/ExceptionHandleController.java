@@ -1,4 +1,4 @@
-package com.ddshteam.web.controller;
+package com.ddshteam.web.controller.util;
 
 import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.UnauthenticatedException;

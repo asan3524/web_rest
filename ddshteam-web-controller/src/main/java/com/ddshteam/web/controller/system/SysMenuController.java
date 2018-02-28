@@ -1,4 +1,4 @@
-package com.ddshteam.web.controller;
+package com.ddshteam.web.controller.system;
 
 import java.util.ArrayList;
 import java.util.HashSet;

@@ -1,4 +1,4 @@
-package com.ddshteam.web.controller;
+package com.ddshteam.web.controller.system;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

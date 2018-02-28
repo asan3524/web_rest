@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
-import com.ddshteam.web.controller.ExceptionHandleController;
+import com.ddshteam.web.controller.util.ExceptionHandleController;
 import com.google.common.base.Predicate;
 
 import springfox.documentation.RequestHandler;
