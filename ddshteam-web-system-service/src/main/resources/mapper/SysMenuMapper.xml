@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ddshteam.web.system.service.dao.SysMenuDao">
-	
+
 	<sql id="sysMenuFields">
 		id,
 		name,
@@ -18,138 +18,137 @@
 	</sql>
 
 	<resultMap id="sysMenuListMap" type="SysMenu">
-        <id column="id" property="id" />
-        <result column="name" property="name" />
-        <result column="parent_id" property="parentId" />
-        <result column="type" property="type" />
-        <result column="url" property="url" />
-        <result column="perms" property="perms" />
-        <result column="icon" property="icon" />
-        <result column="order_num" property="orderNum" />
-        <result column="create_time" property="createTime" />
-    </resultMap>
-    
-    <select id="getMenuList" resultMap="sysMenuListMap">
-    	select 
-        <include refid="sysMenuFields" /> 
-        from sys_menu_info 
-        <where>  
-			1=1  
-			<!-- <if test="name != null and name != ''">
-           	 	AND name LIKE CONCAT('%',#{name},'%') 
-           	</if> -->
-           	ORDER BY create_time DESC
-        </where>
-    </select>
-    
-    <!-- 只查询目录，页面 -->
-    <select id="getMenu$NoFuncList" resultMap="sysMenuListMap">
-    	select 
-        <include refid="sysMenuFields" /> 
-        from sys_menu_info 
-        where type != 3
-        ORDER BY create_time DESC
-    </select>
-    
-    <select id="getMenuById" resultMap="sysMenuListMap">
-    	select 
-        <include refid="sysMenuFields" /> 
-        FROM sys_menu_info  
-        WHERE id = #{menuId}
-    </select>
-    
-    <select id="getMenuByIds" resultMap="sysMenuListMap">
-    	select 
-        <include refid="sysMenuFields" /> 
-        FROM sys_menu_info  
-        WHERE id in
-        <foreach collection="menuIds" item="item" index="index"
-            open="(" close=")" separator=",">
-            #{item}
-        </foreach>
-    </select>
-    
-    <insert id="saveMenu" parameterType="SysMenu">
-    	insert into sys_menu_info(
-  			<include refid="sysMenuFields" />
-  		) 
-  		values(
-	  		REPLACE(UUID(), '-', ''),
-	  		#{name},
-	  		#{parentId},
-	  		#{type},
-	  		#{url},
-	  		#{perms},
-	  		#{icon},
-	  		#{orderNum},
-	  		now()
-  		)
-    </insert>
-    
-    <update id="updateMenu" parameterType="SysMenu">
-    	UPDATE sys_menu_info 
-	    <trim prefix="SET" suffixOverrides=",">
-		    <if test="name != null and name != ''">
-		      name = #{name},
-		    </if>
-		    <if test="parentId != null and parentId != ''">
-		      parent_id = #{parentId},
-		    </if>
-		    <if test="type != null">
-		      type = #{type},
-		    </if>
-		    <if test="url != null and url != ''">
-		      url = #{url},
-		    </if>
-		    <if test="perms != null and perms != ''">
-		      perms = #{perms},
-		    </if>
-		    <if test="icon != null and icon != ''">
-		      icon = #{icon},
-		    </if>
-		    <if test="orderNum != null">
-		      order_num = #{orderNum},
-		    </if>
-	    </trim>
+		<id column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="parent_id" property="parentId" />
+		<result column="type" property="type" />
+		<result column="url" property="url" />
+		<result column="perms" property="perms" />
+		<result column="icon" property="icon" />
+		<result column="order_num" property="orderNum" />
+		<result column="create_time" property="createTime" />
+	</resultMap>
+
+	<select id="getMenuList" resultMap="sysMenuListMap">
+		select
+		<include refid="sysMenuFields" />
+		from sys_menu_info
 		<where>
-	      id=#{id}
-	    </where>
-    </update>
-    
-    <delete id="deleteMenuById">
-    	DELETE FROM sys_menu_info WHERE id=#{menuId};
-    	DELETE FROM sys_role_to_menu WHERE menu_id=#{menuId};
-    </delete>
-    
-    <select id="getPermissionByUser" resultType="java.lang.String">
-    	select 
-    	<!-- <include refid="sysMenuFields" />  -->
-    	perms
-        from sys_menu_info sm
-        where sm.type = 3 and sm.id in (
-        	select distinct menu_id
-	    	from sys_role_to_menu r2m
-	    	where r2m.role_id in (
-	    		select role_id
-		    	from sys_role_to_user r2u
-		    	where r2u.user_id=#{userId}
-	    	) 
-        )
-    	
-    </select>
-    
-    <select id="getMenus$NoFuncByUser" resultType="SysMenu">
-    	select 
-    	<include refid="sysMenuFields" /> 
-        from sys_menu_info sm
-        where sm.type != 3 and sm.id in (
-        	select distinct menu_id
-	    	from sys_role_to_menu r2m
-	    	where r2m.role_id in (
-	    		select role_id
-		    	from sys_role_to_user r2u
-		    	where r2u.user_id=#{userId}
-	    	) 
-        )
-    </select>
+			1=1
+			<!-- <if test="name != null and name != ''"> AND name LIKE CONCAT('%',#{name},'%') 
+				</if> -->
+			ORDER BY create_time DESC
+		</where>
+	</select>
+
+	<!-- 只查询目录，页面 -->
+	<select id="getMenu$NoFuncList" resultMap="sysMenuListMap">
+		select
+		<include refid="sysMenuFields" />
+		from sys_menu_info
+		where type != 3
+		ORDER BY create_time DESC
+	</select>
+
+	<select id="getMenuById" resultMap="sysMenuListMap">
+		select
+		<include refid="sysMenuFields" />
+		FROM sys_menu_info
+		WHERE id = #{menuId}
+	</select>
+
+	<select id="getMenuByIds" resultMap="sysMenuListMap">
+		select
+		<include refid="sysMenuFields" />
+		FROM sys_menu_info
+		WHERE id in
+		<foreach collection="menuIds" item="item" index="index" open="("
+			close=")" separator=",">
+			#{item}
+		</foreach>
+	</select>
+
+	<insert id="saveMenu" parameterType="SysMenu">
+		insert into sys_menu_info(
+		<include refid="sysMenuFields" />
+		)
+		values(
+		REPLACE(UUID(), '-', ''),
+		#{name},
+		#{parentId},
+		#{type},
+		#{url},
+		#{perms},
+		#{icon},
+		#{orderNum},
+		now()
+		)
+	</insert>
+
+	<update id="updateMenu" parameterType="SysMenu">
+		UPDATE sys_menu_info
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="name != null and name != ''">
+				name = #{name},
+			</if>
+			<if test="parentId != null and parentId != ''">
+				parent_id = #{parentId},
+			</if>
+			<if test="type != null">
+				type = #{type},
+			</if>
+			<if test="url != null and url != ''">
+				url = #{url},
+			</if>
+			<if test="perms != null and perms != ''">
+				perms = #{perms},
+			</if>
+			<if test="icon != null and icon != ''">
+				icon = #{icon},
+			</if>
+			<if test="orderNum != null">
+				order_num = #{orderNum},
+			</if>
+		</trim>
+		<where>
+			id=#{id}
+		</where>
+	</update>
+
+	<delete id="deleteMenuById">
+		DELETE FROM sys_menu_info WHERE id=#{menuId};
+		DELETE FROM sys_role_to_menu WHERE menu_id=#{menuId};
+	</delete>
+
+	<select id="getPermissionByUser" resultType="java.lang.String">
+		select
+		<!-- <include refid="sysMenuFields" /> -->
+		perms
+		from sys_menu_info sm
+		where sm.type = 3 and sm.id in (
+		select distinct menu_id
+		from sys_role_to_menu r2m
+		where r2m.role_id in (
+		select role_id
+		from sys_role_to_user r2u
+		where r2u.user_id=#{userId}
+		)
+		)
+
+	</select>
+
+	<select id="getMenus$NoFuncByUser" resultType="SysMenu">
+		select
+		<include refid="sysMenuFields" />
+		from sys_menu_info sm
+		where sm.type != 3 and sm.id in (
+		select distinct menu_id
+		from sys_role_to_menu r2m
+		where r2m.role_id in (
+		select role_id
+		from sys_role_to_user r2u
+		where r2u.user_id=#{userId}
+		)
+		)
+	</select>
 </mapper>
