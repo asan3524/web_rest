@@ -4,14 +4,6 @@ import com.ddsh.goods.service.api.data.GoodsInfoReqData;
 import com.ddsh.goods.service.api.model.GoodsInfo;
 import com.github.pagehelper.PageInfo;
 
-/**
- * 物质管理
- * @ClassName: IGoodsService
- * @author arpgate
- * @date 2018年2月27日 下午7:20:44
- * @version v1.0.0
- * 
- */
 public interface IGoodsService {
 
 	/**

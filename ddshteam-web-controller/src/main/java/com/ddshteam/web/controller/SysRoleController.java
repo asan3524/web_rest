@@ -1,4 +1,4 @@
-package com.ddshteam.web.controller.system;
+package com.ddshteam.web.controller;
 
 import java.util.List;
 
