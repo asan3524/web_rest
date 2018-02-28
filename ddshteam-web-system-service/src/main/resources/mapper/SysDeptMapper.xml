@@ -67,7 +67,8 @@
 		user.status as u_status,
 		user.create_time as u_create_time
 
-		from sys_dep_info dept
+		from
+		sys_dep_info dept
 		left join sys_user_info user
 		on dept.id = user.dep_id
 		<where>
@@ -105,7 +106,8 @@
 		user.status as u_status,
 		user.create_time as u_create_time
 
-		from sys_dep_info dept
+		from
+		sys_dep_info dept
 		left join sys_user_info user
 		on dept.id = user.dep_id
 		<where>
@@ -114,7 +116,8 @@
 				</if> -->
 			AND dept.status = 1
 			AND dept.parent_id=#{deptId}
-			ORDER BY dept.create_time DESC
+			ORDER BY
+			dept.create_time DESC
 		</where>
 	</select>
 
@@ -131,22 +134,26 @@
 
 		user.id as u_id,
 		user.account as u_account,
-		user.name as u_name,
+		user.name
+		as u_name,
 		user.email as
 		u_email,
 		user.fax as u_fax,
-		user.phone as u_phone,
+		user.phone as
+		u_phone,
 		user.mobile as
 		u_mobile,
 		user.is_builtin as u_is_builtin,
 		user.order_num as
 		u_order_num,
 		user.status as u_status,
-		user.create_time as u_create_time
+		user.create_time
+		as u_create_time
 
 		from sys_dep_info dept
 		left join sys_user_info user
-		on dept.id = user.dep_id
+		on
+		dept.id = user.dep_id
 		where dept.id=#{deptId}
 	</select>
 

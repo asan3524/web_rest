@@ -67,13 +67,16 @@
 
 	<delete id="deleteRole">
 		DELETE FROM sys_role_info WHERE id=#{roleId};
-		DELETE FROM sys_role_to_user WHERE role_id=#{roleId};
-		DELETE FROM sys_role_to_menu WHERE role_id=#{roleId};
+		DELETE
+		FROM sys_role_to_user WHERE role_id=#{roleId};
+		DELETE FROM
+		sys_role_to_menu WHERE role_id=#{roleId};
 	</delete>
 
 	<delete id="setRoleMenu">
 		DELETE FROM sys_role_to_menu WHERE role_id=#{roleId};
-		insert into sys_role_to_menu
+		insert into
+		sys_role_to_menu
 		(
 		id,
 		role_id,
