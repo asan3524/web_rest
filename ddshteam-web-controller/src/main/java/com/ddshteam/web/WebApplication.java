@@ -36,7 +36,6 @@ public class WebApplication extends SpringBootServletInitializer implements Comm
 		SpringApplication application = new SpringApplication(WebApplication.class);
 		application.setBannerMode(Banner.Mode.LOG);
 		application.run(args);
-		// SpringApplication.run(WebApplication.class, args);
 	}
 
 	@Override
