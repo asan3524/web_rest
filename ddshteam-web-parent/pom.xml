@@ -36,56 +36,53 @@
 		<junit.version>4.12</junit.version>
 		<commons.io.version>2.5</commons.io.version>
 		<commons-lang3.version>3.6</commons-lang3.version>
-        <ehcache.core.version>2.6.11</ehcache.core.version>
-        <ehcache.version>2.6.11</ehcache.version>
-        <druid.version>1.0.28</druid.version>
-        <mybatis-plus.version>2.1.0</mybatis-plus.version>
-        <jxl.version>2.6.12</jxl.version>
-        <poi.version>3.9</poi.version>
-        <thumbnailator.version>0.4.8</thumbnailator.version>
-        <jsch.version>0.1.53</jsch.version>
-        <pinyin4j.version>2.5.1</pinyin4j.version>
-        <swagger.version>1.5.16</swagger.version>
-        <xfire.version>1.2.6</xfire.version>
-        <zxing.version>3.2.1</zxing.version>
-        <shiro.version>1.4.0</shiro.version>
-        <quartz.version>2.2.3</quartz.version>
-        <lombok.version>1.16.12</lombok.version>
-        <pagehelper.version>4.0.1</pagehelper.version>
-        <guava.version>24.0-jre</guava.version>
+		<ehcache.core.version>2.6.11</ehcache.core.version>
+		<ehcache.version>2.6.11</ehcache.version>
+		<druid.version>1.0.28</druid.version>
+		<mybatis-plus.version>2.1.0</mybatis-plus.version>
+		<jxl.version>2.6.12</jxl.version>
+		<poi.version>3.9</poi.version>
+		<thumbnailator.version>0.4.8</thumbnailator.version>
+		<jsch.version>0.1.53</jsch.version>
+		<pinyin4j.version>2.5.1</pinyin4j.version>
+		<swagger.version>1.5.16</swagger.version>
+		<xfire.version>1.2.6</xfire.version>
+		<zxing.version>3.2.1</zxing.version>
+		<shiro.version>1.4.0</shiro.version>
+		<quartz.version>2.2.3</quartz.version>
+		<lombok.version>1.16.12</lombok.version>
+		<pagehelper.version>4.0.1</pagehelper.version>
+		<guava.version>24.0-jre</guava.version>
 	</properties>
 
 	<dependencyManagement>
 
 		<dependencies>
-		
+
 			<dependency>
-		         <groupId>com.github.pagehelper</groupId>
-		         <artifactId>pagehelper-spring-boot-starter</artifactId>
-		         <version>1.1.2</version>
-		     </dependency>
+				<groupId>com.github.pagehelper</groupId>
+				<artifactId>pagehelper-spring-boot-starter</artifactId>
+				<version>1.1.2</version>
+			</dependency>
 
 			<!-- pagehelper -->
-			<!-- <dependency>
-			    <groupId>com.github.pagehelper</groupId>
-			    <artifactId>pagehelper</artifactId>
-			    <version>${pagehelper.version}</version>
-			</dependency> -->
-			
+			<!-- <dependency> <groupId>com.github.pagehelper</groupId> <artifactId>pagehelper</artifactId> 
+				<version>${pagehelper.version}</version> </dependency> -->
+
 			<!-- guava -->
 			<dependency>
-			    <groupId>com.google.guava</groupId>
-			    <artifactId>guava</artifactId>
-			    <version>${guava.version}</version>
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava</artifactId>
+				<version>${guava.version}</version>
 			</dependency>
-			
+
 			<!-- lombok -->
-		    <dependency>
-		      <groupId>org.projectlombok</groupId>
-		      <artifactId>lombok</artifactId>
-		      <version>${lombok.version}</version>
-		    </dependency>
-		    
+			<dependency>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+				<version>${lombok.version}</version>
+			</dependency>
+
 			<!--fastjson -->
 			<dependency>
 				<groupId>com.alibaba</groupId>
@@ -127,11 +124,11 @@
 			</dependency>
 
 			<!--dubbo -->
-		    <dependency>
+			<dependency>
 				<groupId>com.alibaba</groupId>
 				<artifactId>dubbo</artifactId>
 				<version>${dubbo.version}</version>
-			</dependency> 
+			</dependency>
 
 			<!--zookeeper -->
 			<dependency>
@@ -162,24 +159,24 @@
 				<version>${mysql.connector.java.version}</version>
 				<scope>runtime</scope>
 			</dependency>
-			
-			<!--shiro依赖-->
-	        <dependency>
-	            <groupId>org.apache.shiro</groupId>
-	            <artifactId>shiro-core</artifactId>
-	            <version>${shiro.version}</version>
-	            <exclusions>
-	                <exclusion>
-	                    <artifactId>slf4j-api</artifactId>
-	                    <groupId>org.slf4j</groupId>
-	                </exclusion>
-	            </exclusions>
-	        </dependency>
-	        <dependency>
-	            <groupId>org.apache.shiro</groupId>
-	            <artifactId>shiro-spring</artifactId>
-	            <version>${shiro.version}</version>
-	        </dependency>
+
+			<!--shiro依赖 -->
+			<dependency>
+				<groupId>org.apache.shiro</groupId>
+				<artifactId>shiro-core</artifactId>
+				<version>${shiro.version}</version>
+				<exclusions>
+					<exclusion>
+						<artifactId>slf4j-api</artifactId>
+						<groupId>org.slf4j</groupId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.shiro</groupId>
+				<artifactId>shiro-spring</artifactId>
+				<version>${shiro.version}</version>
+			</dependency>
 
 			<dependency>
 				<groupId>junit</groupId>
