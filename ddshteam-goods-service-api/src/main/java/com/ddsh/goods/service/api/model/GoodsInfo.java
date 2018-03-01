@@ -1,8 +1,10 @@
 package com.ddsh.goods.service.api.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class GoodsInfo {
+@SuppressWarnings("serial")
+public class GoodsInfo  implements Serializable {
     private String id;
 
     private String name;

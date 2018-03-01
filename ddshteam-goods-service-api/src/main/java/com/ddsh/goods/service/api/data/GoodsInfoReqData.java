@@ -1,6 +1,9 @@
 package com.ddsh.goods.service.api.data;
 
-public class GoodsInfoReqData {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class GoodsInfoReqData implements Serializable{
 	private String name;
 	private String code;
 	private String brandId;
