@@ -1,11 +1,14 @@
 package com.ddsh.goods.service.dao;
 
 import com.ddsh.goods.service.api.model.GoodsTypeInfo;
-import com.ddsh.goods.service.api.model.GoodsTypeInfoPojo;
+import com.ddsh.goods.service.api.model.GoodsTypeInfoCriteria;
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface GoodsTypeInfoMapper {
-    long countByExample(GoodsTypeInfoPojo example);
+    long countByExample(GoodsTypeInfoCriteria example);
+
+    int deleteByExample(GoodsTypeInfoCriteria example);
 
     int deleteByPrimaryKey(String id);
 
@@ -13,9 +16,13 @@ public interface GoodsTypeInfoMapper {
 
     int insertSelective(GoodsTypeInfo record);
 
-    List<GoodsTypeInfo> selectByExample(GoodsTypeInfoPojo example);
+    List<GoodsTypeInfo> selectByExample(GoodsTypeInfoCriteria example);
 
     GoodsTypeInfo selectByPrimaryKey(String id);
+
+    int updateByExampleSelective(@Param("record") GoodsTypeInfo record, @Param("example") GoodsTypeInfoCriteria example);
+
+    int updateByExample(@Param("record") GoodsTypeInfo record, @Param("example") GoodsTypeInfoCriteria example);
 
     int updateByPrimaryKeySelective(GoodsTypeInfo record);
 

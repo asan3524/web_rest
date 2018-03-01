@@ -46,20 +46,20 @@
 		<table schema="stock" tableName="goods_brand_info"
 			enableDeleteByPrimaryKey="true" enableInsert="true"
 			enableUpdateByPrimaryKey="true" enableSelectByPrimaryKey="true"
-			enableCountByExample="true" enableUpdateByExample="false"
-			enableDeleteByExample="false" enableSelectByExample="true"
+			enableCountByExample="true" enableUpdateByExample="true"
+			enableDeleteByExample="true" enableSelectByExample="true"
 			selectByExampleQueryId="true" />
 		<table schema="stock" tableName="goods_info"
 			enableDeleteByPrimaryKey="true" enableInsert="true"
 			enableUpdateByPrimaryKey="true" enableSelectByPrimaryKey="true"
-			enableCountByExample="true" enableUpdateByExample="false"
-			enableDeleteByExample="false" enableSelectByExample="true"
+			enableCountByExample="true" enableUpdateByExample="true"
+			enableDeleteByExample="true" enableSelectByExample="true"
 			selectByExampleQueryId="true" />
 		<table schema="stock" tableName="goods_type_info"
 			enableDeleteByPrimaryKey="true" enableInsert="true"
 			enableUpdateByPrimaryKey="true" enableSelectByPrimaryKey="true"
-			enableCountByExample="true" enableUpdateByExample="false"
-			enableDeleteByExample="false" enableSelectByExample="true"
+			enableCountByExample="true" enableUpdateByExample="true"
+			enableDeleteByExample="true" enableSelectByExample="true"
 			selectByExampleQueryId="true" />
 
 	</context>
