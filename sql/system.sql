@@ -50,6 +50,8 @@ CREATE TABLE `sys_dep_info` (
 -- Records of sys_dep_info
 -- ----------------------------
 INSERT INTO `sys_dep_info` VALUES ('1', '集团公司', null, null, '总公司', 0, 1, '2018-02-01 19:22:55');
+INSERT INTO `sys_dep_info` VALUES ('2', '集团公司2', '1', null, '总公司2', '0', '1', '2018-02-01 19:22:55');
+INSERT INTO `sys_dep_info` VALUES ('3', '集团公司3', '2', null, '总公司3', '0', '1', '2018-02-01 19:22:55');
 
 -- ----------------------------
 -- Table structure for `sys_deptype_info` 可选
