@@ -7,12 +7,14 @@ CREATE TABLE `sys_user_info` (
   `account` varchar(128) NOT NULL COMMENT '账号',
   `password` varchar(64) NOT NULL COMMENT '用户登录密码',
   `name` varchar(128) NOT NULL COMMENT '姓名',
+  `sex` int(11) DEFAULT NULL COMMENT '性别：1男0女',
   `email` varchar(128) DEFAULT NULL COMMENT '用户邮箱地址',
   `fax` varchar(32) DEFAULT NULL COMMENT '传真号',
   `phone` varchar(32) DEFAULT NULL COMMENT '座机号',
   `mobile` varchar(32) DEFAULT NULL COMMENT '手机号',
   `dep_id` varchar(64) DEFAULT NULL COMMENT '所属部门ID，当前系统无部门时，此列无意义为空',
   `is_builtin` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否是内置账户，1是0不是，内置账户页面不可见而且有不进行权限过滤',
+  `remark` varchar(256) DEFAULT NULL COMMENT '备注',
   `order_num` int(11) NOT NULL DEFAULT 1000 COMMENT '序号',
   `status` int(11) NOT NULL DEFAULT 1 COMMENT '状态：1有效0失效，理论上用户不应该删除，删除应置为失效',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -25,8 +27,8 @@ CREATE TABLE `sys_user_info` (
 -- root pwd bitlife_root_888T3
 -- admin pwd admin
 -- ----------------------------
-INSERT INTO `sys_user_info` VALUES ('0', 'root', 's5+xTlu4HTuXWkcJS8vXzq==', '内置账户', '', '', '', '', null, 1, 0, 1, '2018-02-01 19:22:55');
-INSERT INTO `sys_user_info` VALUES ('1', 'admin', 'ismLkxFxF14d9uEosEa6MM==', '管理员', '', '', '', '', null, 0, 1, 1, '2018-02-01 19:22:55');
+INSERT INTO `sys_user_info` VALUES ('0', 'root', 's5+xTlu4HTuXWkcJS8vXzq==', '内置账户', null, '', '', '', '', null, 1, '内置账户用户不可见', 0, 1, '2018-02-01 19:22:55');
+INSERT INTO `sys_user_info` VALUES ('1', 'admin', 'ismLkxFxF14d9uEosEa6MM==', '管理员', null, '', '', '', '', null, 0, '内置管理员不可删除', 1, 1, '2018-02-01 19:22:55');
 
 -- ----------------------------
 -- Table structure for `sys_dep_info` 可选
