@@ -35,6 +35,17 @@ public interface IGoodsTypeService {
 	 * @author arpgate
 	 */
 	public GoodsTypeInfo getType(String id);
+	
+	/**
+	 *  根据物质分类id获取物资下级分类详情
+	 * @Title: getSubType
+	 * @param id
+	 * @return List<GoodsTypeInfo>
+	 * @see 
+	 * @throws
+	 * @author arpgate
+	 */
+	public List<GoodsTypeInfo> getSubType(String id);
 
 	/**
 	 * 保存物资分类详情
@@ -76,5 +87,5 @@ public interface IGoodsTypeService {
 	 * @throws
 	 * @author arpgate
 	 */
-	public boolean delete(String... id);
+	public boolean delete(List id);
 }

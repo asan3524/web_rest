@@ -1,9 +1,7 @@
 package com.ddshteam.web.controller.goods;
 
 
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import javax.validation.Valid;
 
@@ -67,6 +65,8 @@ public class GoodsInfoController extends BaseController {
 	@ApiOperation(value = "查看物资列表详情", notes = "根据条件分页查询物资详情")
 	@PostMapping(value = { "/getgoodsInfobycause" })
 	public Object getGoodsInfoByCause( @Valid @RequestBody GoodsInfoSearchReq goodsInfoReq,@PageableDefault(page = 1, size = 10, sort = "createTime,asc") Pageable pageable, BindingResult errors) {
+		logger.debug("GoodsInfoController.getgoodsInfobycause()");
+
 		if (errors.hasErrors()) {
 			String msg = errors.getAllErrors().get(0).getDefaultMessage();
 			logger.error(msg);
@@ -85,16 +85,21 @@ public class GoodsInfoController extends BaseController {
 	@ApiOperation(value = "增加物资", notes = "根据条件分页查询物资详情")
 	@PostMapping(value = { "/addgoods" })
 	public Object addGoods( @Valid @RequestBody GoodsInfoReq goodsInforeq, BindingResult errors) {
+		logger.debug("GoodsInfoController.addGoods()");
+
+		if (errors.hasErrors()) {
+			String msg = errors.getAllErrors().get(0).getDefaultMessage();
+			logger.error(msg);
+			return getResponse(HttpCode.BAD_REQUEST, false, msg);
+		}
+		
 		GoodsInfo goodsInfo=new GoodsInfo();
 		goodsInfo.setBrandId(goodsInforeq.getBrandId());
 		goodsInfo.setColour(goodsInforeq.getColour());
-		goodsInfo.setCreateTime(new Date());
-		goodsInfo.setId(UUID.randomUUID().toString());
 		goodsInfo.setName(goodsInforeq.getName());
 		goodsInfo.setNorm(goodsInforeq.getNorm());
 		goodsInfo.setOrderNum(goodsInforeq.getOrderNum());
 		goodsInfo.setRemark(goodsInforeq.getRemark());
-		goodsInfo.setStatus(1);
 		goodsInfo.setTypeId(goodsInforeq.getTypeId());
 		goodsInfo.setUnit(goodsInforeq.getUnit());
         boolean status=goodsService.save(goodsInfo);
@@ -104,6 +109,19 @@ public class GoodsInfoController extends BaseController {
 	@ApiOperation(value = "更新物资", notes = "根据物资id更新物资信息")
 	@PostMapping(value = { "/updategoods/{goodsid}" })
 	public Object updateGoods( @Valid @RequestBody GoodsInfoReq goodsInforeq, @PathVariable("goodsid") String goodsid,BindingResult errors) {
+		logger.debug("GoodsInfoController.updateGoods()");
+		
+		if (errors.hasErrors()) {
+			String msg = errors.getAllErrors().get(0).getDefaultMessage();
+			logger.error(msg);
+			return getResponse(HttpCode.BAD_REQUEST, false, msg);
+		}
+		
+		if(StringUtils.isEmpty(goodsid)) {
+			logger.error("goodsid is null.");
+			return getResponse(HttpCode.BAD_REQUEST, false);
+		}
+		
 		GoodsInfo goodsInfo=new GoodsInfo();
 		goodsInfo.setBrandId(goodsInforeq.getBrandId());
 		goodsInfo.setColour(goodsInforeq.getColour());
@@ -121,13 +139,27 @@ public class GoodsInfoController extends BaseController {
 	@ApiOperation(value = "删除物资-单条", notes = "根据物资id删除物资信息")
 	@PostMapping(value = { "/id/{goodsid}" })
 	public Object deleteGoods(@PathVariable("goodsid") String goodsid) {
+		logger.debug("GoodsInfoController.deleteGoods()");
+
+		if(StringUtils.isEmpty(goodsid)) {
+			logger.error("goodsid is null.");
+			return getResponse(HttpCode.BAD_REQUEST, false);
+		}
+		
 		boolean status=goodsService.delete(goodsid);
         return getResponse(status);
 	}
 	
 	@ApiOperation(value = "删除物资-多条", notes = "根据物资ids删除物资信息")
 	@PostMapping(value = { "/ids" })
-	public Object deleteGoods(@Valid @RequestBody List<String> goodsids) {
+	public Object deleteGoodss(@Valid @RequestBody List<String> goodsids) {
+		logger.debug("GoodsInfoController.deleteGoodss()");
+
+		if(goodsids==null||goodsids.isEmpty()) {
+			logger.error("goodsids is null or empty.");
+			return getResponse(HttpCode.BAD_REQUEST, false);
+		}
+		
 		boolean status=goodsService.delete(goodsids);
         return getResponse(status);
 	}

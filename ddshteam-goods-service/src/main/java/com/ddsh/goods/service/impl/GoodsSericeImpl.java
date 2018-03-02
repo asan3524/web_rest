@@ -1,7 +1,8 @@
 package com.ddsh.goods.service.impl;
 
-import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,7 +13,10 @@ import com.ddsh.goods.service.api.data.GoodsInfoSearchReqData;
 import com.ddsh.goods.service.api.model.GoodsInfo;
 import com.ddsh.goods.service.api.model.GoodsInfoCriteria;
 import com.ddsh.goods.service.api.model.GoodsInfoCriteria.Criteria;
+import com.ddsh.goods.service.dao.GoodsBrandInfoMapper;
 import com.ddsh.goods.service.dao.GoodsInfoMapper;
+import com.ddsh.goods.service.dao.GoodsTypeInfoMapper;
+import com.ddsh.goods.service.util.GoodsCoder;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
@@ -22,6 +26,12 @@ public class GoodsSericeImpl  implements IGoodsService{
 
 	@Autowired
 	private GoodsInfoMapper goodsInfoDao;
+	
+	@Autowired
+	private GoodsBrandInfoMapper goodsBrandInfoDao;
+	
+	@Autowired
+	private GoodsTypeInfoMapper goodsTypeInfoDao;
 	
 	@Override
 	public PageInfo<GoodsInfo> list(int pageNum, int pageSize, GoodsInfoSearchReqData searchReqData) {
@@ -60,6 +70,11 @@ public class GoodsSericeImpl  implements IGoodsService{
 
 	@Override
 	public boolean save(GoodsInfo goodsInfo) {
+		String code=GoodsCoder.getGoodsCode(goodsInfo.getTypeId(),goodsInfo.getBrandId(),goodsInfo.getColour(),goodsInfo.getName());
+		goodsInfo.setCode(code);
+		goodsInfo.setCreateTime(new Date());
+		goodsInfo.setId(UUID.randomUUID().toString());
+		goodsInfo.setStatus(1);
 		int result = goodsInfoDao.insert(goodsInfo);
 		return result>0;
 	}
