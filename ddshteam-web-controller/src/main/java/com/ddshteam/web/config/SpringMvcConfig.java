@@ -192,7 +192,8 @@ public class SpringMvcConfig extends WebMvcConfigurerAdapter{
             public void addCorsMappings(CorsRegistry registry) {  
                 registry.addMapping("/**")  
                 .allowCredentials(true)  
-                .allowedMethods("GET","POST","OPTIONS","HEAD","PUT","DELETE");  
+                .allowedMethods("GET","POST","OPTIONS","HEAD","PUT","DELETE")
+                .allowedHeaders("x-requested-with","Access-Control-Allow-Origin","EX-SysAuthToken","EX-JSESSIONID","Content-Type");
             }  
         };  
     }  
