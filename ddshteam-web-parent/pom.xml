@@ -18,6 +18,7 @@
 		<module>../ddshteam-web-system-service-api</module>
 		<module>../ddshteam-web-controller</module>
 		<module>../ddshteam-goods-service-api</module>
+		<module>../ddshteam-goods-service</module>
 	</modules>
 
 	<properties>
