@@ -144,3 +144,36 @@ CREATE TABLE `sys_role_to_user` (
 -- Records of sys_role_to_user
 -- ----------------------------
 INSERT INTO `sys_role_to_user` VALUES ('1', '1', '1');
+
+-- ----------------------------
+-- Function structure for `dept_check_parent`
+-- 查询当前部门及其子部门所属的用户语句为：select * from  sys_user_info where dept_check_parent('当前部门ID', dep_id) or dep_id='当前部门ID';
+-- ----------------------------
+DROP FUNCTION IF EXISTS `dept_check_parent`;
+DELIMITER ;;
+CREATE DEFINER=`stock`@`%` FUNCTION `dept_check_parent`(`parent` varchar(64), `self` varchar(64)) RETURNS tinyint(1)
+BEGIN
+DECLARE temp varchar(64) default '';
+DECLARE temp_self varchar(64) default '';
+
+IF
+  (self IS NULL OR parent IS NULL) THEN return 0;
+  END IF;
+  
+SET temp_self = self;
+
+WHILE temp IS NOT NULL DO 
+
+SELECT parent_id INTO temp FROM sys_dep_info WHERE id = temp_self;
+IF
+  (temp IS NOT NULL AND temp = parent) THEN return 1;
+  END IF;
+
+SET temp_self = temp;
+
+END WHILE;
+
+RETURN 0;
+END
+;;
+DELIMITER ;
