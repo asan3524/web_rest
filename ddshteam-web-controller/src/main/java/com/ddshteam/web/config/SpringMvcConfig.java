@@ -176,4 +176,24 @@ public class SpringMvcConfig extends WebMvcConfigurerAdapter{
         //factory.setLocation("/upload");
         return factory.createMultipartConfig();
     } 
+    
+    /**
+     * spring 跨域处理
+     * @Title: corsConfigurer
+     * @return WebMvcConfigurer
+     * @see 
+     * @throws
+     * @author arpgate
+     */
+    @Bean  
+    public WebMvcConfigurer corsConfigurer() {  
+        return new WebMvcConfigurerAdapter() {  
+            @Override  
+            public void addCorsMappings(CorsRegistry registry) {  
+                registry.addMapping("/**")  
+                .allowCredentials(true)  
+                .allowedMethods("GET","POST","OPTIONS","HEAD","PUT","DELETE");  
+            }  
+        };  
+    }  
 }
