@@ -37,7 +37,7 @@ import io.swagger.annotations.ApiOperation;
  * @version v1.0.0
  * 
  */
-@Api(value = "/goods", description = "物资类型接口")
+@Api(value = "/goods", description = "物资类型接口-完成后端测试")
 @RestController
 @RequestMapping(value = "/goods")
 public class GoodsTypeController extends BaseController {
@@ -145,7 +145,7 @@ public class GoodsTypeController extends BaseController {
 			return getResponse(HttpCode.BAD_REQUEST, false);
 		}
 		
-		List<GoodsTypeInfo> GoodsTypeInfos=goodsTypeService.getSubType(goodstypeid);
+		List<Tree> GoodsTypeInfos=goodsTypeService.getSubType(goodstypeid);
         return getResponse(GoodsTypeInfos);
 	}
 	

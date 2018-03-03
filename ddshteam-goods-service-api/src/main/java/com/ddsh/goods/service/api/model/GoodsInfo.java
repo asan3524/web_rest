@@ -50,7 +50,7 @@ public class GoodsInfo  implements Serializable {
     }
 
     public void setCode(String code) {
-        this.code = code == null ? null : code.trim();
+        this.code =code;
     }
 
     public String getTypeId() {

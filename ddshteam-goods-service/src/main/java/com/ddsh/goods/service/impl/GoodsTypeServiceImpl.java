@@ -74,8 +74,8 @@ public class GoodsTypeServiceImpl implements IGoodsTypeService {
 	}
 
 	@Override
-	public List<GoodsTypeInfo> getSubType(String id) {
-		GoodsTypeInfoCriteria goodsTypeInfoCriteria=new GoodsTypeInfoCriteria();
+	public List<Tree> getSubType(String id) {
+     /*		GoodsTypeInfoCriteria goodsTypeInfoCriteria=new GoodsTypeInfoCriteria();
 		Criteria criteria=goodsTypeInfoCriteria.createCriteria();
 		if(id==null)
 		{
@@ -84,8 +84,8 @@ public class GoodsTypeServiceImpl implements IGoodsTypeService {
 		else
 		{
 			criteria.andParentIdEqualTo(id);
-		}
-		List<GoodsTypeInfo> goodsTypeInfos=goodsTypeInfoDao.selectByExample(goodsTypeInfoCriteria);
+		}*/
+		List<Tree> goodsTypeInfos=goodsTypeInfoTreeDao.selectByPrimaryKey(id);
 		return goodsTypeInfos;
 	}
 

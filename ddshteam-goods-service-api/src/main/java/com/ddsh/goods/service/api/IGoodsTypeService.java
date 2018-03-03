@@ -45,7 +45,7 @@ public interface IGoodsTypeService {
 	 * @throws
 	 * @author arpgate
 	 */
-	public List<GoodsTypeInfo> getSubType(String id);
+	public List<Tree> getSubType(String id);
 
 	/**
 	 * 保存物资分类详情

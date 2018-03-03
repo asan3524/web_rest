@@ -1,5 +1,7 @@
 package com.ddshteam.web.dto.goods;
 
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -26,7 +28,7 @@ public class GoodsInfoReq {
     private String norm;
 	@NotBlank
     private String remark;
-	@NotBlank
+	@NotNull
     private Integer orderNum;
 
 	public String getName() {
