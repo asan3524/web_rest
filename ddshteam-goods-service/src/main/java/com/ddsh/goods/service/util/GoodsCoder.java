@@ -20,7 +20,7 @@ public class GoodsCoder {
 			return null;
 		}
 		int factory=factors.length;
-	 
+		factors[0]=factors[0]+factory;
 		StringBuilder code=new StringBuilder(BEGIN_MAKER);
 		for(String factor:factors)
 		{

@@ -53,10 +53,10 @@ public class GoodsContants {
 	public static final class GoodsStatus
 	{
 		@ConstantDescription(desc="有效")
-		public static final String EFFECT="1";
+		public static final int EFFECT=1;
 		
 		@ConstantDescription(desc="失效")
-		public static final String LOSE_EFFECT="0";
+		public static final int LOSE_EFFECT=0;
 
 	}
 	
@@ -64,10 +64,10 @@ public class GoodsContants {
 	public static final class GoodsTypeStatus
 	{
 		@ConstantDescription(desc="有效")
-		public static final String EFFECT="1";
+		public static final int EFFECT=1;
 		
 		@ConstantDescription(desc="失效")
-		public static final String LOSE_EFFECT="0";
+		public static final int LOSE_EFFECT=0;
 
 	}
 	
@@ -75,10 +75,10 @@ public class GoodsContants {
 	public static final class GoodsBrandStatus
 	{
 		@ConstantDescription(desc="有效")
-		public static final String EFFECT="1";
+		public static final int EFFECT=1;
 		
 		@ConstantDescription(desc="失效")
-		public static final String LOSE_EFFECT="0";
+		public static final int LOSE_EFFECT=0;
 
 	}
 }

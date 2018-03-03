@@ -9,13 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.ddsh.goods.service.api.IGoodsService;
+import com.ddsh.goods.service.api.constant.GoodsContants;
 import com.ddsh.goods.service.api.data.GoodsInfoSearchReqData;
 import com.ddsh.goods.service.api.model.GoodsInfo;
 import com.ddsh.goods.service.api.model.GoodsInfoCriteria;
 import com.ddsh.goods.service.api.model.GoodsInfoCriteria.Criteria;
-import com.ddsh.goods.service.dao.GoodsBrandInfoMapper;
 import com.ddsh.goods.service.dao.GoodsInfoMapper;
-import com.ddsh.goods.service.dao.GoodsTypeInfoMapper;
 import com.ddsh.goods.service.util.GoodsCoder;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -26,12 +25,6 @@ public class GoodsSericeImpl  implements IGoodsService{
 
 	@Autowired
 	private GoodsInfoMapper goodsInfoDao;
-	
-	@Autowired
-	private GoodsBrandInfoMapper goodsBrandInfoDao;
-	
-	@Autowired
-	private GoodsTypeInfoMapper goodsTypeInfoDao;
 	
 	@Override
 	public PageInfo<GoodsInfo> list(int pageNum, int pageSize, GoodsInfoSearchReqData searchReqData) {
@@ -74,7 +67,7 @@ public class GoodsSericeImpl  implements IGoodsService{
 		goodsInfo.setCode(code);
 		goodsInfo.setCreateTime(new Date());
 		goodsInfo.setId(UUID.randomUUID().toString());
-		goodsInfo.setStatus(1);
+		goodsInfo.setStatus(GoodsContants.GoodsStatus.EFFECT);
 		int result = goodsInfoDao.insert(goodsInfo);
 		return result>0;
 	}

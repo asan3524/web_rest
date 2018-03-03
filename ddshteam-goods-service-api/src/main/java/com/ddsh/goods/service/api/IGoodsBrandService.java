@@ -47,7 +47,7 @@ public interface IGoodsBrandService {
 	 * @throws
 	 * @author arpgate
 	 */
-	public List<GoodsBrandInfo> getSubBrand(String id);
+	public List<Tree> getSubBrand(String id);
 	/**
 	 * 保存物资类型id
 	 * @Title: save

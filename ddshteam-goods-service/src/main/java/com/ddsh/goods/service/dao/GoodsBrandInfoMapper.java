@@ -2,6 +2,9 @@ package com.ddsh.goods.service.dao;
 
 import com.ddsh.goods.service.api.model.GoodsBrandInfo;
 import com.ddsh.goods.service.api.model.GoodsBrandInfoCriteria;
+import com.ddsh.goods.service.util.GoodsCoder;
+
+import java.util.Date;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 

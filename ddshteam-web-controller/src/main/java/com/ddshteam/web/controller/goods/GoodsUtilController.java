@@ -18,7 +18,7 @@ import com.ddshteam.web.core.support.HttpCode;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
-@Api(value = "/goods/util", description = "物资工具服务")
+@Api(value = "/goods/util", description = "物资工具服务-已测试")
 @RestController
 @RequestMapping(value = "/goods/util")
 public class GoodsUtilController extends BaseController{

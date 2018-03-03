@@ -41,7 +41,7 @@ import io.swagger.annotations.ApiOperation;
  */
 @Api(value = "/goods/goodsinfo", description = "物资类型接口")
 @RestController
-@RequestMapping(value = "/goodsinfo")
+@RequestMapping(value = "/goods/goodsinfo")
 public class GoodsInfoController extends BaseController {
 	
 	private final static Logger logger = LoggerFactory.getLogger(GoodsInfoController.class);
@@ -64,7 +64,7 @@ public class GoodsInfoController extends BaseController {
 	
 	@ApiOperation(value = "查看物资列表详情", notes = "根据条件分页查询物资详情")
 	@PostMapping(value = { "/getgoodsInfobycause" })
-	public Object getGoodsInfoByCause( @Valid @RequestBody GoodsInfoSearchReq goodsInfoReq,@PageableDefault(page = 1, size = 10, sort = "createTime,asc") Pageable pageable, BindingResult errors) {
+	public Object getGoodsInfoByCause( @Valid @RequestBody GoodsInfoSearchReq goodsInfoReq,@PageableDefault(page = 1, size = 10, sort = "order_num,asc") Pageable pageable, BindingResult errors) {
 		logger.debug("GoodsInfoController.getgoodsInfobycause()");
 
 		if (errors.hasErrors()) {

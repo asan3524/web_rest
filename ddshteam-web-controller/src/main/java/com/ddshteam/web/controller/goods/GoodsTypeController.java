@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,6 +24,7 @@ import com.ddsh.goods.service.api.model.GoodsTypeInfo;
 import com.ddshteam.web.core.base.BaseController;
 import com.ddshteam.web.core.support.HttpCode;
 import com.ddshteam.web.dto.goods.GoodsTypeInoReq;
+import com.ddshteam.web.system.service.api.data.Tree;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -35,9 +37,9 @@ import io.swagger.annotations.ApiOperation;
  * @version v1.0.0
  * 
  */
-@Api(value = "/goods/goodstype", description = "物资类型接口")
+@Api(value = "/goods", description = "物资类型接口")
 @RestController
-@RequestMapping(value = "/goods/goodstype")
+@RequestMapping(value = "/goods")
 public class GoodsTypeController extends BaseController {
 
 	private final static Logger logger = LoggerFactory.getLogger(GoodsTypeController.class);
@@ -52,7 +54,7 @@ public class GoodsTypeController extends BaseController {
 	private IGoodsService goodsService;
 	
 	@ApiOperation(value = "增加物资类型", notes = "增加物资类型")
-	@PostMapping(value = { "/addgoodsType" })
+	@PostMapping(value = { "/type/addgoodsType" })
 	public Object addGoodsType( @Valid @RequestBody GoodsTypeInoReq goodsTypeInoReq, BindingResult errors) {
 		
 		if (errors.hasErrors()) {
@@ -70,8 +72,8 @@ public class GoodsTypeController extends BaseController {
 	}
 	
 	@ApiOperation(value = "更新物资类型", notes = "根据物资类型id更新物资类型信息")
-	@PostMapping(value = { "/updategoodstype/{goodstypeid}" })
-	public Object updateGoodsType( @Valid @RequestBody GoodsTypeInoReq goodsTypeInoReq, @PathVariable("goodstypeid") String goodstypeid,BindingResult errors) {
+	@PostMapping(value = { "/type/updategoodstype" })
+	public Object updateGoodsType( @Valid @RequestBody GoodsTypeInoReq goodsTypeInoReq, String goodstypeid,BindingResult errors) {
 		
 		if (errors.hasErrors()) {
 			String msg = errors.getAllErrors().get(0).getDefaultMessage();
@@ -95,8 +97,8 @@ public class GoodsTypeController extends BaseController {
 	}
 	
 	@ApiOperation(value = "删除物资类型-单条", notes = "根据物资类型id删除物资类型信息")
-	@PostMapping(value = { "/deletetype/{goodstypeid}" })
-	public Object deleteGoodsTypebyId(@PathVariable("goodsid") String goodstypeid) {
+	@GetMapping(value = { "/type/deletetype/{goodstypeid}" })
+	public Object deleteGoodsTypebyId(@PathVariable("goodstypeid")  String goodstypeid) {
 		
 		if(StringUtils.isEmpty(goodstypeid)) {
 			logger.error("goodstypeid is null.");
@@ -108,7 +110,7 @@ public class GoodsTypeController extends BaseController {
 	}
 	
 	@ApiOperation(value = "删除物资类型-多条", notes = "根据物资类型ids删除物资类型信息")
-	@PostMapping(value = { "/deletetypes" })
+	@PostMapping(value = { "/type/deletetypes" })
 	public Object deleteGoodsTypebyIds(@Valid @RequestBody List<String> goodstypeids) {
 		
 		if(goodstypeids==null||goodstypeids.isEmpty()) {
@@ -121,8 +123,8 @@ public class GoodsTypeController extends BaseController {
 	
 	
 	@ApiOperation(value = "获取物资类型", notes = "根据类型id获取物资类型信息")
-	@PostMapping(value = { "/gettype/{goodstypeid}" })
-	public Object getGoodsType(@PathVariable("goodsid") String goodstypeid) {
+	@GetMapping(value = { "/type/gettype/{goodstypeid}" })
+	public Object getGoodsType(@PathVariable("goodstypeid") String goodstypeid) {
 		
 		if(StringUtils.isEmpty(goodstypeid)) {
 			logger.error("goodstypeid is null.");
@@ -135,8 +137,8 @@ public class GoodsTypeController extends BaseController {
 	
 	
 	@ApiOperation(value = "获取下级物资类型", notes = "根据类型id获取下级物资类型信息，id为空则获取所有父id为空的物资类型")
-	@PostMapping(value = { "/getsubgoostype/{goodstypeid}" })
-	public Object getSubGoosType(@PathVariable("goodsid") String goodstypeid) {
+	@GetMapping(value = { "/type/getsubgoostype/{goodstypeid}" })
+	public Object getSubGoosType(@PathVariable("goodstypeid") String goodstypeid) {
 		
 		if(StringUtils.isEmpty(goodstypeid)) {
 			logger.error("goodstypeid is null.");
@@ -151,7 +153,7 @@ public class GoodsTypeController extends BaseController {
 	
 	
 	@ApiOperation(value = "增加物资品牌类型", notes = "增加物资品牌类型")
-	@PostMapping(value = { "/addgoodsBrand" })
+	@PostMapping(value = { "/brand/addgoodsBrand" })
 	public Object addGoodsBrand( @Valid @RequestBody GoodsTypeInoReq goodsTypeInoReq, BindingResult errors) {
 		
 		if (errors.hasErrors()) {
@@ -169,8 +171,8 @@ public class GoodsTypeController extends BaseController {
 	}
 	
 	@ApiOperation(value = "更新物资品牌类型", notes = "根据物资品牌类型id更新物资品牌类型信息")
-	@PostMapping(value = { "/updategoodsbrand/{goodsbrandid}" })
-	public Object updateGoodsBrand( @Valid @RequestBody GoodsTypeInoReq goodsTypeInoReq, @PathVariable("goodsbrandid") String goodsbrandid,BindingResult errors) {
+	@PostMapping(value = { "/brand/updategoodsbrand" })
+	public Object updateGoodsBrand( @Valid @RequestBody GoodsTypeInoReq goodsTypeInoReq, String goodsbrandid,BindingResult errors) {
 		
 		if (errors.hasErrors()) {
 			String msg = errors.getAllErrors().get(0).getDefaultMessage();
@@ -194,7 +196,7 @@ public class GoodsTypeController extends BaseController {
 	}
 	
 	@ApiOperation(value = "删除物资品牌类型-单条", notes = "根据物资品牌类型id删除物资品牌类型信息")
-	@PostMapping(value = { "/deletebrand/{goodsbrandid}" })
+	@GetMapping(value = { "/brand/deletebrand/{goodsbrandid}" })
 	public Object deleteGoodsBrandbyId(@PathVariable("goodsbrandid") String goodsbrandid) {
 		
 		if(StringUtils.isEmpty(goodsbrandid)) {
@@ -207,7 +209,7 @@ public class GoodsTypeController extends BaseController {
 	}
 	
 	@ApiOperation(value = "删除物资品牌类型-多条", notes = "根据物资类型ids删除物资品牌类型信息")
-	@PostMapping(value = { "/deletebrand" })
+	@PostMapping(value = { "/brand/deletebrand" })
 	public Object deleteGoodsBrandbyIds(@Valid @RequestBody List<String> goodsbrandids) {
 		
 		if(goodsbrandids==null||goodsbrandids.isEmpty()) {
@@ -220,7 +222,7 @@ public class GoodsTypeController extends BaseController {
 	
 	
 	@ApiOperation(value = "获取物资品牌类型", notes = "根据品牌类型id获取物资品牌类型信息")
-	@PostMapping(value = { "/getbrand/{goodsBrandid}" })
+	@GetMapping(value = { "/brand/getbrand/{goodsbrandid}" })
 	public Object getGoodsBrand(@PathVariable("goodsbrandid") String goodsbrandid) {
 		
 		if(StringUtils.isEmpty(goodsbrandid)) {
@@ -234,7 +236,7 @@ public class GoodsTypeController extends BaseController {
 	
 	
 	@ApiOperation(value = "获取下级物资品牌类型", notes = "根据品牌类型id获取下级物资品牌类型信息，id为空则获取所有父id为空的物资品牌类型")
-	@PostMapping(value = { "/getsubgoosbrand/{goodsbrandid}" })
+	@GetMapping(value = { "/brand/getsubgoosbrand/{goodsbrandid}" })
 	public Object getSubGoosBrand(@PathVariable("goodsbrandid") String goodsbrandid) {
 		
 		if(StringUtils.isEmpty(goodsbrandid)) {
@@ -242,7 +244,7 @@ public class GoodsTypeController extends BaseController {
 			return getResponse(HttpCode.BAD_REQUEST, false);
 		}
 		
-		List<GoodsBrandInfo> goodsBrandInfos=goodsBrandService.getSubBrand(goodsbrandid);
+		List<Tree> goodsBrandInfos=goodsBrandService.getSubBrand(goodsbrandid);
         return getResponse(goodsBrandInfos);
 	}
 	
