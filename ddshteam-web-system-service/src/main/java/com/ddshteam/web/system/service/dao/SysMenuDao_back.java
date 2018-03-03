@@ -9,7 +9,7 @@ import com.ddshteam.web.system.service.api.model.SysMenu;
 
 @Repository
 //@Mapper
-public interface SysMenuDao {
+public interface SysMenuDao_back {
 	
 	public List<SysMenu> getMenuList();
 	

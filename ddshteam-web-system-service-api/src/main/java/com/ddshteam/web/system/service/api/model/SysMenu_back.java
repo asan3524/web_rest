@@ -11,7 +11,7 @@ import lombok.ToString;
 @Builder
 @Data
 @ToString
-public class SysMenu implements Serializable{
+public class SysMenu_back implements Serializable{
 	
 	private String id;      
 	private String name;    
@@ -78,10 +78,10 @@ public class SysMenu implements Serializable{
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
-	public SysMenu() {
+	public SysMenu_back() {
 		super();
 	}
-	public SysMenu(String id, String name, String parentId, int type, String url, String perms, String icon,
+	public SysMenu_back(String id, String name, String parentId, int type, String url, String perms, String icon,
 			int orderNum, Date createTime) {
 		super();
 		this.id = id;

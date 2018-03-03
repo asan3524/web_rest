@@ -12,7 +12,7 @@ import lombok.ToString;
 @Builder
 @Data
 @ToString
-public class SysUser implements Serializable{
+public class SysUser_back implements Serializable{
 	
 	private String id;
 	private String account;
@@ -123,10 +123,10 @@ public class SysUser implements Serializable{
 	public void setRoles(List<SysRole> roles) {
 		this.roles = roles;
 	}
-	public SysUser() {
+	public SysUser_back() {
 		super();
 	}
-	public SysUser(String id, String account, String password, String name, String email, String fax, String phone,
+	public SysUser_back(String id, String account, String password, String name, String email, String fax, String phone,
 			String mobile, String depId, boolean isBuiltin, int orderNum, int status, Date createTime, SysDept dept,
 			List<SysRole> roles) {
 		super();

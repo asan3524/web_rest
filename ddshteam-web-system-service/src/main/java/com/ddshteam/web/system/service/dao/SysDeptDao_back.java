@@ -9,7 +9,7 @@ import com.ddshteam.web.system.service.api.model.SysDept;
 
 @Repository
 //@Mapper
-public interface SysDeptDao {
+public interface SysDeptDao_back {
 	
 	/**
 	 * 获取所有部门列表

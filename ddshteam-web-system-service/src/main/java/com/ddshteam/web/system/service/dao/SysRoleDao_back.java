@@ -9,7 +9,7 @@ import com.ddshteam.web.system.service.api.model.SysRole;
 
 @Repository
 //@Mapper
-public interface SysRoleDao {
+public interface SysRoleDao_back {
 	
 	public List<SysRole> getRoleList();
 	

@@ -9,7 +9,7 @@ import com.ddshteam.web.system.service.api.model.SysUser;
 
 @Repository
 //@Mapper
-public interface SysUserDao {
+public interface SysUserDao_back {
 	
 	public List<SysUser> getUserList(@Param("name") String name, @Param("depId") String depId);
 	

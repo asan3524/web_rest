@@ -11,7 +11,7 @@ import lombok.ToString;
 @Builder
 @Data
 @ToString
-public class SysRole implements Serializable{
+public class SysRole_back implements Serializable{
 	
 	private String id;
 	private String name;
@@ -42,10 +42,10 @@ public class SysRole implements Serializable{
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
-	public SysRole() {
+	public SysRole_back() {
 		super();
 	}
-	public SysRole(String id, String name, String remark, Date createTime) {
+	public SysRole_back(String id, String name, String remark, Date createTime) {
 		super();
 		this.id = id;
 		this.name = name;

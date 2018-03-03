@@ -15,7 +15,7 @@ import lombok.ToString;
 //@NoArgsConstructor
 //@AllArgsConstructor
 @ToString
-public class SysDept implements Serializable{
+public class SysDept_back implements Serializable{
 	
 	private String id;
 	private String name;
@@ -83,10 +83,10 @@ public class SysDept implements Serializable{
 	public void setUserList(List<SysUser> userList) {
 		this.userList = userList;
 	}
-	public SysDept() {
+	public SysDept_back() {
 		super();
 	}
-	public SysDept(String id, String name, String parentId, String typeId, String remark, int orderNum, int status,
+	public SysDept_back(String id, String name, String parentId, String typeId, String remark, int orderNum, int status,
 			Date createTime, List<SysUser> userList) {
 		super();
 		this.id = id;
