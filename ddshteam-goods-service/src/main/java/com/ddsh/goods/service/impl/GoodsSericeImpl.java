@@ -74,11 +74,7 @@ public class GoodsSericeImpl  implements IGoodsService{
 
 	@Override
 	public boolean update(GoodsInfo goodsInfo) {
-		GoodsInfo oldgoodsInfo=goodsInfoDao.selectByPrimaryKey(goodsInfo.getId());
-		goodsInfo.setCode(oldgoodsInfo.getCode());
-		goodsInfo.setCreateTime(oldgoodsInfo.getCreateTime());
-		goodsInfo.setStatus(oldgoodsInfo.getStatus());
-		int result = goodsInfoDao.updateByPrimaryKey(goodsInfo);
+		int result = goodsInfoDao.updateByPrimaryKeySelective(goodsInfo);
 		return result>0;
 	}
 

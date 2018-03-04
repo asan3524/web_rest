@@ -47,10 +47,7 @@ public class GoodsBrandServiceImpl implements IGoodsBrandService {
 
 	@Override
 	public boolean update(GoodsBrandInfo Info) {
-		GoodsBrandInfo oldInfo=goodsBrandInfoDao.selectByPrimaryKey(Info.getId());
-		Info.setCreateTime(oldInfo.getCreateTime());
-		Info.setCode(oldInfo.getCode());
-		int result=goodsBrandInfoDao.updateByPrimaryKey(Info);
+		int result=goodsBrandInfoDao.updateByPrimaryKeySelective(Info);
 		return result>0;
 	}
 

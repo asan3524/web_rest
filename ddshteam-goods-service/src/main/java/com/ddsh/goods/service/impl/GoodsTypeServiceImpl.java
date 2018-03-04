@@ -50,11 +50,7 @@ public class GoodsTypeServiceImpl implements IGoodsTypeService {
 
 	@Override
 	public boolean update(GoodsTypeInfo typeInfo) {
-		GoodsTypeInfo oldtype=goodsTypeInfoDao.selectByPrimaryKey(typeInfo.getId());
-		typeInfo.setCode(oldtype.getCode());
-		typeInfo.setStatus(oldtype.getStatus());
-		typeInfo.setCreateTime(oldtype.getCreateTime());
-		int result =goodsTypeInfoDao.updateByPrimaryKey(typeInfo);
+		int result =goodsTypeInfoDao.updateByPrimaryKeySelective(typeInfo);
 		return result>0;
 	}
 

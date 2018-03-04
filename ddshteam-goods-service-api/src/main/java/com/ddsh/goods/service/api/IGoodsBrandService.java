@@ -3,7 +3,6 @@ package com.ddsh.goods.service.api;
 import java.util.List;
 
 import com.ddsh.goods.service.api.model.GoodsBrandInfo;
-import com.ddsh.goods.service.api.model.GoodsTypeInfo;
 import com.ddshteam.web.system.service.api.data.Tree;
 
 /**
@@ -51,24 +50,24 @@ public interface IGoodsBrandService {
 	/**
 	 * 保存物资类型id
 	 * @Title: save
-	 * @param Info
+	 * @param info
 	 * @return boolean
 	 * @see 
 	 * @throws
 	 * @author arpgate
 	 */
-	public boolean save(GoodsBrandInfo Info);
+	public boolean save(GoodsBrandInfo info);
 
 	/**
 	 * 更新物资类型
 	 * @Title: update
-	 * @param Info
+	 * @param info
 	 * @return boolean
 	 * @see 
 	 * @throws
 	 * @author arpgate
 	 */
-	public boolean update(GoodsBrandInfo Info);
+	public boolean update(GoodsBrandInfo info);
 
 	/**
 	 * 根据ID删除品牌
