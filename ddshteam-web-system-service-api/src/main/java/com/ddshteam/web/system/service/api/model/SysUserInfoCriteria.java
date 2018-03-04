@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class SysUserInfoExample {
+public class SysUserInfoCriteria {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public SysUserInfoExample() {
+    public SysUserInfoCriteria() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
