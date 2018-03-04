@@ -3,7 +3,7 @@ package com.ddshteam.web.system.service.api;
 import java.util.List;
 
 import com.ddshteam.web.system.service.api.data.Tree;
-import com.ddshteam.web.system.service.api.model.SysMenu;
+import com.ddshteam.web.system.service.api.model.SysMenuInfo;
 import com.github.pagehelper.PageInfo;
 
 /**
@@ -18,7 +18,7 @@ import com.github.pagehelper.PageInfo;
  *          3.1用户左侧菜单列表: 权限n-n菜单(页面)的并集(如:A用户拥有2个角色，则页面是两个角色的并集，注意只查type=2)
  *          3.2用户按钮权限:用于shiro控制权限，同上(区别是只查type=3)
  * </li>
- * @ClassName: SysMenuService
+ * @ClassName: SysMenuInfoService
  * @author duyu
  * @date 2018年2月18日 上午1:56:32
  * @version v1.0.0
@@ -32,7 +32,7 @@ public interface SysMenuService {
 	 * @param pageSize 分页大小
 	 * @return
 	 */
-	public PageInfo<SysMenu> getMenuList(int pageNum, int pageSize);
+	public PageInfo<SysMenuInfo> getMenuList(int pageNum, int pageSize);
 
 	/**
 	 * 获取所有非功能菜单树结构，提供给内置账户使用（只返回目录及页面，功能点不返回）
@@ -43,7 +43,7 @@ public interface SysMenuService {
 	 * @author lishibang
 	 */
 	public List<Tree> getMenuTree();
-	
+
 	/**
 	 * 获取所有菜单的树结构(包含功能点)
 	 * 作用：添加角色时需要勾选菜单权限
@@ -64,7 +64,7 @@ public interface SysMenuService {
 	 * @author lishibang
 	 */
 	public List<Tree> getMenuTreeByUser(String userId);
-	
+
 	/**
 	 * 获取用户的权限(type=3)
 	 * @Title: getPermissionTreeByUser
@@ -90,30 +90,30 @@ public interface SysMenuService {
 	 * @param menuId
 	 * @return
 	 */
-	public SysMenu getMenuById(String menuId);
-	
+	public SysMenuInfo getMenuById(String menuId);
+
 	/**
 	 * 批量获取菜单详情
 	 * @Title: getMenuByIds
 	 * @param menuIds
-	 * @return List<SysMenu>
+	 * @return List<SysMenuInfo>
 	 * @author duyu
 	 */
-	public List<SysMenu> getMenuByIds(String... menuIds);
+	public List<SysMenuInfo> getMenuByIds(String... menuIds);
 
 	/**
 	 * 保存「菜单/目录/按钮」
-	 * @param sysMenu
+	 * @param SysMenuInfo
 	 * @return
 	 */
-	public boolean saveMenu(SysMenu sysMenu);
+	public boolean saveMenu(SysMenuInfo sysMenuInfo);
 
 	/**
 	 * 更新「菜单/目录/按钮」
-	 * @param sysMenu
+	 * @param SysMenuInfo
 	 * @return
 	 */
-	public boolean updateMenu(SysMenu sysMenu);
+	public boolean updateMenu(SysMenuInfo sysMenuInfo);
 
 	/**
 	 * 根据id删除「菜单/目录/按钮」

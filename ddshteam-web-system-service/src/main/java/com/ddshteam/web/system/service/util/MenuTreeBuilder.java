@@ -3,16 +3,16 @@ package com.ddshteam.web.system.service.util;
 import java.util.List;
 
 import com.ddshteam.web.system.service.api.data.Tree;
-import com.ddshteam.web.system.service.api.model.SysMenu;
+import com.ddshteam.web.system.service.api.model.SysMenuInfo;
 import com.google.common.collect.Lists;
 import com.mysql.cj.core.util.StringUtils;
 
 public class MenuTreeBuilder {
 	
-	public static List<Tree> build(List<SysMenu> list) {
+	public static List<Tree> build(List<SysMenuInfo> list) {
 		List<Tree> result = Lists.newArrayList();
 		
-		for (SysMenu menu : list) {
+		for (SysMenuInfo menu : list) {
 			//root
 			if (StringUtils.isNullOrEmpty(menu.getParentId())) {
 				//{id,name,url,iconClass,children}
@@ -42,11 +42,11 @@ public class MenuTreeBuilder {
 		return result;
 	}
 	
-	public static List<Tree> getChildren(List<SysMenu> list, String pid) {
+	public static List<Tree> getChildren(List<SysMenuInfo> list, String pid) {
 		
 		List<Tree> children = Lists.newArrayList();
 		
-		for(SysMenu menu : list) {
+		for(SysMenuInfo menu : list) {
 			String p_id = menu.getParentId();
 			if(!StringUtils.isNullOrEmpty(p_id) && p_id.equals(pid)) {
 				Tree tree = Tree.builder()
@@ -72,9 +72,9 @@ public class MenuTreeBuilder {
 		return children;
 	}
 	
-	public static boolean ifHasChild(List<SysMenu> list, String pid) {
+	public static boolean ifHasChild(List<SysMenuInfo> list, String pid) {
 		boolean flag = false;  
-		for(SysMenu r : list) {
+		for(SysMenuInfo r : list) {
 			String p_id = r.getParentId();
 			if(!StringUtils.isNullOrEmpty(p_id) && p_id.equals(pid)) {
 				flag = true;
