@@ -11,9 +11,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -63,7 +65,7 @@ public class GoodsInfoController extends BaseController {
 	}
 	
 	@ApiOperation(value = "查看物资列表详情", notes = "根据条件分页查询物资详情")
-	@PostMapping(value = { "/getgoodsInfobycause" })
+	@PostMapping(value = { "/list" })
 	public Object getGoodsInfoByCause( @Valid @RequestBody GoodsInfoSearchReq goodsInfoReq,@PageableDefault(page = 1, size = 10, sort = "order_num,asc") Pageable pageable, BindingResult errors) {
 		logger.debug("GoodsInfoController.getgoodsInfobycause()");
 
@@ -83,7 +85,7 @@ public class GoodsInfoController extends BaseController {
 	}
 	
 	@ApiOperation(value = "增加物资", notes = "根据条件分页查询物资详情")
-	@PostMapping(value = { "/addgoods" })
+	@PostMapping(value = { "/save" })
 	public Object addGoods( @Valid @RequestBody GoodsInfoReq goodsInforeq, BindingResult errors) {
 		logger.debug("GoodsInfoController.addGoods()");
 
@@ -107,7 +109,7 @@ public class GoodsInfoController extends BaseController {
 	}
 	
 	@ApiOperation(value = "更新物资", notes = "根据物资id更新物资信息")
-	@PostMapping(value = { "/updategoods/{goodsid}" })
+	@PutMapping(value = { "/update/{goodsid}" })
 	public Object updateGoods( @Valid @RequestBody GoodsInfoReq goodsInforeq, @PathVariable("goodsid") String goodsid,BindingResult errors) {
 		logger.debug("GoodsInfoController.updateGoods()");
 		
@@ -137,7 +139,7 @@ public class GoodsInfoController extends BaseController {
 	}
 	
 	@ApiOperation(value = "删除物资-单条", notes = "根据物资id删除物资信息")
-	@PostMapping(value = { "/id/{goodsid}" })
+	@DeleteMapping(value = { "/delete/{goodsid}" })
 	public Object deleteGoods(@PathVariable("goodsid") String goodsid) {
 		logger.debug("GoodsInfoController.deleteGoods()");
 
@@ -151,7 +153,7 @@ public class GoodsInfoController extends BaseController {
 	}
 	
 	@ApiOperation(value = "删除物资-多条", notes = "根据物资ids删除物资信息")
-	@PostMapping(value = { "/ids" })
+	@DeleteMapping(value = { "/delete/ids" })
 	public Object deleteGoodss(@Valid @RequestBody List<String> goodsids) {
 		logger.debug("GoodsInfoController.deleteGoodss()");
 
@@ -163,6 +165,4 @@ public class GoodsInfoController extends BaseController {
 		boolean status=goodsService.delete(goodsids);
         return getResponse(status);
 	}
-	
-	
 }
