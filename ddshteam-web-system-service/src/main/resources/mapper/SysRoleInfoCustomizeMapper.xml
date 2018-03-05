@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ddshteam.web.system.service.dao.SysRoleInfoCustomizeMapper">
+
+	<sql id="sysRoleFields">
+		id,
+		name,
+		remark,
+		create_time
+	</sql>
+
+	<resultMap id="sysRoleListMap" type="SysRole">
+		<id column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="remark" property="remark" />
+		<result column="create_time" property="createTime" />
+	</resultMap>
+
+	<select id="getRoleList" resultMap="sysRoleListMap">
+		select
+		<include refid="sysRoleFields" />
+		from sys_role_info
+		<where>
+			1=1
+			<!-- <if test="name != null and name != ''"> AND name LIKE CONCAT('%',#{name},'%') 
+				</if> -->
+			ORDER BY create_time DESC
+		</where>
+	</select>
+
+	<select id="getRoleById" resultMap="sysRoleListMap">
+		select
+		<include refid="sysRoleFields" />
+		FROM sys_role_info
+		WHERE id = #{roleId}
+	</select>
+
+	<insert id="saveRole" parameterType="SysRole">
+		insert into sys_role_info(
+		<include refid="sysRoleFields" />
+		)
+		values(
+		REPLACE(UUID(), '-', ''),
+		#{name},
+		#{remark},
+		now()
+		)
+	</insert>
+
+	<update id="updateRole" parameterType="SysRole">
+		UPDATE sys_role_info
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="name != null and name != ''">
+				name = #{name},
+			</if>
+			<if test="remark != null and remark != ''">
+				remark = #{remark},
+			</if>
+		</trim>
+		<where>
+			id=#{id}
+		</where>
+	</update>
+
+	<delete id="deleteRole">
+		DELETE FROM sys_role_info WHERE id=#{roleId};
+		DELETE
+		FROM sys_role_to_user WHERE role_id=#{roleId};
+		DELETE FROM
+		sys_role_to_menu WHERE role_id=#{roleId};
+	</delete>
+
+	<delete id="setRoleMenu">
+		DELETE FROM sys_role_to_menu WHERE role_id=#{roleId};
+		insert into
+		sys_role_to_menu
+		(
+		id,
+		role_id,
+		menu_id
+		)
+		values
+		<foreach collection="menuIds" item="item" index="index"
+			separator=",">
+			(
+			REPLACE(UUID(), '-', ''),
+			#{roleId},
+			#{item}
+			)
+		</foreach>
+		;
+	</delete>
+
+	<select id="getMenuIdByRole" resultType="java.lang.String">
+		select distinct menu_id
+		from sys_role_to_menu
+		where role_id in
+		<foreach collection="roleIds" item="roleId" index="index"
+			open="(" close=")" separator=",">
+			#{roleId}
+		</foreach>
+	</select>
+
+</mapper>
