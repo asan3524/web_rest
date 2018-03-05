@@ -4,10 +4,45 @@
 	<classPathEntry
 		location="D:\my_repo\.m2\repository\mysql\mysql-connector-java\5.0.2\mysql-connector-java-5.0.2.jar" />
 	<context id="context1">
+
+		<!-- JavaBean 实现 序列化 接口 -->
+		<plugin type="org.mybatis.generator.plugins.SerializablePlugin">
+		</plugin>
+		<!-- genenat entity时,生成toString -->
+		<plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
+		<!-- 自定义物理分页 可生成支持Mysql数据的limit 不支持Oracle -->
+		<plugin type="org.mybatis.generator.plugins.page.PaginationPlugin" />
+		<!-- 自定义查询指定字段 -->
+		<plugin type="org.mybatis.generator.plugins.field.FieldsPlugin" />
+		<!-- 开启支持内存分页 可生成 支持内存分布的方法及参数 <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin" 
+			/> -->
+
+		<!-- 此处是将Example改名为Criteria 当然 想改成什么都行~ -->
+		<plugin type="org.mybatis.generator.plugins.RenameExampleClassPlugin">
+			<property name="searchString" value="Example$" />
+			<property name="replaceString" value="Criteria" />
+		</plugin>
+		
+		<!-- 此处是将UserMapper.xml改名为UserDao.xml 当然 想改成什么都行~ 
+		<plugin type="org.mybatis.generator.plugins.rename.RenameSqlMapperPlugin">
+			<property name="searchString" value="Mapper" />
+			<property name="replaceString" value="Dao" />
+		</plugin>-->
+
+		<!-- 此处是将UserMapper改名为UserDao 接口 当然 想改成什么都行~ -->
+		<plugin type="org.mybatis.generator.plugins.rename.RenameJavaMapperPlugin">
+			<property name="searchString" value="Mapper$" />
+			<property name="replaceString" value="Dao" />
+		</plugin>
+
+		<!-- 是否去除自动生成的注释 true：是 ： false:否 -->
 		<commentGenerator>
-			<!-- 是否去除自动生成的注释 true：是 ： false:否 -->
 			<property name="suppressAllComments" value="true" />
+			<property name="suppressDate" value="true" />
 		</commentGenerator>
+
+
+
 
 		<jdbcConnection
 			connectionURL="jdbc:mysql://47.91.208.194:3306/stock?useUnicode=true&amp;characterEncoding=UTF8"
@@ -43,48 +78,14 @@
 		</javaClientGenerator>
 
 		<!-- 指定数据库表 -->
-		<table schema="stock" tableName="sys_dep_info"
+		<table schema="stock" tableName="sto_transfer_order_goods"
 			enableDeleteByPrimaryKey="true" enableInsert="true"
 			enableUpdateByPrimaryKey="true" enableSelectByPrimaryKey="true"
 			enableCountByExample="true" enableUpdateByExample="true"
 			enableDeleteByExample="true" enableSelectByExample="true"
-			selectByExampleQueryId="true" />
-		<table schema="stock" tableName="sys_deptype_info"
-			enableDeleteByPrimaryKey="true" enableInsert="true"
-			enableUpdateByPrimaryKey="true" enableSelectByPrimaryKey="true"
-			enableCountByExample="true" enableUpdateByExample="true"
-			enableDeleteByExample="true" enableSelectByExample="true"
-			selectByExampleQueryId="true" />
-		<table schema="stock" tableName="sys_menu_info"
-			enableDeleteByPrimaryKey="true" enableInsert="true"
-			enableUpdateByPrimaryKey="true" enableSelectByPrimaryKey="true"
-			enableCountByExample="true" enableUpdateByExample="true"
-			enableDeleteByExample="true" enableSelectByExample="true"
-			selectByExampleQueryId="true" />
-		<table schema="stock" tableName="sys_role_info"
-			enableDeleteByPrimaryKey="true" enableInsert="true"
-			enableUpdateByPrimaryKey="true" enableSelectByPrimaryKey="true"
-			enableCountByExample="true" enableUpdateByExample="true"
-			enableDeleteByExample="true" enableSelectByExample="true"
-			selectByExampleQueryId="true" />
-		<table schema="stock" tableName="sys_role_to_menu"
-			enableDeleteByPrimaryKey="true" enableInsert="true"
-			enableUpdateByPrimaryKey="true" enableSelectByPrimaryKey="true"
-			enableCountByExample="true" enableUpdateByExample="true"
-			enableDeleteByExample="true" enableSelectByExample="true"
-			selectByExampleQueryId="true" />
-		<table schema="stock" tableName="sys_role_to_user"
-			enableDeleteByPrimaryKey="true" enableInsert="true"
-			enableUpdateByPrimaryKey="true" enableSelectByPrimaryKey="true"
-			enableCountByExample="true" enableUpdateByExample="true"
-			enableDeleteByExample="true" enableSelectByExample="true"
-			selectByExampleQueryId="true" />
-		<table schema="stock" tableName="sys_user_info"
-			enableDeleteByPrimaryKey="true" enableInsert="true"
-			enableUpdateByPrimaryKey="true" enableSelectByPrimaryKey="true"
-			enableCountByExample="true" enableUpdateByExample="true"
-			enableDeleteByExample="true" enableSelectByExample="true"
-			selectByExampleQueryId="true" />
+			selectByExampleQueryId="true" >
+		</table>
+
 
 	</context>
 </generatorConfiguration>
