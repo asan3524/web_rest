@@ -63,7 +63,7 @@ public class GoodsSericeImpl  implements IGoodsService{
 
 	@Override
 	public boolean save(GoodsInfo goodsInfo) {
-		String code=GoodsCoder.getGoodsCode(goodsInfo.getTypeId(),goodsInfo.getBrandId(),goodsInfo.getColour(),goodsInfo.getName());
+		String code=GoodsCoder.getGoodsCode(goodsInfo.getTypeId(),goodsInfo.getBrandId(),goodsInfo.getColor(),goodsInfo.getName());
 		goodsInfo.setCode(code);
 		goodsInfo.setCreateTime(new Date());
 		goodsInfo.setId(UUID.randomUUID().toString());

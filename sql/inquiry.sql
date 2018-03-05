@@ -51,7 +51,7 @@ CREATE TABLE `inq_inquiry_order_goods` (
   `code` varchar(64) NOT NULL COMMENT '编码',
   `type` varchar(128) DEFAULT NULL COMMENT '类型',
   `brand` varchar(128) DEFAULT NULL COMMENT '品牌名称',
-  `colour` varchar(32) NOT NULL COMMENT '颜色',
+  `color` varchar(32) NOT NULL COMMENT '颜色',
   `unit` varchar(32) NOT NULL COMMENT '单位',
   `norm` varchar(512) DEFAULT NULL COMMENT '规格说明',
   `remark` varchar(512) DEFAULT NULL COMMENT '备注',

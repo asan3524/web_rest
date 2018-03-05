@@ -8,7 +8,7 @@ CREATE TABLE `goods_info` (
   `code` varchar(64) NOT NULL COMMENT '编码',
   `type_id` varchar(64) NOT NULL COMMENT '分类',
   `brand_id` varchar(64) DEFAULT NULL COMMENT '品牌',
-  `colour` varchar(32) NOT NULL COMMENT '颜色',
+  `color` varchar(32) NOT NULL COMMENT '颜色',
   `unit` varchar(32) NOT NULL COMMENT '单位',
   `norm` varchar(512) DEFAULT NULL COMMENT '规格说明',
   `remark` varchar(256) DEFAULT NULL COMMENT '备注',

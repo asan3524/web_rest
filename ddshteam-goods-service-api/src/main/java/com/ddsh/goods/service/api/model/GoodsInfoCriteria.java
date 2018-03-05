@@ -455,73 +455,73 @@ public class GoodsInfoCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andColourIsNull() {
-            addCriterion("colour is null");
+        public Criteria andColorIsNull() {
+            addCriterion("color is null");
             return (Criteria) this;
         }
 
-        public Criteria andColourIsNotNull() {
-            addCriterion("colour is not null");
+        public Criteria andColorIsNotNull() {
+            addCriterion("color is not null");
             return (Criteria) this;
         }
 
-        public Criteria andColourEqualTo(String value) {
-            addCriterion("colour =", value, "colour");
+        public Criteria andColorEqualTo(String value) {
+            addCriterion("color =", value, "color");
             return (Criteria) this;
         }
 
-        public Criteria andColourNotEqualTo(String value) {
-            addCriterion("colour <>", value, "colour");
+        public Criteria andColorNotEqualTo(String value) {
+            addCriterion("color <>", value, "color");
             return (Criteria) this;
         }
 
-        public Criteria andColourGreaterThan(String value) {
-            addCriterion("colour >", value, "colour");
+        public Criteria andColorGreaterThan(String value) {
+            addCriterion("color >", value, "color");
             return (Criteria) this;
         }
 
-        public Criteria andColourGreaterThanOrEqualTo(String value) {
-            addCriterion("colour >=", value, "colour");
+        public Criteria andColorGreaterThanOrEqualTo(String value) {
+            addCriterion("color >=", value, "color");
             return (Criteria) this;
         }
 
-        public Criteria andColourLessThan(String value) {
-            addCriterion("colour <", value, "colour");
+        public Criteria andColorLessThan(String value) {
+            addCriterion("color <", value, "color");
             return (Criteria) this;
         }
 
-        public Criteria andColourLessThanOrEqualTo(String value) {
-            addCriterion("colour <=", value, "colour");
+        public Criteria andColorLessThanOrEqualTo(String value) {
+            addCriterion("color <=", value, "color");
             return (Criteria) this;
         }
 
-        public Criteria andColourLike(String value) {
-            addCriterion("colour like", value, "colour");
+        public Criteria andColorLike(String value) {
+            addCriterion("color like", value, "color");
             return (Criteria) this;
         }
 
-        public Criteria andColourNotLike(String value) {
-            addCriterion("colour not like", value, "colour");
+        public Criteria andColorNotLike(String value) {
+            addCriterion("color not like", value, "color");
             return (Criteria) this;
         }
 
-        public Criteria andColourIn(List<String> values) {
-            addCriterion("colour in", values, "colour");
+        public Criteria andColorIn(List<String> values) {
+            addCriterion("color in", values, "color");
             return (Criteria) this;
         }
 
-        public Criteria andColourNotIn(List<String> values) {
-            addCriterion("colour not in", values, "colour");
+        public Criteria andColorNotIn(List<String> values) {
+            addCriterion("color not in", values, "color");
             return (Criteria) this;
         }
 
-        public Criteria andColourBetween(String value1, String value2) {
-            addCriterion("colour between", value1, value2, "colour");
+        public Criteria andColorBetween(String value1, String value2) {
+            addCriterion("color between", value1, value2, "color");
             return (Criteria) this;
         }
 
-        public Criteria andColourNotBetween(String value1, String value2) {
-            addCriterion("colour not between", value1, value2, "colour");
+        public Criteria andColorNotBetween(String value1, String value2) {
+            addCriterion("color not between", value1, value2, "color");
             return (Criteria) this;
         }
 

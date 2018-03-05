@@ -21,7 +21,7 @@ public class GoodsInfoReq {
 	@NotBlank
     private String brandId;
 	@NotBlank
-    private String colour;
+    private String color;
 	@NotBlank
     private String unit;
 	@NotBlank
@@ -55,12 +55,12 @@ public class GoodsInfoReq {
 		this.brandId = brandId;
 	}
 
-	public String getColour() {
-		return colour;
+	public String getColor() {
+		return color;
 	}
 
-	public void setColour(String colour) {
-		this.colour = colour;
+	public void setColor(String color) {
+		this.color = color;
 	}
 
 	public String getUnit() {

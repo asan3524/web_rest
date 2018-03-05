@@ -7,7 +7,7 @@
     <result column="code" jdbcType="VARCHAR" property="code" />
     <result column="type_id" jdbcType="VARCHAR" property="typeId" />
     <result column="brand_id" jdbcType="VARCHAR" property="brandId" />
-    <result column="colour" jdbcType="VARCHAR" property="colour" />
+    <result column="color" jdbcType="VARCHAR" property="color" />
     <result column="unit" jdbcType="VARCHAR" property="unit" />
     <result column="norm" jdbcType="VARCHAR" property="norm" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
@@ -74,7 +74,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, name, code, type_id, brand_id, colour, unit, norm, remark, status, order_num, 
+    id, name, code, type_id, brand_id, color, unit, norm, remark, status, order_num, 
     create_time
   </sql>
   <select id="selectByExample" parameterType="com.ddsh.goods.service.api.model.GoodsInfoCriteria" resultMap="BaseResultMap">
@@ -110,12 +110,12 @@
   </delete>
   <insert id="insert" parameterType="com.ddsh.goods.service.api.model.GoodsInfo">
     insert into goods_info (id, name, code, 
-      type_id, brand_id, colour, 
+      type_id, brand_id, color, 
       unit, norm, remark, 
       status, order_num, create_time
       )
     values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, 
-      #{typeId,jdbcType=VARCHAR}, #{brandId,jdbcType=VARCHAR}, #{colour,jdbcType=VARCHAR}, 
+      #{typeId,jdbcType=VARCHAR}, #{brandId,jdbcType=VARCHAR}, #{color,jdbcType=VARCHAR}, 
       #{unit,jdbcType=VARCHAR}, #{norm,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
       #{status,jdbcType=INTEGER}, #{orderNum,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}
       )
@@ -138,8 +138,8 @@
       <if test="brandId != null">
         brand_id,
       </if>
-      <if test="colour != null">
-        colour,
+      <if test="color != null">
+        color,
       </if>
       <if test="unit != null">
         unit,
@@ -176,8 +176,8 @@
       <if test="brandId != null">
         #{brandId,jdbcType=VARCHAR},
       </if>
-      <if test="colour != null">
-        #{colour,jdbcType=VARCHAR},
+      <if test="color != null">
+        #{color,jdbcType=VARCHAR},
       </if>
       <if test="unit != null">
         #{unit,jdbcType=VARCHAR},
@@ -223,8 +223,8 @@
       <if test="record.brandId != null">
         brand_id = #{record.brandId,jdbcType=VARCHAR},
       </if>
-      <if test="record.colour != null">
-        colour = #{record.colour,jdbcType=VARCHAR},
+      <if test="record.color != null">
+        color = #{record.color,jdbcType=VARCHAR},
       </if>
       <if test="record.unit != null">
         unit = #{record.unit,jdbcType=VARCHAR},
@@ -256,7 +256,7 @@
       code = #{record.code,jdbcType=VARCHAR},
       type_id = #{record.typeId,jdbcType=VARCHAR},
       brand_id = #{record.brandId,jdbcType=VARCHAR},
-      colour = #{record.colour,jdbcType=VARCHAR},
+      color = #{record.color,jdbcType=VARCHAR},
       unit = #{record.unit,jdbcType=VARCHAR},
       norm = #{record.norm,jdbcType=VARCHAR},
       remark = #{record.remark,jdbcType=VARCHAR},
@@ -282,8 +282,8 @@
       <if test="brandId != null">
         brand_id = #{brandId,jdbcType=VARCHAR},
       </if>
-      <if test="colour != null">
-        colour = #{colour,jdbcType=VARCHAR},
+      <if test="color != null">
+        color = #{color,jdbcType=VARCHAR},
       </if>
       <if test="unit != null">
         unit = #{unit,jdbcType=VARCHAR},
@@ -312,7 +312,7 @@
       code = #{code,jdbcType=VARCHAR},
       type_id = #{typeId,jdbcType=VARCHAR},
       brand_id = #{brandId,jdbcType=VARCHAR},
-      colour = #{colour,jdbcType=VARCHAR},
+      color = #{color,jdbcType=VARCHAR},
       unit = #{unit,jdbcType=VARCHAR},
       norm = #{norm,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR},

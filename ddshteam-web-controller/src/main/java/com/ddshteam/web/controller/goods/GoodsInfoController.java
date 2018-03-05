@@ -97,7 +97,7 @@ public class GoodsInfoController extends BaseController {
 		
 		GoodsInfo goodsInfo=new GoodsInfo();
 		goodsInfo.setBrandId(goodsInforeq.getBrandId());
-		goodsInfo.setColour(goodsInforeq.getColour());
+		goodsInfo.setColor(goodsInforeq.getColor());
 		goodsInfo.setName(goodsInforeq.getName());
 		goodsInfo.setNorm(goodsInforeq.getNorm());
 		goodsInfo.setOrderNum(goodsInforeq.getOrderNum());
@@ -126,7 +126,7 @@ public class GoodsInfoController extends BaseController {
 		
 		GoodsInfo goodsInfo=new GoodsInfo();
 		goodsInfo.setBrandId(goodsInforeq.getBrandId());
-		goodsInfo.setColour(goodsInforeq.getColour());
+		goodsInfo.setColor(goodsInforeq.getColor());
 		goodsInfo.setId(goodsid);
 		goodsInfo.setName(goodsInforeq.getName());
 		goodsInfo.setNorm(goodsInforeq.getNorm());

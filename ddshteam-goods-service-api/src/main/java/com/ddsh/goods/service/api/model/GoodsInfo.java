@@ -15,7 +15,7 @@ public class GoodsInfo  implements Serializable {
 
     private String brandId;
 
-    private String colour;
+    private String color;
 
     private String unit;
 
@@ -69,12 +69,12 @@ public class GoodsInfo  implements Serializable {
         this.brandId = brandId == null ? null : brandId.trim();
     }
 
-    public String getColour() {
-        return colour;
+    public String getColor() {
+        return color;
     }
 
-    public void setColour(String colour) {
-        this.colour = colour == null ? null : colour.trim();
+    public void setColor(String color) {
+        this.color = color == null ? null : color.trim();
     }
 
     public String getUnit() {
