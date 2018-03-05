@@ -78,7 +78,7 @@
 		</javaClientGenerator>
 
 		<!-- 指定数据库表 -->
-		<table schema="stock" tableName="sto_transfer_order_goods"
+		<table schema="stock" tableName=""
 			enableDeleteByPrimaryKey="true" enableInsert="true"
 			enableUpdateByPrimaryKey="true" enableSelectByPrimaryKey="true"
 			enableCountByExample="true" enableUpdateByExample="true"
