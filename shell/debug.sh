@@ -1,5 +1,5 @@
 
-JAVA_OPTS="-server -Xms400m -Xmx400m -Xmn300m -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=128m -Xverify:none -XX:+DisableExplicitGC -Djava.awt.headless=true"
+JAVA_OPTS="-server -Xms256m -Xmx256m -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=128m -Xverify:none -XX:+UseParNewGC -XX:+UseConcMarkSweepGC"
 
 jar_name=$1
 this_dir="$( cd "$( dirname "$0"  )" && pwd )"

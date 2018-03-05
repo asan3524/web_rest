@@ -25,17 +25,18 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import com.alibaba.fastjson.parser.ParserConfig;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
-import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter4;
+import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.ddshteam.web.core.interceptor.MaliciousRequestInterceptor;
-import com.ddshteam.web.core.interceptor.SignInterceptor;
 import com.ddshteam.web.core.listener.ServerListener;
 
 @Configuration
 @Component
 public class SpringMvcConfig extends WebMvcConfigurerAdapter {
 
+	private static final String ACTIVE = "dev";
+
 	@Value("${spring.profiles.active}")
-	private String env = "env";
+	private String env;
 
 	@Value("${spring.upload.maxFileSize}")
 	private Long maxFileSize;
@@ -48,8 +49,7 @@ public class SpringMvcConfig extends WebMvcConfigurerAdapter {
 	 */
 	@Override
 	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-		@SuppressWarnings("deprecation")
-		FastJsonHttpMessageConverter4 converter = new FastJsonHttpMessageConverter4();
+		FastJsonHttpMessageConverter converter = new FastJsonHttpMessageConverter();
 		FastJsonConfig config = new FastJsonConfig();
 		ParserConfig.getGlobalInstance().setAutoTypeSupport(true);
 		// 保留空的字段
@@ -59,20 +59,14 @@ public class SpringMvcConfig extends WebMvcConfigurerAdapter {
 				SerializerFeature.WriteNullNumberAsZero, SerializerFeature.DisableCircularReferenceDetect);
 		converter.setFastJsonConfig(config);
 		converter.setDefaultCharset(Charset.forName("UTF-8"));
-
 		converters.add(converter);
 	}
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 
-		registry.addInterceptor(new MaliciousRequestInterceptor()).addPathPatterns("/**")
-				.excludePathPatterns("/upload", "/upload/v1", "/upload/image");
-
-		// 开发环境忽略签名认证,忽略拦截恶意请求
-		if (!"dev".equals(env)) {
-			registry.addInterceptor(new SignInterceptor()).addPathPatterns("/**")
-					.excludePathPatterns("/", "/login", "/register");
+		if (!ACTIVE.equals(env)) {
+			registry.addInterceptor(new MaliciousRequestInterceptor()).addPathPatterns("/**");
 		}
 
 		super.addInterceptors(registry);
@@ -94,19 +88,6 @@ public class SpringMvcConfig extends WebMvcConfigurerAdapter {
 		 * 因为shiro默认放行/static,所以这里添加了一个映射(其实主要是为了开发页面时,js都是相对路径)
 		 */
 		registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
-
-		/**
-		 * 默认实现mvc已经添加, 如果使用了@EnableWebMvc需要自己写
-		 */
-		// registry.addResourceHandler("/favicon.ico").addResourceLocations("/static/favicon.ico");
-
-		/**
-		 * SpringBoot默认已经将classpath:/META-INF/resources/和classpath:/META-INF/resources/webjars/映射
-		 */
-		// registry.addResourceHandler("swagger-ui.html")
-		// .addResourceLocations("classpath:/META-INF/resources/");
-		// registry.addResourceHandler("/webjars/**")
-		// .addResourceLocations("classpath:/META-INF/resources/webjars/");
 	}
 
 	/**
@@ -187,11 +168,14 @@ public class SpringMvcConfig extends WebMvcConfigurerAdapter {
 		return new WebMvcConfigurerAdapter() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**")
-						.allowCredentials(true)
-						.allowedMethods("GET", "POST", "OPTIONS", "HEAD", "PUT", "DELETE")
-						.allowedHeaders("x-requested-with", "Access-Control-Allow-Origin", "EX-SysAuthToken",
-								"EX-JSESSIONID", "Content-Type");
+				if (ACTIVE.equals(env)) {
+					registry.addMapping("/**").allowCredentials(true)
+							.allowedMethods("GET", "POST", "OPTIONS", "HEAD", "PUT", "DELETE").allowedOrigins("*")
+							.allowedHeaders("*");
+					// .allowedHeaders("x-requested-with",
+					// "Access-Control-Allow-Origin", "EX-SysAuthToken",
+					// "EX-JSESSIONID", "Content-Type");
+				}
 			}
 		};
 	}

@@ -18,9 +18,9 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.ddshteam.web.system.service.api.SysMenuService;
 import com.ddshteam.web.system.service.api.SysUserService;
 import com.ddshteam.web.system.service.api.model.SysUserInfo;
@@ -29,10 +29,11 @@ import com.ddshteam.web.system.service.api.model.SysUserInfo;
 public class AuthRealm extends AuthorizingRealm {
 
 	private final static Logger logger = LoggerFactory.getLogger(AuthorizingRealm.class);
-	@Autowired
+
+	@Reference(version = "1.0.0")
 	private SysUserService sysUserService;
-	
-	@Autowired
+
+	@Reference(version = "1.0.0")
 	private SysMenuService sysMenuService;
 
 	@Override

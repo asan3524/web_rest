@@ -17,7 +17,6 @@ import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
@@ -30,12 +29,9 @@ import com.google.common.collect.Lists;
 @Component
 public class ShiroConfig {
 
-	// @PropertySource 只可加载 proprties
-	@Value("${whayer.sessionTimeOut}")
-	private Long sessionTimeOut = 1800000L;
+	private static Long sessionTimeOut = 1800000L;
 
-	@Value("${whayer.sessionInterval}")
-	private Long sessionInterval = 30000L;
+	private static Long sessionInterval = 30000L;
 
 	@Bean
 	public ShiroFilterFactoryBean shiroFilter(@Qualifier("securityManager") SecurityManager securityManager) {
@@ -59,8 +55,8 @@ public class ShiroConfig {
 		// static resource
 		map.put("/static/**", "anon");
 
-		// all
-		map.put("/**", "authc");
+		// all,开发模式下不验证权限
+		// map.put("/**", "authc");
 
 		shiroFilterFactoryBean.setLoginUrl("/login");
 		shiroFilterFactoryBean.setUnauthorizedUrl("/unauthorized");
