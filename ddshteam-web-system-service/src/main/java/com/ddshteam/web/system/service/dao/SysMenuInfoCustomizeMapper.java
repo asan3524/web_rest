@@ -2,6 +2,9 @@ package com.ddshteam.web.system.service.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
+import com.ddshteam.web.system.service.api.data.Tree;
 import com.ddshteam.web.system.service.api.model.SysMenuInfo;
 
 public interface SysMenuInfoCustomizeMapper {
@@ -10,5 +13,11 @@ public interface SysMenuInfoCustomizeMapper {
 
 	List<String> getPermissionByUser(String userId);
 
-	List<SysMenuInfo> getMenuByRole(String roleId);
+	List<Tree> getMenuTreeByUserRole(@Param("userId") String userId, @Param("roleId") String roleId);
+
+	List<Tree> getMenuTreeByRole(String roleId);
+
+	List<Tree> getMenuTreeByUser(String userId);
+
+	List<Tree> getMenuTree();
 }

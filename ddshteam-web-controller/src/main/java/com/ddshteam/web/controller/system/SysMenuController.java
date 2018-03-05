@@ -43,26 +43,7 @@ public class SysMenuController extends BaseController {
 	@Reference(version = "1.0.0")
 	private SysMenuService sysMenuService;
 
-	// @Reference(version = "1.0.0")
-	// private SysRoleService sysRoleService;
-	// @Reference(version = "1.0.0")
-	// private SysUserService sysUserervice;
-
-	// @ApiOperation(value = "菜单列表", notes = "")
-	// @GetMapping(value = { "/list" })
-	// public Object getMenuList(HttpServletRequest request, HttpServletResponse
-	// response,
-	// @PageableDefault(page = 1, size = 10, sort = "createTime,asc") Pageable
-	// pageable) {
-	// logger.debug("SysMenuController.getMenuList()");
-	//
-	// PageInfo<SysMenuInfo> pi =
-	// sysMenuService.getMenuList(pageable.getPageNumber(),
-	// pageable.getPageSize());
-	// return getResponse(pi);
-	// }
-
-	@ApiOperation(value = "菜单树(不含功能点)", notes = "用于添加菜单时选择父级菜单弹窗")
+	@ApiOperation(value = "菜单树(不含功能点)", notes = "用于添加菜单时选择父级菜单弹窗(root专用)")
 	@GetMapping(value = { "/tree" })
 	public Object getMenuTree(HttpServletRequest request, HttpServletResponse response) {
 		logger.debug("SysMenuController.getMenuTree()");
@@ -71,74 +52,52 @@ public class SysMenuController extends BaseController {
 		return getResponse(list);
 	}
 
-	@ApiOperation(value = "菜单树(包含功能点)", notes = "用于添加角色时需要勾选菜单权限")
-	@GetMapping(value = { "/tree2all" })
-	public Object getAllMenuTree(HttpServletRequest request, HttpServletResponse response) {
-		logger.debug("SysMenuController.getAllMenuTree()");
+	@ApiOperation(value = "用户带勾选状态的菜单树(包含功能点)", notes = "用于新增角色时查看已勾选的状态树（所有状态未勾选）")
+	@GetMapping(value = { "/tree2status" })
+	public Object getMenuWithStatusTree(HttpServletRequest request, HttpServletResponse response) {
+		logger.debug("SysMenuController.getMenuWithStatusTree()");
 
-		List<Tree> list = sysMenuService.getAllMenuTree();
-		return getResponse(list);
-	}
+		Subject subject = SecurityUtils.getSubject();
+		SysUserInfo user = (SysUserInfo) subject.getPrincipals().getPrimaryPrincipal();
 
-	@ApiOperation(value = "用户带勾选状态的菜单树(包含功能点)", notes = "用于更新角色时查看已勾选的状态树")
-	@GetMapping(value = { "/tree2status/{userId}" })
-	public Object getAllMenuWithStatusTree(@PathVariable String userId, HttpServletRequest request,
-			HttpServletResponse response) {
-		logger.debug("SysMenuController.getAllMenuWithStatusTree()");
-
-		if (StringUtils.isEmpty(userId)) {
-			logger.error("userId is null.");
-			return getResponse(HttpCode.BAD_REQUEST, false);
+		if (StringUtils.isEmpty(user)) {
+			return getResponse(HttpCode.UNAUTHORIZED, false);
 		}
 
-		List<Tree> list = sysMenuService.getAllMenuTree();
-
+		List<Tree> list = null;
+		if (user.getIsBuiltin()) {
+			list = sysMenuService.getMenuTreeByRole(null);
+		} else {
+			list = sysMenuService.getMenuTreeByRole(user.getId(), null);
+		}
 		return getResponse(list);
-		// TODO 此处需待优化效率
-
-		// SysUserInfo user = sysUserervice.getUserById(userId);
-		//
-		// List<String> ids = Lists.transform(user.getRoles(), new
-		// Function<SysRole, String>() {
-		// @Override
-		// public String apply(SysRoleInfo r) {
-		// return r.getId();
-		// }
-		// });
-		//
-		// ids = new ArrayList<String>(new HashSet<String>(ids));
-		//
-		// List<String> menuIds = sysRoleService.getMenuIdByRole(ids.toArray(new
-		// String[ids.size()]));
-		//
-		// for (String menuId : menuIds) {
-		// for (Tree tree : list) {
-		// if (menuId.equals(tree.getId())) {
-		// tree.setCheckStatus(1);
-		// break;
-		// } else {
-		// if (null != tree.getChildren() && !tree.getChildren().isEmpty()) {
-		// setTreeCheckStatus(tree.getChildren(), menuId);
-		// }
-		// }
-		// }
-		// }
-		//
-		// return getResponse(list);
 	}
 
-	// private void setTreeCheckStatus(List<Tree> trees, String menuId) {
-	// for (Tree tree : trees) {
-	// if (menuId.equals(tree.getId())) {
-	// tree.setCheckStatus(1);
-	// break;
-	// } else {
-	// if (null != tree.getChildren() && !tree.getChildren().isEmpty()) {
-	// setTreeCheckStatus(tree.getChildren(), menuId);
-	// }
-	// }
-	// }
-	// }
+	@ApiOperation(value = "用户带勾选状态的菜单树(包含功能点)", notes = "用于更新角色时查看已勾选的状态树,返回指定role的勾选状态")
+	@GetMapping(value = { "/tree2status/{roleId}" })
+	public Object getMenuWithStatusTree(@PathVariable String roleId, HttpServletRequest request,
+			HttpServletResponse response) {
+		logger.debug("SysMenuController.getMenuWithStatusTree()");
+
+		if (StringUtils.isEmpty(roleId)) {
+			return getResponse(HttpCode.BAD_REQUEST, false, "roleId为空");
+		}
+
+		Subject subject = SecurityUtils.getSubject();
+		SysUserInfo user = (SysUserInfo) subject.getPrincipals().getPrimaryPrincipal();
+
+		if (StringUtils.isEmpty(user)) {
+			return getResponse(HttpCode.UNAUTHORIZED, false);
+		}
+
+		List<Tree> list = null;
+		if (user.getIsBuiltin()) {
+			list = sysMenuService.getMenuTreeByRole(roleId);
+		} else {
+			list = sysMenuService.getMenuTreeByRole(user.getId(), roleId);
+		}
+		return getResponse(list);
+	}
 
 	@ApiOperation(value = "用户左侧菜单树", notes = "当前用户的左侧菜单(type!=3)")
 	@GetMapping(value = { "/tree2user" })
@@ -146,9 +105,18 @@ public class SysMenuController extends BaseController {
 		logger.debug("SysMenuController.getMenuTreeByUser()");
 
 		Subject subject = SecurityUtils.getSubject();
-		SysUserInfo user = (SysUserInfo)subject.getPrincipals().getPrimaryPrincipal();
-		logger.info("================ 当前用户为: " + user.getAccount() + "==================");
-		List<Tree> list = sysMenuService.getMenuTreeByUser("0");
+		SysUserInfo user = (SysUserInfo) subject.getPrincipals().getPrimaryPrincipal();
+
+		if (StringUtils.isEmpty(user)) {
+			return getResponse(HttpCode.UNAUTHORIZED, false);
+		}
+
+		List<Tree> list = null;
+		if (user.getIsBuiltin()) {
+			list = sysMenuService.getMenuTree();
+		} else {
+			list = sysMenuService.getMenuTreeByUser(user.getId());
+		}
 		return getResponse(list);
 	}
 

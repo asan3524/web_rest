@@ -16,6 +16,7 @@ import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,6 +34,9 @@ public class ShiroConfig {
 
 	private static Long sessionInterval = 30000L;
 
+	@Autowired
+	private AuthRealm authRealm;
+	
 	@Bean
 	public ShiroFilterFactoryBean shiroFilter(@Qualifier("securityManager") SecurityManager securityManager) {
 		ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
@@ -109,11 +113,11 @@ public class ShiroConfig {
 		return manager;
 	}
 
-	@Bean(name = "authRealm")
-	public AuthRealm authRealm() {
-		AuthRealm authRealm = new AuthRealm();
-		return authRealm;
-	}
+//	@Bean(name = "authRealm")
+//	public AuthRealm authRealm() {
+//		AuthRealm authRealm = new AuthRealm();
+//		return authRealm;
+//	}
 
 	@Bean
 	public SimpleCookie rememberMeCookie() {

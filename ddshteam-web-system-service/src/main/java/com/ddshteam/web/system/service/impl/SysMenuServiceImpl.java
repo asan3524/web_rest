@@ -2,6 +2,7 @@ package com.ddshteam.web.system.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,8 +17,6 @@ import com.ddshteam.web.system.service.dao.SysMenuInfoCustomizeMapper;
 import com.ddshteam.web.system.service.dao.SysMenuInfoMapper;
 import com.ddshteam.web.system.service.dao.SysRoleToMenuMapper;
 import com.ddshteam.web.system.service.util.MenuTreeBuilder;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.google.common.base.Splitter;
 import com.mysql.cj.core.util.StringUtils;
 
@@ -35,14 +34,6 @@ public class SysMenuServiceImpl implements SysMenuService {
 	private SysMenuInfoCustomizeMapper sysMenuInfoCustomizeDao;
 
 	@Override
-	public PageInfo<SysMenuInfo> getMenuList(int pageNum, int pageSize) {
-		// TODO Auto-generated method stub
-		PageHelper.startPage(pageNum, pageSize);
-		PageInfo<SysMenuInfo> pageInfo = new PageInfo<SysMenuInfo>(sysMenuInfoDao.selectByExample(null));
-		return pageInfo;
-	}
-
-	@Override
 	public List<Tree> getMenuTree() {
 		// TODO Auto-generated method stub
 		SysMenuInfoCriteria criteria = new SysMenuInfoCriteria();
@@ -53,11 +44,13 @@ public class SysMenuServiceImpl implements SysMenuService {
 	}
 
 	@Override
-	public List<Tree> getAllMenuTree() {
+	public List<Tree> getMenuTreeByRole(String roleId) {
 		// TODO Auto-generated method stub
-		List<SysMenuInfo> list = sysMenuInfoDao.selectByExample(null);
-		List<Tree> trees = MenuTreeBuilder.build(list);
-		return trees;
+		if (StringUtils.isNullOrEmpty(roleId)) {
+			return MenuTreeBuilder.convert(sysMenuInfoCustomizeDao.getMenuTree());
+		} else {
+			return MenuTreeBuilder.convert(sysMenuInfoCustomizeDao.getMenuTreeByRole(roleId));
+		}
 	}
 
 	@Override
@@ -85,9 +78,13 @@ public class SysMenuServiceImpl implements SysMenuService {
 	}
 
 	@Override
-	public List<Tree> getMenuTreeByRole(String roleId) {
+	public List<Tree> getMenuTreeByRole(String userId, String roleId) {
 		// TODO Auto-generated method stub
-		return null;
+		if (StringUtils.isNullOrEmpty(roleId)) {
+			return MenuTreeBuilder.convert(sysMenuInfoCustomizeDao.getMenuTreeByUser(userId));
+		} else {
+			return MenuTreeBuilder.convert(sysMenuInfoCustomizeDao.getMenuTreeByUserRole(userId, roleId));
+		}
 	}
 
 	@Override
@@ -97,14 +94,9 @@ public class SysMenuServiceImpl implements SysMenuService {
 	}
 
 	@Override
-	public List<SysMenuInfo> getMenuByIds(String... menuIds) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public boolean saveMenu(SysMenuInfo sysMenuInfo) {
 		// TODO Auto-generated method stub
+		sysMenuInfo.setId(UUID.randomUUID().toString());
 		int result = sysMenuInfoDao.insert(sysMenuInfo);
 		return result > 0;
 	}
@@ -120,11 +112,12 @@ public class SysMenuServiceImpl implements SysMenuService {
 	@Transactional
 	public boolean deleteMenuById(String menuId) {
 		// TODO Auto-generated method stub
-		int result = sysMenuInfoDao.deleteByPrimaryKey(menuId);
+		int r1 = sysMenuInfoDao.deleteByPrimaryKey(menuId);
 
 		SysRoleToMenuCriteria criteria = new SysRoleToMenuCriteria();
 		criteria.createCriteria().andMenuIdEqualTo(menuId);
-		result = sysRoleToMenuDao.deleteByExample(criteria);
-		return result > 0;
+		int r2 = sysRoleToMenuDao.deleteByExample(criteria);
+
+		return r1 > 0 && r2 >= 0;
 	}
 }

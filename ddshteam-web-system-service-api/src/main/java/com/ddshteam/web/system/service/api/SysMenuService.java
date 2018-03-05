@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.ddshteam.web.system.service.api.data.Tree;
 import com.ddshteam.web.system.service.api.model.SysMenuInfo;
-import com.github.pagehelper.PageInfo;
 
 /**
  * 
@@ -27,15 +26,7 @@ import com.github.pagehelper.PageInfo;
 public interface SysMenuService {
 
 	/**
-	 * 获取「菜单/目录/按钮」分页列表，可以给权限初始化系统使用
-	 * @param pageNum  当前页索引
-	 * @param pageSize 分页大小
-	 * @return
-	 */
-	public PageInfo<SysMenuInfo> getMenuList(int pageNum, int pageSize);
-
-	/**
-	 * 获取所有非功能菜单树结构，提供给内置账户使用（只返回目录及页面，功能点不返回）
+	 * 获取所有非功能菜单树结构，（只返回目录及页面，功能点不返回）提供给内置账户使用
 	 * 作用：添加菜单时选择父级菜单弹窗
 	 * {id,name,url,iconClass,children}
 	 * @Title: getMenuTree
@@ -43,17 +34,18 @@ public interface SysMenuService {
 	 * @author lishibang
 	 */
 	public List<Tree> getMenuTree();
-
+	
 	/**
-	 * 获取所有菜单的树结构(包含功能点)
-	 * 作用：添加角色时需要勾选菜单权限
-	 * {id,name,url,iconClass,children}
-	 * @Title: getAllMenuTree
+	 * 获取指定角色的菜单可选（带可选标记）树结构（目录、页面、功能）提供给内置账户使用
+	 * {id,name,url,iconClass,children,disabled,isLeaf,checkStatus=1/0}
+	 * isLeaf=true时为叶子节点，checkStatus才有意义
+	 * @Title: getMenuTreeByRole
+	 * @param roleId 角色ID 为空时新增角色
 	 * @return List<Tree>
-	 * @author duyu
+	 * @author lishibang
 	 */
-	public List<Tree> getAllMenuTree();
-
+	public List<Tree> getMenuTreeByRole(String roleId);
+	
 	/**
 	 * 获取当前登录用户菜单树结构（只返回目录及页面，功能点不返回）
 	 * 作用：当前用户的左侧菜单(type!=3)
@@ -79,11 +71,12 @@ public interface SysMenuService {
 	 * {id,name,url,iconClass,children,disabled,isLeaf,checkStatus=1/0}
 	 * isLeaf=true时为叶子节点，checkStatus才有意义
 	 * @Title: getMenuTreeByRole
-	 * @param roleId 角色ID 为空时查询
+	 * @param userId 用户ID 不为空
+	 * @param roleId 角色ID 不为空
 	 * @return List<Tree>
 	 * @author lishibang
 	 */
-	public List<Tree> getMenuTreeByRole(String roleId);
+	public List<Tree> getMenuTreeByRole(String userId, String roleId);
 
 	/**
 	 * 根据id获取「菜单/目录/按钮」详情
@@ -91,15 +84,6 @@ public interface SysMenuService {
 	 * @return
 	 */
 	public SysMenuInfo getMenuById(String menuId);
-
-	/**
-	 * 批量获取菜单详情
-	 * @Title: getMenuByIds
-	 * @param menuIds
-	 * @return List<SysMenuInfo>
-	 * @author duyu
-	 */
-	public List<SysMenuInfo> getMenuByIds(String... menuIds);
 
 	/**
 	 * 保存「菜单/目录/按钮」

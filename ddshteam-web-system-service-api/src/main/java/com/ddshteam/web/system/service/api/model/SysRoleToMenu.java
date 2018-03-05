@@ -1,6 +1,9 @@
 package com.ddshteam.web.system.service.api.model;
 
-public class SysRoleToMenu {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class SysRoleToMenu implements Serializable {
     private String id;
 
     private String roleId;

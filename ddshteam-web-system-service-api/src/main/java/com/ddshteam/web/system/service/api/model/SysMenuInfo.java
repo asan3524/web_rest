@@ -1,6 +1,9 @@
 package com.ddshteam.web.system.service.api.model;
 
-public class SysMenuInfo {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class SysMenuInfo implements Serializable {
     private String id;
 
     private String name;
