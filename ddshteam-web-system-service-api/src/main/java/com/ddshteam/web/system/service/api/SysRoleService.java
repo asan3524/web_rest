@@ -3,7 +3,7 @@ package com.ddshteam.web.system.service.api;
 import java.util.List;
 
 import com.ddshteam.web.system.service.api.data.Tree;
-import com.ddshteam.web.system.service.api.model.SysRole;
+import com.ddshteam.web.system.service.api.model.SysRoleInfo;
 import com.github.pagehelper.PageInfo;
 
 public interface SysRoleService {
@@ -14,28 +14,28 @@ public interface SysRoleService {
 	 * @param pageSize 分页大小
 	 * @return
 	 */
-	public PageInfo<SysRole> getRoleList(int pageNum, int pageSize);
+	public PageInfo<SysRoleInfo> getRoleList(int pageNum, int pageSize);
 
 	/**
 	 * 根据id获取角色详情
 	 * @param roleId 角色id
 	 * @return
 	 */
-	public SysRole getRoleById(String roleId);
+	public SysRoleInfo getRoleById(String roleId);
 
 	/**
 	 * 添加角色
 	 * @param sysRole
 	 * @return
 	 */
-	public boolean saveRole(SysRole sysRole);
+	public boolean saveRole(SysRoleInfo sysRole);
 
 	/**
 	 * 更新角色
 	 * @param sysRole
 	 * @return
 	 */
-	public boolean updateRole(SysRole sysRole);
+	public boolean updateRole(SysRoleInfo sysRole);
 
 	/**
 	 * 删除角色

@@ -7,8 +7,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.ddshteam.web.system.service.api.SysUserService;
-import com.ddshteam.web.system.service.api.model.SysUser;
-import com.ddshteam.web.system.service.dao.SysUserDao;
+import com.ddshteam.web.system.service.api.model.SysUserInfo;
+import com.ddshteam.web.system.service.api.model.SysUserInfoCriteria;
+import com.ddshteam.web.system.service.api.model.SysUserInfoCriteria.Criteria;
+import com.ddshteam.web.system.service.dao.SysUserInfoCustomizeMapper;
+import com.ddshteam.web.system.service.dao.SysUserInfoMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
@@ -17,73 +20,88 @@ import com.github.pagehelper.PageInfo;
 public class SysUserServiceImpl implements SysUserService {
 
 	@Autowired
-	private SysUserDao sysUserDao;
+	private SysUserInfoMapper SysUserInfoInfoDao;
+	
+	@Autowired
+	private SysUserInfoCustomizeMapper SysUserInfoInfoCustomizeDao;
 
 	@Override
-	public PageInfo<SysUser> getUserList(int pageNum, int pageSize, String name, String depId) {
+	public PageInfo<SysUserInfo> getUserList(int pageNum, int pageSize, String name, String depId) {
 		PageHelper.startPage(pageNum, pageSize);
-		List<SysUser> list = sysUserDao.getUserList(name, depId);
-		PageInfo<SysUser> pageInfo = new PageInfo<SysUser>(list, 10);
+		SysUserInfoCriteria sysUserInfoCriteria=new SysUserInfoCriteria();
+		Criteria criteria=sysUserInfoCriteria.createCriteria();
+		criteria.andNameEqualTo(name);
+		criteria.andDepIdEqualTo(depId);
+		List<SysUserInfo> sysUserInfos=SysUserInfoInfoDao.selectByExample(sysUserInfoCriteria);
+		PageInfo<SysUserInfo> pageInfo = new PageInfo<SysUserInfo>(sysUserInfos, 10);
 		return pageInfo;
 	}
 
 	@Override
-	public SysUser getUserByAccount(String account) {
-		SysUser sysUser = sysUserDao.getUserByAccount(account);
-		return sysUser;
+	public SysUserInfo getUserByAccount(String account) {
+		
+		SysUserInfoCriteria sysUserInfoCriteria=new SysUserInfoCriteria();
+		Criteria criteria=sysUserInfoCriteria.createCriteria();
+		criteria.andAccountEqualTo(account);
+		criteria.andStatusEqualTo(1);
+		List<SysUserInfo> sysUserInfos=SysUserInfoInfoDao.selectByExample(sysUserInfoCriteria);
+		return sysUserInfos.size()>0?sysUserInfos.get(0):null;
 	}
 
 	@Override
-	public SysUser getUserById(String userId) {
-		SysUser sysUser = sysUserDao.getUserById(userId);
-		return sysUser;
+	public SysUserInfo getUserById(String userId) {
+		SysUserInfo SysUserInfo = SysUserInfoInfoDao.selectByPrimaryKey(userId);
+		return SysUserInfo;
 	}
 
 	@Override
-	public boolean saveUser(SysUser sysUser, String... roleIds) {
-		int result = sysUserDao.saveUser(sysUser, roleIds);
+	public boolean saveUser(SysUserInfo SysUserInfo, String... roleIds) {
+		int result = SysUserInfoInfoCustomizeDao.saveUser(SysUserInfo, roleIds);
 		return result > 0;
 	}
 
 	@Override
-	public boolean updateUser(SysUser sysUser, String... roleIds) {
-		int result = sysUserDao.updateUser(sysUser, roleIds);
+	public boolean updateUser(SysUserInfo SysUserInfo, String... roleIds) {
+		int result = SysUserInfoInfoCustomizeDao.updateUser(SysUserInfo, roleIds);
 		return result > 0;
 	}
 
 	@Override
 	public boolean updatePassword(String userId, String newPassword) {
-		int result = sysUserDao.updatePassword(userId, newPassword);
+		SysUserInfo record=new SysUserInfo();
+		record.setId(userId);
+		record.setPassword(newPassword);
+		int result = SysUserInfoInfoDao.updateByPrimaryKeySelective(record);
 		return result > 0;
 	}
 
 	@Override
 	public boolean deleteUser(String userId) {
-		int result = sysUserDao.deleteUser(userId);
+		int result =SysUserInfoInfoDao.deleteByPrimaryKey(userId);
 		return result > 0;
 	}
 
 	@Override
-	public boolean saveUser(SysUser sysUser) {
-		int result = sysUserDao.saveUserNoRole(sysUser);
+	public boolean saveUser(SysUserInfo SysUserInfo) {
+		int result = SysUserInfoInfoDao.insert(SysUserInfo);
 		return result > 0;
 	}
 
 	@Override
-	public boolean saveUser(List<SysUser> sysUsers) {
+	public boolean saveUser(List<SysUserInfo> SysUserInfos) {
 		// TODO
 		return false;
 	}
 
 	@Override
-	public boolean updateUser(SysUser sysUser) {
-		int result = sysUserDao.updateUserNoRole(sysUser);
+	public boolean updateUser(SysUserInfo SysUserInfo) {
+		int result = SysUserInfoInfoDao.updateByPrimaryKeySelective(SysUserInfo);
 		return result > 0;
 	}
 
 	@Override
 	public boolean setUserRole(String userId, String... roleIds) {
-		int result = sysUserDao.setUserRole(userId, roleIds);
+		int result = SysUserInfoInfoCustomizeDao.setUserRole(userId, roleIds);
 		return result > 0;
 	}
 
