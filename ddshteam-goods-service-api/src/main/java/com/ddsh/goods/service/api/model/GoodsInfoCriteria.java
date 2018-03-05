@@ -115,8 +115,18 @@ public class GoodsInfoCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andCustomizeIdIsNotNull() {
+            addCriterion("gi.id is not null");
+            return (Criteria) this;
+        }
+
         public Criteria andIdEqualTo(String value) {
             addCriterion("id =", value, "id");
+            return (Criteria) this;
+        }
+        
+        public Criteria andCustomizeIdEqualTo(String value) {
+            addCriterion("gi.id =", value, "id");
             return (Criteria) this;
         }
 

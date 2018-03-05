@@ -10,10 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.ddsh.goods.service.api.IGoodsService;
 import com.ddsh.goods.service.api.constant.GoodsContants;
+import com.ddsh.goods.service.api.data.GoodsInfoRespData;
 import com.ddsh.goods.service.api.data.GoodsInfoSearchReqData;
 import com.ddsh.goods.service.api.model.GoodsInfo;
 import com.ddsh.goods.service.api.model.GoodsInfoCriteria;
 import com.ddsh.goods.service.api.model.GoodsInfoCriteria.Criteria;
+import com.ddsh.goods.service.dao.GoodsInfoCustomizeMapper;
 import com.ddsh.goods.service.dao.GoodsInfoMapper;
 import com.ddsh.goods.service.util.GoodsCoder;
 import com.github.pagehelper.PageHelper;
@@ -25,13 +27,16 @@ public class GoodsSericeImpl  implements IGoodsService{
 
 	@Autowired
 	private GoodsInfoMapper goodsInfoDao;
+	@Autowired
+	private GoodsInfoCustomizeMapper goodsInfoCustomizeDao;
 	
 	@Override
-	public PageInfo<GoodsInfo> list(int pageNum, int pageSize, GoodsInfoSearchReqData searchReqData) {
+	public PageInfo<GoodsInfoRespData> list(int pageNum, int pageSize, GoodsInfoSearchReqData searchReqData) {
 		PageHelper.startPage(pageNum, pageSize);
 		GoodsInfoCriteria goodsInfoCriteria=new GoodsInfoCriteria();
+		goodsInfoCriteria.setOrderByClause(" create_time desc");
 		Criteria criteria=goodsInfoCriteria.createCriteria();
-		
+		criteria.andCustomizeIdIsNotNull();
 		if(searchReqData.getCode()!=null&&!searchReqData.getCode().equals(""))
 		{
 			criteria.andCodeLike("%"+searchReqData.getCode()+"%");
@@ -52,13 +57,13 @@ public class GoodsSericeImpl  implements IGoodsService{
 			criteria.andBrandIdIn(searchReqData.getBrandIds());
 
 		}
-		PageInfo<GoodsInfo> pageinfo=new PageInfo<GoodsInfo>(goodsInfoDao.selectByExample(goodsInfoCriteria));
+		PageInfo<GoodsInfoRespData> pageinfo=new PageInfo<GoodsInfoRespData>(goodsInfoCustomizeDao.selectByExample(goodsInfoCriteria));
 		return pageinfo ;
 	}
 
 	@Override
-	public GoodsInfo get(String id) {
-		return goodsInfoDao.selectByPrimaryKey(id);
+	public GoodsInfoRespData get(String id) {
+		return goodsInfoCustomizeDao.selectByPrimaryKey(id);
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package com.ddshteam.web.controller.goods;
 
 
+
 import java.util.List;
 
 import javax.validation.Valid;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.ddsh.goods.service.api.IGoodsService;
+import com.ddsh.goods.service.api.data.GoodsInfoRespData;
 import com.ddsh.goods.service.api.data.GoodsInfoSearchReqData;
 import com.ddsh.goods.service.api.model.GoodsInfo;
 import com.ddshteam.web.core.base.BaseController;
@@ -60,7 +62,7 @@ public class GoodsInfoController extends BaseController {
 			logger.error("goodsid is null.");
 			return getResponse(HttpCode.BAD_REQUEST, false);
 		}
-		GoodsInfo goodsInfo=goodsService.get(goodsid);
+		GoodsInfoRespData goodsInfo=goodsService.get(goodsid);
 		return getResponse(goodsInfo);
 	}
 	
@@ -80,7 +82,7 @@ public class GoodsInfoController extends BaseController {
 		goodsInfoSearchReqData.setCode(goodsInfoReq.getCode());
 		goodsInfoSearchReqData.setName(goodsInfoReq.getName());
 		
-		PageInfo<GoodsInfo> pageInfos=goodsService.list(pageable.getPageNumber(), pageable.getPageSize(), goodsInfoSearchReqData);
+		PageInfo<GoodsInfoRespData> pageInfos=goodsService.list(pageable.getPageNumber(), pageable.getPageSize(), goodsInfoSearchReqData);
 		return getResponse(pageInfos);
 	}
 	

@@ -3,6 +3,7 @@ package com.ddsh.goods.service.api;
 import java.util.List;
 
 import com.ddsh.goods.service.api.data.GoodsInfoReqData;
+import com.ddsh.goods.service.api.data.GoodsInfoRespData;
 import com.ddsh.goods.service.api.data.GoodsInfoSearchReqData;
 import com.ddsh.goods.service.api.model.GoodsInfo;
 import com.github.pagehelper.PageInfo;
@@ -28,7 +29,7 @@ public interface IGoodsService {
 	 * @throws
 	 * @author arpgate
 	 */
-	public PageInfo<GoodsInfo> list(int pageNum, int pageSize, GoodsInfoSearchReqData searchReqData);
+	public PageInfo<GoodsInfoRespData> list(int pageNum, int pageSize, GoodsInfoSearchReqData searchReqData);
 
 	/**
 	 * 根据物质id获取物质详情
@@ -39,7 +40,7 @@ public interface IGoodsService {
 	 * @throws
 	 * @author arpgate
 	 */
-	public GoodsInfo get(String id);
+	public GoodsInfoRespData get(String id);
 
 	/**
 	 * 物质详情保存
