@@ -35,7 +35,7 @@ public interface IInquiryService {
 	 * @return PageInfo<OrderListRespData>
 	 * @author lishibang
 	 */
-	public PageInfo<OrderListRespData> list(OrderListReqData reqData);
+	public PageInfo<OrderListRespData> list(int pageNum, int pageSize, OrderListReqData reqData);
 
 	/**
 	 * 询价申请发起，从发起时间起，一个月内均为有效，超过一个月询价无效

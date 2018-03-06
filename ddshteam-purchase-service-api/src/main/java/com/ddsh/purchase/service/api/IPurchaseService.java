@@ -26,7 +26,7 @@ public interface IPurchaseService {
 	 * @return PageInfo<OrderListRespData>
 	 * @author lishibang
 	 */
-	public PageInfo<OrderListRespData> list(OrderListReqData reqData);
+	public PageInfo<OrderListRespData> list(int pageNum, int pageSize, OrderListReqData reqData);
 
 	/**
 	 * 采购申请发起
