@@ -20,4 +20,6 @@ public interface SysMenuInfoCustomizeMapper {
 	List<Tree> getMenuTreeByUser(String userId);
 
 	List<Tree> getMenuTree();
+
+	int deleteByPrimaryKey(String id);
 }

@@ -151,20 +151,77 @@ INSERT INTO `sys_role_to_user` VALUES ('1', '1', '1');
 -- ----------------------------
 DROP FUNCTION IF EXISTS `dept_check_parent`;
 DELIMITER ;;
-CREATE DEFINER=`stock`@`%` FUNCTION `dept_check_parent`(`parent` varchar(64), `self` varchar(64)) RETURNS tinyint(1)
+CREATE FUNCTION `dept_check_parent`(`parent` varchar(64), `self` varchar(64)) RETURNS tinyint(1)
 BEGIN
 DECLARE temp varchar(64) default '';
 DECLARE temp_self varchar(64) default '';
+DECLARE c int default 0;
 
 IF
-  (self IS NULL OR parent IS NULL) THEN return 0;
+  (self IS NULL OR parent IS NULL OR self = paren) THEN return 0;
   END IF;
   
 SET temp_self = self;
 
+SELECT count(*) INTO c FROM sys_dep_info WHERE id = temp_self;
+IF
+  c = 0 THEN return 0;
+  END IF;
+  
 WHILE temp IS NOT NULL DO 
 
 SELECT parent_id INTO temp FROM sys_dep_info WHERE id = temp_self;
+
+IF
+  (temp IS NULL) THEN return 0;
+  END IF;
+  
+IF
+  (temp IS NOT NULL AND temp = parent) THEN return 1;
+  END IF;
+
+SET temp_self = temp;
+
+END WHILE;
+
+RETURN 0;
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Function structure for `menu_check_parent`
+-- 删除菜单时事务执行：
+-- delete from sys_role_to_menu where menu_check_parent('当前菜单ID', menu_id) or id='当前菜单ID';
+-- delete from sys_menu_info where menu_check_parent('当前菜单ID', id) or id='当前菜单ID';
+-- ----------------------------
+DROP FUNCTION IF EXISTS `menu_check_parent`;
+DELIMITER ;;
+CREATE FUNCTION `menu_check_parent`(`parent` varchar(64), `self` varchar(64)) RETURNS tinyint(1)
+BEGIN
+DECLARE temp varchar(64) default '';
+DECLARE temp_self varchar(64) default '';
+DECLARE c int default 0;
+
+IF
+  (self IS NULL OR parent IS NULL OR self = parent) THEN return 0;
+  END IF;
+  
+SET temp_self = self;
+
+SELECT count(*) INTO c FROM sys_menu_info WHERE id = temp_self;
+IF
+  c = 0 THEN return 0;
+  END IF;
+  
+WHILE temp IS NOT NULL DO 
+
+SELECT parent_id INTO temp FROM sys_menu_info WHERE id = temp_self;
+
+IF
+  (temp IS NULL) THEN return 0;
+  END IF;
+  
 IF
   (temp IS NOT NULL AND temp = parent) THEN return 1;
   END IF;

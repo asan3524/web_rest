@@ -12,7 +12,6 @@ import com.ddshteam.web.system.service.api.SysMenuService;
 import com.ddshteam.web.system.service.api.data.Tree;
 import com.ddshteam.web.system.service.api.model.SysMenuInfo;
 import com.ddshteam.web.system.service.api.model.SysMenuInfoCriteria;
-import com.ddshteam.web.system.service.api.model.SysRoleToMenuCriteria;
 import com.ddshteam.web.system.service.dao.SysMenuInfoCustomizeMapper;
 import com.ddshteam.web.system.service.dao.SysMenuInfoMapper;
 import com.ddshteam.web.system.service.dao.SysRoleToMenuMapper;
@@ -112,12 +111,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 	@Transactional
 	public boolean deleteMenuById(String menuId) {
 		// TODO Auto-generated method stub
-		int r1 = sysMenuInfoDao.deleteByPrimaryKey(menuId);
-
-		SysRoleToMenuCriteria criteria = new SysRoleToMenuCriteria();
-		criteria.createCriteria().andMenuIdEqualTo(menuId);
-		int r2 = sysRoleToMenuDao.deleteByExample(criteria);
-
-		return r1 > 0 && r2 >= 0;
+		int result = sysMenuInfoCustomizeDao.deleteByPrimaryKey(menuId);
+		return result > 0;
 	}
 }
