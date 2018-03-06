@@ -12,7 +12,7 @@
 		create_time
 	</sql>
 
-	<resultMap id="sysRoleListMap" type="SysRole">
+	<resultMap id="sysRoleListMap" type="SysRoleInfo">
 		<id column="id" property="id" />
 		<result column="name" property="name" />
 		<result column="remark" property="remark" />
@@ -38,7 +38,7 @@
 		WHERE id = #{roleId}
 	</select>
 
-	<insert id="saveRole" parameterType="SysRole">
+	<insert id="saveRole" parameterType="SysRoleInfo">
 		insert into sys_role_info(
 		<include refid="sysRoleFields" />
 		)
@@ -50,7 +50,7 @@
 		)
 	</insert>
 
-	<update id="updateRole" parameterType="SysRole">
+	<update id="updateRole" parameterType="SysRoleInfo">
 		UPDATE sys_role_info
 		<trim prefix="SET" suffixOverrides=",">
 			<if test="name != null and name != ''">

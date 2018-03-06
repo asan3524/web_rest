@@ -16,7 +16,7 @@
 		create_time
 	</sql>
 
-	<resultMap id="sysDeptListMap" type="SysDept">
+	<resultMap id="sysDeptListMap" type="SysDepInfo">
 		<id column="id" property="id" />
 		<result column="name" property="name" />
 		<result column="parent_id" property="parentId" />
@@ -26,7 +26,7 @@
 		<result column="status" property="status" />
 		<result column="create_time" property="createTime" />
 
-		<collection property="userList" column="u_id" ofType="SysUser">
+		<collection property="userList" column="u_id" ofType="SysUserInfo">
 			<id property="id" column="u_id" />
 			<result property="account" column="u_account" />
 			<result property="name" column="u_name" />
@@ -157,7 +157,7 @@
 		where dept.id=#{deptId}
 	</select>
 
-	<insert id="saveDept" parameterType="SysDept">
+	<insert id="saveDept" parameterType="SysDepInfo">
 		insert into sys_dep_info(
 		<include refid="sysDeptFields" />
 		)
@@ -193,7 +193,7 @@
 		</foreach>
 	</insert>
 
-	<update id="updateDept" parameterType="SysDept">
+	<update id="updateDept" parameterType="SysDepInfo">
 		UPDATE sys_dep_info
 		<trim prefix="SET" suffixOverrides=",">
 			<if test="name != null and name != ''">

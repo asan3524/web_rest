@@ -21,7 +21,7 @@
 		create_time
 	</sql>
 
-	<resultMap id="sysUserListMap" type="SysUser">
+	<resultMap id="sysUserListMap" type="SysUserInfo">
 		<id column="id" property="id" />
 		<result column="account" property="account" />
 		<result column="password" property="password" />
@@ -45,7 +45,7 @@
 		<result property="dept.status" column="d_status" />
 		<result property="dept.createTime" column="d_create_time" />
 
-		<collection property="roles" column="r_id" ofType="SysRole">
+		<collection property="roles" column="r_id" ofType="SysRoleInfo">
 			<id property="id" column="r_id" />
 			<result property="name" column="r_name" />
 			<result property="remark" column="r_remark" />
