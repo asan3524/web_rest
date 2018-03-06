@@ -36,6 +36,7 @@ import com.ddshteam.web.dto.system.ChangePswReq;
 import com.ddshteam.web.dto.system.UserReq;
 import com.ddshteam.web.dto.system.UserReqBase;
 import com.ddshteam.web.system.service.api.SysUserService;
+import com.ddshteam.web.system.service.api.constant.SystemContants;
 import com.ddshteam.web.system.service.api.model.SysUserInfo;
 import com.github.pagehelper.PageInfo;
 
@@ -116,9 +117,9 @@ public class SysUserController extends BaseController {
 		user.setMobile(userReqBase.getMobile());
 		user.setPhone(userReqBase.getPhone());
 		user.setDepId(userReqBase.getDepId());
-		user.setIsBuiltin(false);
+		user.setIsBuiltin(SystemContants.SysUserIsBuiltin.NOT_BUILTIN);
 		user.setOrderNum(userReqBase.getOrderNum());
-		user.setStatus(userReqBase.getStatus());
+		user.setStatus(SystemContants.SysUserStatus.EFFECT);
 		user.setCreateTime(new Date());
 		
 		boolean result = sysUserService.saveUser(user);
@@ -148,9 +149,9 @@ public class SysUserController extends BaseController {
 		user.setMobile(userReq.getMobile());
 		user.setPhone(userReq.getPhone());
 		user.setDepId(userReq.getDepId());
-		user.setIsBuiltin(false);
+		user.setIsBuiltin(SystemContants.SysUserIsBuiltin.NOT_BUILTIN);
 		user.setOrderNum(userReq.getOrderNum());
-		user.setStatus(userReq.getStatus());
+		user.setStatus(SystemContants.SysUserStatus.EFFECT);
 		user.setCreateTime(new Date());
 		
 		List<String> roleIds = userReq.getRoleIds();
@@ -189,7 +190,7 @@ public class SysUserController extends BaseController {
 		user.setMobile(userReqBase.getMobile());
 		user.setPhone(userReqBase.getPhone());
 		user.setDepId(userReqBase.getDepId());
-		user.setIsBuiltin(false);
+		user.setIsBuiltin(SystemContants.SysUserIsBuiltin.NOT_BUILTIN);
 		user.setOrderNum(userReqBase.getOrderNum());
 		user.setStatus(userReqBase.getStatus());
 		
@@ -227,7 +228,7 @@ public class SysUserController extends BaseController {
 		user.setMobile(userReq.getMobile());
 		user.setPhone(userReq.getPhone());
 		user.setDepId(userReq.getDepId());
-		user.setIsBuiltin(false);
+		user.setIsBuiltin(SystemContants.SysUserIsBuiltin.NOT_BUILTIN);
 		user.setOrderNum(userReq.getOrderNum());
 		user.setStatus(userReq.getStatus());
 		

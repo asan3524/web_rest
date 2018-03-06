@@ -101,10 +101,10 @@ public class SystemContants {
 	public static final class SysUserIsBuiltin
 	{
 		@ConstantDescription(desc="内置账户")
-		public static final int BUILTIN=1;
+		public static final boolean BUILTIN=true;
 		
 		@ConstantDescription(desc="非内置账户")
-		public static final int NOT_BUILTIN=0;
+		public static final boolean NOT_BUILTIN=false;
 
 	}
 }

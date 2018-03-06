@@ -7,13 +7,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.ddshteam.web.system.service.api.SysUserService;
+import com.ddshteam.web.system.service.api.constant.SystemContants;
 import com.ddshteam.web.system.service.api.model.SysUserInfo;
 import com.ddshteam.web.system.service.api.model.SysUserInfoCriteria;
 import com.ddshteam.web.system.service.api.model.SysUserInfoCriteria.Criteria;
+import com.ddshteam.web.system.service.dao.SysRoleToUserCustomizeMapper;
+import com.ddshteam.web.system.service.dao.SysRoleToUserMapper;
 import com.ddshteam.web.system.service.dao.SysUserInfoCustomizeMapper;
 import com.ddshteam.web.system.service.dao.SysUserInfoMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+
+import ch.qos.logback.core.net.SyslogConstants;
 
 @Service(version = "1.0.0")
 @Transactional(rollbackFor = Exception.class)
@@ -24,14 +29,30 @@ public class SysUserServiceImpl implements SysUserService {
 	
 	@Autowired
 	private SysUserInfoCustomizeMapper SysUserInfoInfoCustomizeDao;
+	
+	@Autowired
+	private SysRoleToUserMapper sysRoleToUserDao;
 
+	@Autowired
+	private SysRoleToUserCustomizeMapper sysRoleToUserCustomizeDao;
+	
 	@Override
 	public PageInfo<SysUserInfo> getUserList(int pageNum, int pageSize, String name, String depId) {
 		PageHelper.startPage(pageNum, pageSize);
 		SysUserInfoCriteria sysUserInfoCriteria=new SysUserInfoCriteria();
 		Criteria criteria=sysUserInfoCriteria.createCriteria();
-		criteria.andNameEqualTo(name);
-		criteria.andDepIdEqualTo(depId);
+		
+		if(name!=null&&!name.equals(""))
+		{
+			criteria.andNameEqualTo(name);
+		}
+		if(depId!=null&&!depId.equals(""))
+		{
+			criteria.andDepIdEqualTo(depId);
+		}
+		
+		criteria.andStatusEqualTo(SystemContants.SysUserStatus.EFFECT);
+		criteria.andIsBuiltinEqualTo(SystemContants.SysUserIsBuiltin.NOT_BUILTIN);
 		List<SysUserInfo> sysUserInfos=SysUserInfoInfoDao.selectByExample(sysUserInfoCriteria);
 		PageInfo<SysUserInfo> pageInfo = new PageInfo<SysUserInfo>(sysUserInfos, 10);
 		return pageInfo;
@@ -56,7 +77,9 @@ public class SysUserServiceImpl implements SysUserService {
 
 	@Override
 	public boolean saveUser(SysUserInfo SysUserInfo, String... roleIds) {
-		int result = SysUserInfoInfoCustomizeDao.saveUser(SysUserInfo, roleIds);
+		int result = SysUserInfoInfoDao.insert(SysUserInfo);
+		 result = sysRoleToUserCustomizeDao.insertRoleToUsers( SysUserInfo.getId(),roleIds);
+				 //saveUser(SysUserInfo,SysUserInfo.getId(), roleIds);
 		return result > 0;
 	}
 

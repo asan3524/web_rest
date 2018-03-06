@@ -24,7 +24,7 @@ public interface SysUserInfoCustomizeMapper {
 	 * @param roleIds 
 	 * @return
 	 */
-	public Integer saveUser(SysUserInfo sysUser, @Param("roleIds") String... roleIds);
+	public Integer saveUser(SysUserInfo sysUser,@Param("id")String id, @Param("roleIds") String... roleIds);
 	
 	public Integer saveUserNoRole(SysUserInfo sysUser);
 	

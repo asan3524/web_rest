@@ -1,6 +1,8 @@
 package com.ddshteam.web.system.service.api.model;
 
-public class SysRoleToUser {
+import java.io.Serializable;
+@SuppressWarnings("serial")
+public class SysRoleToUser implements  Serializable{
     private String id;
 
     private String roleId;
