@@ -1,8 +1,10 @@
 package com.ddshteam.web.system.service.api.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class SysDepInfo {
+@SuppressWarnings("serial")
+public class SysDepInfo implements  Serializable{
     private String id;
 
     private String name;

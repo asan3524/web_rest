@@ -1,6 +1,8 @@
 package com.ddshteam.web.system.service.impl;
 
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -101,6 +103,9 @@ public class SysDeptServiceImpl implements SysDeptService{
 
 	@Override
 	public boolean saveDept(SysDepInfo sysDept) {
+		sysDept.setId(UUID.randomUUID().toString());
+		sysDept.setCreateTime(new Date());
+		sysDept.setStatus(SystemContants.SysDeptStatus.EFFECT);
 		int result = sysDepInfoDao.insert(sysDept);
 				//sysDeptDao.saveDept(sysDept);
 		return result > 0;

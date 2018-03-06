@@ -1,6 +1,8 @@
 package com.ddshteam.web.system.service.api.model;
 
-public class SysDeptypeInfo {
+import java.io.Serializable;
+@SuppressWarnings("serial")
+public class SysDeptypeInfo  implements  Serializable{
     private String id;
 
     private String code;
