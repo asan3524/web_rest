@@ -31,9 +31,9 @@ import com.ddshteam.web.system.service.api.model.SysDepInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
-@Api(value = "/dept", description = "部门接口")
+@Api(value = "/system/dept", description = "部门接口-完成后端测试")
 @RestController
-@RequestMapping(value = "/dept")
+@RequestMapping(value = "/system/dept")
 public class SysDeptController extends BaseController {
 	
 	private final static Logger logger = LoggerFactory.getLogger(SysDeptController.class);
@@ -122,8 +122,6 @@ public class SysDeptController extends BaseController {
 		dept.setTypeId(deptReq.getTypeId());
 		dept.setRemark(deptReq.getRemark());
 		dept.setOrderNum(deptReq.getOrderNum());
-		dept.setStatus(deptReq.getStatus());
-		
 		boolean result = sysDeptService.saveDept(dept);
 		if(result) {
 			return getResponse(result);	
