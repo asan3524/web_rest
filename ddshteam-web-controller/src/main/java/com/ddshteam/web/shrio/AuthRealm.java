@@ -52,10 +52,20 @@ public class AuthRealm extends AuthorizingRealm {
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 		SysUserInfo user = (SysUserInfo) principals.getPrimaryPrincipal();
-		List<String> permissions = sysMenuService.getPermissionByUser(user.getId());
-
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-		info.addStringPermissions(permissions);
+
+		if (null == user) {
+			return info;
+		}
+
+		/**
+		 * 内置账户有所有权限
+		 */
+		if (user.getIsBuiltin()) {
+			info.addStringPermissions(Constant.rootPermission());
+		} else {
+			info.addStringPermissions(sysMenuService.getPermissionByUser(user.getId()));
+		}
 		return info;
 	}
 

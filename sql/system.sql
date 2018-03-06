@@ -90,9 +90,15 @@ CREATE TABLE `sys_menu_info` (
 -- ----------------------------
 -- Records of sys_menu_info
 -- ----------------------------
-INSERT INTO `sys_menu_info` VALUES ('1', '系统管理', null, '1', '/system', null, '', 5);
-INSERT INTO `sys_menu_info` VALUES ('2', '菜单管理', '1', '2', '/menu', null, '', 55);
-INSERT INTO `sys_menu_info` VALUES ('3', '查询列表', '2', '3', null, 'menu:query', '', 555);
+INSERT INTO `sys_menu_info` VALUES ('1', '系统管理', null, '1', '/system', null, '', 1);
+INSERT INTO `sys_menu_info` VALUES ('2', '菜单管理', '1', '2', '/menu', null, '', 2);
+INSERT INTO `sys_menu_info` VALUES ('3', '菜单树', '2', '3', null, 'system:menu:tree', '', 3);
+INSERT INTO `sys_menu_info` VALUES ('4', '菜单状态树', '2', '3', null, 'system:menu:tree2status', '', 4);
+INSERT INTO `sys_menu_info` VALUES ('5', '用户菜单树', '2', '3', null, 'system:menu:tree2user', '', 5);
+INSERT INTO `sys_menu_info` VALUES ('6', '详情', '2', '3', null, 'system:menu:info', '', 6);
+INSERT INTO `sys_menu_info` VALUES ('7', '增加', '2', '3', null, 'system:menu:save', '', 7);
+INSERT INTO `sys_menu_info` VALUES ('8', '修改', '2', '3', null, 'system:menu:update', '', 8);
+INSERT INTO `sys_menu_info` VALUES ('9', '删除', '2', '3', null, 'system:menu:delete', '', 9);
 
 -- ----------------------------
 -- Table structure for `sys_role_info`

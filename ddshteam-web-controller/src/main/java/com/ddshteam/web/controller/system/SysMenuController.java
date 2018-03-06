@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +29,7 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.ddshteam.web.core.base.BaseController;
 import com.ddshteam.web.core.support.HttpCode;
 import com.ddshteam.web.dto.system.MenuReq;
+import com.ddshteam.web.shrio.Constant;
 import com.ddshteam.web.system.service.api.SysMenuService;
 import com.ddshteam.web.system.service.api.data.Tree;
 import com.ddshteam.web.system.service.api.model.SysMenuInfo;
@@ -45,6 +47,7 @@ public class SysMenuController extends BaseController {
 
 	@ApiOperation(value = "菜单树(不含功能点)", notes = "用于添加菜单时选择父级菜单弹窗(root专用)")
 	@GetMapping(value = { "/tree" })
+	@RequiresPermissions(Constant.PERMISSION_MENU_TREE)
 	public Object getMenuTree(HttpServletRequest request, HttpServletResponse response) {
 		logger.debug("SysMenuController.getMenuTree()");
 
@@ -54,6 +57,7 @@ public class SysMenuController extends BaseController {
 
 	@ApiOperation(value = "用户带勾选状态的菜单树(包含功能点)", notes = "用于新增角色时查看已勾选的状态树（所有状态未勾选）")
 	@GetMapping(value = { "/tree2status" })
+	@RequiresPermissions(Constant.PERMISSION_MENU_TREE2STATUS)
 	public Object getMenuWithStatusTree(HttpServletRequest request, HttpServletResponse response) {
 		logger.debug("SysMenuController.getMenuWithStatusTree()");
 
@@ -75,6 +79,7 @@ public class SysMenuController extends BaseController {
 
 	@ApiOperation(value = "用户带勾选状态的菜单树(包含功能点)", notes = "用于更新角色时查看已勾选的状态树,返回指定role的勾选状态")
 	@GetMapping(value = { "/tree2status/{roleId}" })
+	@RequiresPermissions(Constant.PERMISSION_MENU_TREE2STATUS)
 	public Object getMenuWithStatusTree(@PathVariable String roleId, HttpServletRequest request,
 			HttpServletResponse response) {
 		logger.debug("SysMenuController.getMenuWithStatusTree()");
@@ -101,6 +106,7 @@ public class SysMenuController extends BaseController {
 
 	@ApiOperation(value = "用户左侧菜单树", notes = "当前用户的左侧菜单(type!=3)")
 	@GetMapping(value = { "/tree2user" })
+	@RequiresPermissions(Constant.PERMISSION_MENU_TREE2USER)
 	public Object getMenuTreeByUser(HttpServletRequest request, HttpServletResponse response) {
 		logger.debug("SysMenuController.getMenuTreeByUser()");
 
@@ -122,6 +128,7 @@ public class SysMenuController extends BaseController {
 
 	@ApiOperation(value = "获取菜单详情", notes = "")
 	@GetMapping(value = { "/id/{menuId}" })
+	@RequiresPermissions(Constant.PERMISSION_MENU_INFO)
 	public Object getMenuById(@PathVariable String menuId, HttpServletRequest request, HttpServletResponse response) {
 		logger.debug("SysMenuController.getMenuById()");
 
@@ -136,6 +143,7 @@ public class SysMenuController extends BaseController {
 
 	@ApiOperation(value = "添加菜单", notes = "")
 	@PostMapping(value = { "/save" })
+	@RequiresPermissions(Constant.PERMISSION_MENU_SAVE)
 	public Object saveMenu(@Valid @RequestBody MenuReq menuReq, BindingResult errors) {
 		logger.debug("SysMenuController.saveMenu()");
 
@@ -164,6 +172,7 @@ public class SysMenuController extends BaseController {
 
 	@ApiOperation(value = "更新菜单", notes = "")
 	@PutMapping(value = { "/update/{id}" })
+	@RequiresPermissions(Constant.PERMISSION_MENU_UPDATE)
 	public Object updateMenu(@Valid @RequestBody MenuReq menuReq, @PathVariable String id, BindingResult errors) {
 		logger.debug("SysMenuController.updateMenu()");
 
@@ -192,6 +201,7 @@ public class SysMenuController extends BaseController {
 
 	@ApiOperation(value = "删除菜单", notes = "")
 	@DeleteMapping(value = { "/delete/{id}" })
+	@RequiresPermissions(Constant.PERMISSION_MENU_DELETE)
 	public Object deleteMenu(@PathVariable String id) {
 		logger.debug("SysMenuController.deleteMenu()");
 
