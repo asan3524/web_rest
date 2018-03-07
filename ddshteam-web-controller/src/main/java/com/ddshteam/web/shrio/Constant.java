@@ -22,6 +22,7 @@ public class Constant {
 		permissions.add(Constant.PERMISSION_MENU_SAVE);
 		permissions.add(Constant.PERMISSION_MENU_UPDATE);
 		permissions.add(Constant.PERMISSION_MENU_DELETE);
+		permissions.add(Constant.PERMISSION_OPLOG_LIST);
 	}
 
 	/**
@@ -45,4 +46,8 @@ public class Constant {
 	public static final String PERMISSION_MENU_UPDATE = "system:menu:update";
 	public static final String PERMISSION_MENU_DELETE = "system:menu:delete";
 
+	/**
+	 * 操作日志
+	 */
+	public static final String PERMISSION_OPLOG_LIST = "system:oplog:list";
 }

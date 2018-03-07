@@ -152,6 +152,21 @@ CREATE TABLE `sys_role_to_user` (
 INSERT INTO `sys_role_to_user` VALUES ('1', '1', '1');
 
 -- ----------------------------
+-- Table structure for `sys_op_logs`
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_op_logs`;
+CREATE TABLE `sys_op_logs` (
+  `id` varchar(64) NOT NULL COMMENT '主键ID',
+  `account` varchar(128) NOT NULL COMMENT '账号',
+  `name` varchar(128) NOT NULL COMMENT '姓名',
+  `ip` varchar(32) NOT NULL COMMENT '请求者IP',
+  `uri` varchar(128) DEFAULT NULL COMMENT 'uri',
+  `excute_time` int(11) NOT NULL DEFAULT 1000 COMMENT '执行时间',
+  `resp` varchar(512) DEFAULT NULL COMMENT '响应',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='操作日志表';
+
+-- ----------------------------
 -- Function structure for `dept_check_parent`
 -- 查询当前部门及其子部门所属的用户语句为：select * from  sys_user_info where dept_check_parent('当前部门ID', dep_id) or dep_id='当前部门ID';
 -- ----------------------------
