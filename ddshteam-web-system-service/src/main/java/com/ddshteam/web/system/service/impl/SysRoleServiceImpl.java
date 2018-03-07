@@ -1,6 +1,8 @@
 package com.ddshteam.web.system.service.impl;
 
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,10 +33,11 @@ public class SysRoleServiceImpl implements SysRoleService{
 	public PageInfo<SysRoleInfo> getRoleList(int pageNum, int pageSize) {
 		PageHelper.startPage(pageNum, pageSize);
 		SysRoleInfoCriteria sysRoleInfoCriteria=new SysRoleInfoCriteria(); 
+		sysRoleInfoCriteria.setOrderByClause(" create_time desc");
 		Criteria criteria=sysRoleInfoCriteria.createCriteria();
 		criteria.andIdIsNotNull();
 		List<SysRoleInfo> list = sysRoleInfoDao.selectByExample(sysRoleInfoCriteria);
-		PageInfo<SysRoleInfo> pageInfo = new PageInfo<SysRoleInfo>(list, 10);
+		PageInfo<SysRoleInfo> pageInfo = new PageInfo<SysRoleInfo>(list, pageSize);
 		return pageInfo;
 	}
 
@@ -45,7 +48,9 @@ public class SysRoleServiceImpl implements SysRoleService{
 
 	@Override
 	public boolean saveRole(SysRoleInfo sysRole) {
-		int result = sysRoleInfoDao.updateByPrimaryKey(sysRole);
+		sysRole.setId(UUID.randomUUID().toString());
+		sysRole.setCreateTime(new Date());
+		int result = sysRoleInfoDao.insert(sysRole);
 		return result > 0;
 	}
 

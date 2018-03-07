@@ -33,7 +33,7 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
-@Api(value = "/role", description = "角色接口")
+@Api(value = "/role", description = "角色接口-完成后端测试")
 @RestController
 @RequestMapping(value = "/role")
 public class SysRoleController extends BaseController {
