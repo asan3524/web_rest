@@ -8,14 +8,14 @@
 		<result column="isLeaf" jdbcType="INTEGER" property="isLeaf" />
 	</resultMap>
 	<sql id="Base_Column_List">
-		p.id, p.parent_id, p.name, count(c.id) > 0 as isLeaf
+		p.id, p.parent_id, p.name, 1 > count(c.id) as isLeaf
 	</sql>
 	<!-- select p.id, p.parent_id, p.name, count(c.id) > 0 as isLeaf from goods_brand_info 
 		p left join goods_brand_info c on p.id=c.parent_id group by p.id; -->
 	<select id="selectByPrimaryKey" parameterType="java.lang.String"
 		resultMap="BaseResultMap">
 		select
-		p.id, p.parent_id, p.name, count(c.id) > 0 as isLeaf 
+		p.id, p.parent_id, p.name, 1> count(c.id) as isLeaf 
 		from goods_brand_info p left join goods_brand_info c on
 		p.id=c.parent_id
 		where p.parent_id = #{id,jdbcType=VARCHAR} group by p.id
