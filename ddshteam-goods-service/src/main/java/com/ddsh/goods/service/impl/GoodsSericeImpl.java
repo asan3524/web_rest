@@ -34,7 +34,7 @@ public class GoodsSericeImpl  implements IGoodsService{
 	public PageInfo<GoodsInfoRespData> list(int pageNum, int pageSize, GoodsInfoSearchReqData searchReqData) {
 		PageHelper.startPage(pageNum, pageSize);
 		GoodsInfoCriteria goodsInfoCriteria=new GoodsInfoCriteria();
-		goodsInfoCriteria.setOrderByClause(" create_time desc");
+		goodsInfoCriteria.setOrderByClause(" order_num desc,create_time desc");
 		Criteria criteria=goodsInfoCriteria.createCriteria();
 		criteria.andCustomizeIdIsNotNull();
 		if(searchReqData.getCode()!=null&&!searchReqData.getCode().equals(""))
