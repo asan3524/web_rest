@@ -105,6 +105,9 @@ public class SystemContants {
 		
 		@ConstantDescription(desc="非内置账户")
 		public static final boolean NOT_BUILTIN=false;
+		
+		@ConstantDescription(desc="账户默认密码")
+		public static final String DEFAULT_PWD="123456";
 
 	}
 }

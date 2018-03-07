@@ -110,7 +110,15 @@ public class SysUserController extends BaseController {
 		SysUserInfo user = new SysUserInfo();
 		user.setId(IdUtil.generateId().toString());
 		user.setAccount(userReqBase.getAccount());
-		user.setPassword(SecurityUtil.encryptMd5(userReqBase.getPassword()));
+		if(userReqBase.getPassword()==null||userReqBase.getPassword().trim().equals(""))
+		{
+			user.setPassword(SystemContants.SysUserIsBuiltin.DEFAULT_PWD);
+		}
+		else
+		{
+			user.setPassword(SecurityUtil.encryptMd5(userReqBase.getPassword()));
+		}
+	
 		user.setName(userReqBase.getName());
 		user.setEmail(userReqBase.getEmail());
 		user.setFax(userReqBase.getFax());
