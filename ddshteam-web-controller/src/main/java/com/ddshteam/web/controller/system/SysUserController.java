@@ -40,7 +40,7 @@ import com.ddshteam.web.system.service.api.constant.SystemContants;
 import com.ddshteam.web.system.service.api.model.SysUserInfo;
 import com.github.pagehelper.PageInfo;
 
-@Api(value = "/user", description = "用户接口")
+@Api(value = "/user", description = "用户接口-完成后端测试")
 @RestController
 @RequestMapping(value = "/user")
 public class SysUserController extends BaseController {

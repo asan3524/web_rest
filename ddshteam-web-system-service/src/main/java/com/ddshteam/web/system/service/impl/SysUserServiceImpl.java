@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.ddshteam.web.system.service.api.SysUserService;
 import com.ddshteam.web.system.service.api.constant.SystemContants;
+import com.ddshteam.web.system.service.api.model.SysRoleToUserCriteria;
 import com.ddshteam.web.system.service.api.model.SysUserInfo;
 import com.ddshteam.web.system.service.api.model.SysUserInfoCriteria;
 import com.ddshteam.web.system.service.api.model.SysUserInfoCriteria.Criteria;
@@ -17,8 +18,6 @@ import com.ddshteam.web.system.service.dao.SysUserInfoCustomizeMapper;
 import com.ddshteam.web.system.service.dao.SysUserInfoMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-
-import ch.qos.logback.core.net.SyslogConstants;
 
 @Service(version = "1.0.0")
 @Transactional(rollbackFor = Exception.class)
@@ -40,6 +39,7 @@ public class SysUserServiceImpl implements SysUserService {
 	public PageInfo<SysUserInfo> getUserList(int pageNum, int pageSize, String name, String depId) {
 		PageHelper.startPage(pageNum, pageSize);
 		SysUserInfoCriteria sysUserInfoCriteria=new SysUserInfoCriteria();
+		sysUserInfoCriteria.setOrderByClause(" order_num desc,create_time desc");
 		Criteria criteria=sysUserInfoCriteria.createCriteria();
 		
 		if(name!=null&&!name.equals(""))
@@ -54,7 +54,7 @@ public class SysUserServiceImpl implements SysUserService {
 		criteria.andStatusEqualTo(SystemContants.SysUserStatus.EFFECT);
 		criteria.andIsBuiltinEqualTo(SystemContants.SysUserIsBuiltin.NOT_BUILTIN);
 		List<SysUserInfo> sysUserInfos=SysUserInfoInfoDao.selectByExample(sysUserInfoCriteria);
-		PageInfo<SysUserInfo> pageInfo = new PageInfo<SysUserInfo>(sysUserInfos, 10);
+		PageInfo<SysUserInfo> pageInfo = new PageInfo<SysUserInfo>(sysUserInfos, pageSize);
 		return pageInfo;
 	}
 
@@ -64,7 +64,7 @@ public class SysUserServiceImpl implements SysUserService {
 		SysUserInfoCriteria sysUserInfoCriteria=new SysUserInfoCriteria();
 		Criteria criteria=sysUserInfoCriteria.createCriteria();
 		criteria.andAccountEqualTo(account);
-		criteria.andStatusEqualTo(1);
+		criteria.andStatusEqualTo(SystemContants.SysUserStatus.EFFECT);
 		List<SysUserInfo> sysUserInfos=SysUserInfoInfoDao.selectByExample(sysUserInfoCriteria);
 		return sysUserInfos.size()>0?sysUserInfos.get(0):null;
 	}
@@ -85,7 +85,16 @@ public class SysUserServiceImpl implements SysUserService {
 
 	@Override
 	public boolean updateUser(SysUserInfo SysUserInfo, String... roleIds) {
-		int result = SysUserInfoInfoCustomizeDao.updateUser(SysUserInfo, roleIds);
+		int result = SysUserInfoInfoDao.updateByPrimaryKeySelective(SysUserInfo);
+		
+		SysRoleToUserCriteria sysRoleToUserCriteria=new SysRoleToUserCriteria();
+		com.ddshteam.web.system.service.api.model.SysRoleToUserCriteria.Criteria  criteria=sysRoleToUserCriteria.createCriteria();
+		criteria.andUserIdEqualTo(SysUserInfo.getId());
+		result=sysRoleToUserDao.deleteByExample(sysRoleToUserCriteria);
+		
+		
+		result=sysRoleToUserCustomizeDao.insertRoleToUsers(SysUserInfo.getId(), roleIds);
+				//SysUserInfoInfoCustomizeDao.updateUser(SysUserInfo, roleIds);
 		return result > 0;
 	}
 
