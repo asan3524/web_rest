@@ -104,9 +104,10 @@
 		sys_menu_info
 	</select>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-		delete from sys_role_to_menu where menu_check_parent(#{id,jdbcType=VARCHAR},
+		<!--delete from sys_role_to_menu where menu_check_parent(#{id,jdbcType=VARCHAR},
 		menu_id) or id=#{id,jdbcType=VARCHAR};
 		delete from sys_menu_info where menu_check_parent(#{id,jdbcType=VARCHAR},
-		id) or id=#{id,jdbcType=VARCHAR}
+		id) or id=#{id,jdbcType=VARCHAR} -->
+		call delete_menu_childrens(#{id,jdbcType=VARCHAR})
 	</delete>
 </mapper>
