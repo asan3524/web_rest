@@ -7,7 +7,7 @@ import org.hibernate.validator.constraints.NotBlank;
 public class GoodsTypeInoReq {
 	@NotBlank
 	String name;
-	@NotNull
+	
 	String remark;
 	@NotNull
 	String parentid;

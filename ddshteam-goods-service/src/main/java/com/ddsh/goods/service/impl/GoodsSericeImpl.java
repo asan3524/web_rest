@@ -39,23 +39,23 @@ public class GoodsSericeImpl  implements IGoodsService{
 		criteria.andCustomizeIdIsNotNull();
 		if(searchReqData.getCode()!=null&&!searchReqData.getCode().equals(""))
 		{
-			criteria.andCodeLike("%"+searchReqData.getCode()+"%");
+			criteria.andCustomizeCodeLike("%"+searchReqData.getCode()+"%");
 		}
 		
 		if(searchReqData.getName()!=null&&!searchReqData.getName().equals(""))
 		{
-			criteria.andNameLike("%"+searchReqData.getName()+"%");
+			criteria.andCustomizeNameLike("%"+searchReqData.getName()+"%");
+
 		}
 		
 		if(searchReqData.getTypeIds()!=null&&!searchReqData.getTypeIds().isEmpty())
 		{
-			criteria.andTypeIdIn(searchReqData.getTypeIds());
+			criteria.andCustomizeTypeIdIn(searchReqData.getTypeIds());
 		}
 		
 		if(searchReqData.getBrandIds()!=null&&!searchReqData.getBrandIds().isEmpty())
 		{
-			criteria.andBrandIdIn(searchReqData.getBrandIds());
-
+			criteria.andCustomizeBrandIdIn(searchReqData.getBrandIds());
 		}
 		PageInfo<GoodsInfoRespData> pageinfo=new PageInfo<GoodsInfoRespData>(goodsInfoCustomizeDao.selectByExample(goodsInfoCriteria));
 		return pageinfo ;

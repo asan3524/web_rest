@@ -229,6 +229,12 @@ public class GoodsInfoCriteria {
             addCriterion("name like", value, "name");
             return (Criteria) this;
         }
+        
+        public Criteria andCustomizeNameLike(String value) {
+            addCriterion("gi.name like", value, "name");
+            return (Criteria) this;
+        }
+
 
         public Criteria andNameNotLike(String value) {
             addCriterion("name not like", value, "name");
@@ -295,6 +301,11 @@ public class GoodsInfoCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andCustomizeCodeLike(String value) {
+            addCriterion("gi.code like", value, "code");
+            return (Criteria) this;
+        }
+        
         public Criteria andCodeLike(String value) {
             addCriterion("code like", value, "code");
             return (Criteria) this;
@@ -375,11 +386,16 @@ public class GoodsInfoCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andCustomizeTypeIdIn(List<String> values) {
+            addCriterion("gi.type_id in", values, "typeId");
+            return (Criteria) this;
+        }
+
+        
         public Criteria andTypeIdIn(List<String> values) {
             addCriterion("type_id in", values, "typeId");
             return (Criteria) this;
         }
-
         public Criteria andTypeIdNotIn(List<String> values) {
             addCriterion("type_id not in", values, "typeId");
             return (Criteria) this;
@@ -447,6 +463,11 @@ public class GoodsInfoCriteria {
 
         public Criteria andBrandIdIn(List<String> values) {
             addCriterion("brand_id in", values, "brandId");
+            return (Criteria) this;
+        }
+        
+        public Criteria andCustomizeBrandIdIn(List<String> values) {
+            addCriterion("gi.brand_id in", values, "brandId");
             return (Criteria) this;
         }
 
