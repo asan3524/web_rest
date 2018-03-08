@@ -43,6 +43,7 @@ public class GoodsTypeServiceImpl implements IGoodsTypeService {
 		typeInfo.setId(IdUtil.generateId().toString());
 		typeInfo.setCreateTime(new Date());
 		typeInfo.setStatus(GoodsContants.GoodsTypeStatus.EFFECT);
+		typeInfo.setCode(GoodsCoder.getGoodsCode(typeInfo.getName(),typeInfo.getParentId()));
 		int result =goodsTypeInfoDao.insert(typeInfo);
  		return result>0;
 	}
@@ -59,6 +60,7 @@ public class GoodsTypeServiceImpl implements IGoodsTypeService {
 		return result>0;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public boolean delete(List id) {
 		GoodsTypeInfoCriteria goodsTypeInfoCriteria=new GoodsTypeInfoCriteria();

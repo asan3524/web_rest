@@ -57,6 +57,7 @@ public class GoodsBrandServiceImpl implements IGoodsBrandService {
 		return result>0;
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public boolean delete(List id) {
 		GoodsBrandInfoCriteria goodsBrandInfoCriteria=new GoodsBrandInfoCriteria();
