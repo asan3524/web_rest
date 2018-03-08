@@ -2,7 +2,6 @@ package com.ddsh.goods.service.impl;
 
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +15,7 @@ import com.ddsh.goods.service.api.model.GoodsTypeInfoCriteria.Criteria;
 import com.ddsh.goods.service.dao.GoodsTypeInfoMapper;
 import com.ddsh.goods.service.dao.GoodsTypeInfoTreeMapper;
 import com.ddsh.goods.service.util.GoodsCoder;
+import com.ddshteam.web.core.util.IdUtil;
 import com.ddshteam.web.system.service.api.data.Tree;
 
 @Service(version = "1.0.0")
@@ -40,10 +40,9 @@ public class GoodsTypeServiceImpl implements IGoodsTypeService {
 
 	@Override
 	public boolean save(GoodsTypeInfo typeInfo) {
-		typeInfo.setId(UUID.randomUUID().toString());
+		typeInfo.setId(IdUtil.generateId().toString());
 		typeInfo.setCreateTime(new Date());
 		typeInfo.setStatus(GoodsContants.GoodsTypeStatus.EFFECT);
-		typeInfo.setCode(GoodsCoder.getGoodsCode(typeInfo.getName(),typeInfo.getParentId()));
 		int result =goodsTypeInfoDao.insert(typeInfo);
  		return result>0;
 	}
@@ -83,6 +82,27 @@ public class GoodsTypeServiceImpl implements IGoodsTypeService {
 		}*/
 		List<Tree> goodsTypeInfos=goodsTypeInfoTreeDao.selectByPrimaryKey(id);
 		return goodsTypeInfos;
+	}
+
+	
+	/**
+	 * 判断编码是否存在
+	 * @Title: nameExist
+	 * @param name
+	 * @param parentid
+	 * @return boolean
+	 * @see 
+	 * @throws
+	 * @author arpgate
+	 */
+	@Override
+	public boolean nameExist(String name,String parentid) {
+		GoodsTypeInfoCriteria goodsTypeInfoCriteria=new GoodsTypeInfoCriteria();
+		Criteria criteria=goodsTypeInfoCriteria.createCriteria();
+		criteria.andNameEqualTo(name);
+		criteria.andParentIdEqualTo(parentid);
+		long result =goodsTypeInfoDao.countByExample(goodsTypeInfoCriteria);
+		return result>0;
 	}
 
 }

@@ -88,4 +88,17 @@ public interface IGoodsTypeService {
 	 * @author arpgate
 	 */
 	public boolean delete(List id);
+	
+	
+	/**
+	 * 判断编码是否存在
+	 * @Title: nameExist
+	 * @param name
+	 * @param parentid
+	 * @return boolean
+	 * @see 
+	 * @throws
+	 * @author arpgate
+	 */
+	public boolean nameExist(String name,String parentid);
 }

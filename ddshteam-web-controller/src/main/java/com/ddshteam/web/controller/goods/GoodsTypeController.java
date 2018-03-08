@@ -65,6 +65,11 @@ public class GoodsTypeController extends BaseController {
 			return getResponse(HttpCode.BAD_REQUEST, false, msg);
 		}
 		
+		if(goodsTypeService.nameExist(goodsTypeInoReq.getName(), goodsTypeInoReq.getParentid()))
+		{
+			return getResponse(HttpCode.BAD_REQUEST, false, "同一级别物资分类重名!");
+		}
+		
 		GoodsTypeInfo goodsTypeInfo=new GoodsTypeInfo();
 		goodsTypeInfo.setName(goodsTypeInoReq.getName());
 		goodsTypeInfo.setParentId(goodsTypeInoReq.getParentid());
@@ -86,6 +91,11 @@ public class GoodsTypeController extends BaseController {
 		if(StringUtils.isEmpty(goodstypeid)) {
 			logger.error("goodstypeid is null.");
 			return getResponse(HttpCode.BAD_REQUEST, false);
+		}
+		
+		if(goodsTypeService.nameExist(goodsTypeInoReq.getName(), goodsTypeInoReq.getParentid()))
+		{
+			return getResponse(HttpCode.BAD_REQUEST, false, "同一级别物资分类重名!");
 		}
 		
 		GoodsTypeInfo goodsTypeInfo=new GoodsTypeInfo();
@@ -163,6 +173,10 @@ public class GoodsTypeController extends BaseController {
 			logger.error(msg);
 			return getResponse(HttpCode.BAD_REQUEST, false, msg);
 		}
+		if(goodsBrandService.nameExist(goodsTypeInoReq.getName(), goodsTypeInoReq.getParentid()))
+		{
+			return getResponse(HttpCode.BAD_REQUEST, false, "同一级别物资品牌重名!");
+		}
 		
 		GoodsBrandInfo goodsTypeInfo=new GoodsBrandInfo();
 		goodsTypeInfo.setName(goodsTypeInoReq.getName());
@@ -185,6 +199,11 @@ public class GoodsTypeController extends BaseController {
 		if(StringUtils.isEmpty(goodsbrandid)) {
 			logger.error("goodstypeid is null.");
 			return getResponse(HttpCode.BAD_REQUEST, false);
+		}
+		
+		if(goodsBrandService.nameExist(goodsTypeInoReq.getName(), goodsTypeInoReq.getParentid()))
+		{
+			return getResponse(HttpCode.BAD_REQUEST, false, "同一级别物资品牌重名!");
 		}
 		
 		GoodsBrandInfo goodsTypeInfo=new GoodsBrandInfo();

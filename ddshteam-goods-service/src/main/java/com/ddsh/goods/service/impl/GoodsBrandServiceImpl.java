@@ -2,7 +2,6 @@ package com.ddsh.goods.service.impl;
 
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +14,7 @@ import com.ddsh.goods.service.api.model.GoodsBrandInfoCriteria.Criteria;
 import com.ddsh.goods.service.dao.GoodsBrandInfoMapper;
 import com.ddsh.goods.service.dao.GoodsBrandInfoTreeMapper;
 import com.ddsh.goods.service.util.GoodsCoder;
+import com.ddshteam.web.core.util.IdUtil;
 import com.ddshteam.web.system.service.api.data.Tree;
 
 @Service(version = "1.0.0")
@@ -38,7 +38,7 @@ public class GoodsBrandServiceImpl implements IGoodsBrandService {
 
 	@Override
 	public boolean save(GoodsBrandInfo Info) {
-		Info.setId(UUID.randomUUID().toString());
+		Info.setId(IdUtil.generateId().toString());
 		Info.setCreateTime(new Date());
 		Info.setCode(GoodsCoder.getGoodsCode(Info.getName(),Info.getParentId()));
 		int result=goodsBrandInfoDao.insert(Info);
@@ -83,6 +83,16 @@ public class GoodsBrandServiceImpl implements IGoodsBrandService {
 //		goodsBrandInfoDao.
 		List<Tree> trees = goodsBrandInfoTreeDao.selectByPrimaryKey(id);
 		return trees;
+	}
+
+	@Override
+	public boolean nameExist(String name,String parentid) {
+		GoodsBrandInfoCriteria goodsBrandInfoCriteria=new GoodsBrandInfoCriteria();
+		Criteria criteria=goodsBrandInfoCriteria.createCriteria();
+		criteria.andNameEqualTo(name);
+		criteria.andParentIdEqualTo(parentid);
+		long result=goodsBrandInfoDao.countByExample(goodsBrandInfoCriteria);
+		return result>0;
 	}
 
 }
