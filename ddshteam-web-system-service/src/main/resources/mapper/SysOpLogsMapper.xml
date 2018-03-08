@@ -9,6 +9,7 @@
     <result column="uri" jdbcType="VARCHAR" property="uri" />
     <result column="excute_time" jdbcType="INTEGER" property="excuteTime" />
     <result column="resp" jdbcType="VARCHAR" property="resp" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -70,7 +71,7 @@
   </sql>
   <sql id="Base_Column_List">
     <if test="fields == null">
-      id, account, name, ip, uri, excute_time, resp
+      id, account, name, ip, uri, excute_time, resp, create_time
     </if>
     <if test="fields != null">
       ${fields}
@@ -96,7 +97,7 @@
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
-    id,account,name,ip,uri,excute_time,resp
+    id,account,name,ip,uri,excute_time,resp,create_time
     from sys_op_logs
     where id = #{id,jdbcType=VARCHAR}
   </select>
@@ -113,10 +114,10 @@
   <insert id="insert" parameterType="com.ddshteam.web.system.service.api.model.SysOpLogs">
     insert into sys_op_logs (id, account, name, 
       ip, uri, excute_time, 
-      resp)
+      resp, create_time)
     values (#{id,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
       #{ip,jdbcType=VARCHAR}, #{uri,jdbcType=VARCHAR}, #{excuteTime,jdbcType=INTEGER}, 
-      #{resp,jdbcType=VARCHAR})
+      #{resp,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.ddshteam.web.system.service.api.model.SysOpLogs">
     insert into sys_op_logs
@@ -142,6 +143,9 @@
       <if test="resp != null">
         resp,
       </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -164,6 +168,9 @@
       </if>
       <if test="resp != null">
         #{resp,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -197,6 +204,9 @@
       <if test="record.resp != null">
         resp = #{record.resp,jdbcType=VARCHAR},
       </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -210,7 +220,8 @@
       ip = #{record.ip,jdbcType=VARCHAR},
       uri = #{record.uri,jdbcType=VARCHAR},
       excute_time = #{record.excuteTime,jdbcType=INTEGER},
-      resp = #{record.resp,jdbcType=VARCHAR}
+      resp = #{record.resp,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -236,6 +247,9 @@
       <if test="resp != null">
         resp = #{resp,jdbcType=VARCHAR},
       </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
@@ -246,7 +260,8 @@
       ip = #{ip,jdbcType=VARCHAR},
       uri = #{uri,jdbcType=VARCHAR},
       excute_time = #{excuteTime,jdbcType=INTEGER},
-      resp = #{resp,jdbcType=VARCHAR}
+      resp = #{resp,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>
