@@ -8,7 +8,7 @@ import org.hibernate.validator.constraints.NotBlank;
 public class UserReqBase {
 	@NotBlank
 	private String account;
-	@NotBlank
+	
 	private String password;
 	@NotBlank
 	private String name;

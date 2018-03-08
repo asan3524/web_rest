@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ddshteam.web.system.service.dao.SysRoleToUserCustomizeMapper">
+  <resultMap id="BaseResultMap" type="com.ddshteam.web.system.service.api.model.SysRoleToUser">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="role_id" jdbcType="VARCHAR" property="roleId" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+  </resultMap>
+  <insert id="insertRoleToUsers">
+		insert into sys_role_to_user
+		(
+		id,
+		user_id,
+		role_id
+		)
+		values
+		<foreach collection="roleids" item="item" index="index"
+			separator=",">
+			(
+			REPLACE(UUID(), '-', ''),
+			#{userid},
+			#{item} <!--可以使用param1 param2 -->
+			)
+		</foreach>
+		;
+	</insert>
+  
+</mapper>

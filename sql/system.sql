@@ -95,9 +95,15 @@ CREATE TABLE `sys_menu_info` (
 -- ----------------------------
 -- Records of sys_menu_info
 -- ----------------------------
-INSERT INTO `sys_menu_info` VALUES ('1', '系统管理', null, '1', '/system', null, '', 5);
-INSERT INTO `sys_menu_info` VALUES ('2', '菜单管理', '1', '2', '/menu', null, '', 55);
-INSERT INTO `sys_menu_info` VALUES ('3', '查询列表', '2', '3', null, 'menu:query', '', 555);
+INSERT INTO `sys_menu_info` VALUES ('1', '系统管理', null, '1', '/system', null, '', 1);
+INSERT INTO `sys_menu_info` VALUES ('2', '菜单管理', '1', '2', '/menu', null, '', 2);
+INSERT INTO `sys_menu_info` VALUES ('3', '菜单树', '2', '3', null, 'system:menu:tree', '', 3);
+INSERT INTO `sys_menu_info` VALUES ('4', '菜单状态树', '2', '3', null, 'system:menu:tree2status', '', 4);
+INSERT INTO `sys_menu_info` VALUES ('5', '用户菜单树', '2', '3', null, 'system:menu:tree2user', '', 5);
+INSERT INTO `sys_menu_info` VALUES ('6', '详情', '2', '3', null, 'system:menu:info', '', 6);
+INSERT INTO `sys_menu_info` VALUES ('7', '增加', '2', '3', null, 'system:menu:save', '', 7);
+INSERT INTO `sys_menu_info` VALUES ('8', '修改', '2', '3', null, 'system:menu:update', '', 8);
+INSERT INTO `sys_menu_info` VALUES ('9', '删除', '2', '3', null, 'system:menu:delete', '', 9);
 
 -- ----------------------------
 -- Table structure for `sys_role_info`
@@ -151,25 +157,97 @@ CREATE TABLE `sys_role_to_user` (
 INSERT INTO `sys_role_to_user` VALUES ('1', '1', '1');
 
 -- ----------------------------
+-- Table structure for `sys_op_logs`
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_op_logs`;
+CREATE TABLE `sys_op_logs` (
+  `id` varchar(64) NOT NULL COMMENT '主键ID',
+  `account` varchar(128) NOT NULL COMMENT '账号',
+  `name` varchar(128) NOT NULL COMMENT '姓名',
+  `ip` varchar(32) NOT NULL COMMENT '请求者IP',
+  `uri` varchar(128) DEFAULT NULL COMMENT 'uri',
+  `excute_time` int(11) NOT NULL DEFAULT 1000 COMMENT '执行时间',
+  `resp` varchar(512) DEFAULT NULL COMMENT '响应',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='操作日志表';
+
+-- ----------------------------
 -- Function structure for `dept_check_parent`
 -- 查询当前部门及其子部门所属的用户语句为：select * from  sys_user_info where dept_check_parent('当前部门ID', dep_id) or dep_id='当前部门ID';
 -- ----------------------------
 DROP FUNCTION IF EXISTS `dept_check_parent`;
 DELIMITER ;;
-CREATE DEFINER=`stock`@`%` FUNCTION `dept_check_parent`(`parent` varchar(64), `self` varchar(64)) RETURNS tinyint(1)
+CREATE FUNCTION `dept_check_parent`(`parent` varchar(64), `self` varchar(64)) RETURNS tinyint(1)
 BEGIN
 DECLARE temp varchar(64) default '';
 DECLARE temp_self varchar(64) default '';
+DECLARE c int default 0;
 
 IF
-  (self IS NULL OR parent IS NULL) THEN return 0;
+  (self IS NULL OR parent IS NULL OR self = paren) THEN return 0;
   END IF;
   
 SET temp_self = self;
 
+SELECT count(*) INTO c FROM sys_dep_info WHERE id = temp_self;
+IF
+  c = 0 THEN return 0;
+  END IF;
+  
 WHILE temp IS NOT NULL DO 
 
 SELECT parent_id INTO temp FROM sys_dep_info WHERE id = temp_self;
+
+IF
+  (temp IS NULL) THEN return 0;
+  END IF;
+  
+IF
+  (temp IS NOT NULL AND temp = parent) THEN return 1;
+  END IF;
+
+SET temp_self = temp;
+
+END WHILE;
+
+RETURN 0;
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Function structure for `menu_check_parent`
+-- 删除菜单时事务执行：
+-- delete from sys_role_to_menu where menu_check_parent('当前菜单ID', menu_id) or id='当前菜单ID';
+-- delete from sys_menu_info where menu_check_parent('当前菜单ID', id) or id='当前菜单ID';
+-- ----------------------------
+DROP FUNCTION IF EXISTS `menu_check_parent`;
+DELIMITER ;;
+CREATE FUNCTION `menu_check_parent`(`parent` varchar(64), `self` varchar(64)) RETURNS tinyint(1)
+BEGIN
+DECLARE temp varchar(64) default '';
+DECLARE temp_self varchar(64) default '';
+DECLARE c int default 0;
+
+IF
+  (self IS NULL OR parent IS NULL OR self = parent) THEN return 0;
+  END IF;
+  
+SET temp_self = self;
+
+SELECT count(*) INTO c FROM sys_menu_info WHERE id = temp_self;
+IF
+  c = 0 THEN return 0;
+  END IF;
+  
+WHILE temp IS NOT NULL DO 
+
+SELECT parent_id INTO temp FROM sys_menu_info WHERE id = temp_self;
+
+IF
+  (temp IS NULL) THEN return 0;
+  END IF;
+  
 IF
   (temp IS NOT NULL AND temp = parent) THEN return 1;
   END IF;

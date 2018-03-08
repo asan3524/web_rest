@@ -36,10 +36,11 @@ import com.ddshteam.web.dto.system.ChangePswReq;
 import com.ddshteam.web.dto.system.UserReq;
 import com.ddshteam.web.dto.system.UserReqBase;
 import com.ddshteam.web.system.service.api.SysUserService;
-import com.ddshteam.web.system.service.api.model.SysUser;
+import com.ddshteam.web.system.service.api.constant.SystemContants;
+import com.ddshteam.web.system.service.api.model.SysUserInfo;
 import com.github.pagehelper.PageInfo;
 
-@Api(value = "/user", description = "用户接口")
+@Api(value = "/user", description = "用户接口-完成后端测试")
 @RestController
 @RequestMapping(value = "/user")
 public class SysUserController extends BaseController {
@@ -60,7 +61,7 @@ public class SysUserController extends BaseController {
 		String name = paremeters.get("name");
 		String depId = paremeters.get("depId");
 
-		PageInfo<SysUser> pi = sysUserService
+		PageInfo<SysUserInfo> pi = sysUserService
 				.getUserList(pageable.getPageNumber(), pageable.getPageSize(), name, depId);
 		return getResponse(pi);
 	}
@@ -75,7 +76,7 @@ public class SysUserController extends BaseController {
 			return getResponse(HttpCode.BAD_REQUEST, false);
 		}
 		
-		SysUser user = sysUserService.getUserByAccount(account);
+		SysUserInfo user = sysUserService.getUserByAccount(account);
 		user.setPassword(null);
 		return getResponse(user);
 	}
@@ -90,7 +91,7 @@ public class SysUserController extends BaseController {
 			return getResponse(HttpCode.BAD_REQUEST, false);
 		}
 		
-		SysUser user = sysUserService.getUserById(id);
+		SysUserInfo user = sysUserService.getUserById(id);
 		user.setPassword(null);
 		return getResponse(user);
 	}
@@ -106,19 +107,27 @@ public class SysUserController extends BaseController {
 			return getResponse(HttpCode.BAD_REQUEST, false, msg);
 		}
 		
-		SysUser user = new SysUser();
+		SysUserInfo user = new SysUserInfo();
 		user.setId(IdUtil.generateId().toString());
 		user.setAccount(userReqBase.getAccount());
-		user.setPassword(SecurityUtil.encryptMd5(userReqBase.getPassword()));
+		if(userReqBase.getPassword()==null||userReqBase.getPassword().trim().equals(""))
+		{
+			user.setPassword(SystemContants.SysUserIsBuiltin.DEFAULT_PWD);
+		}
+		else
+		{
+			user.setPassword(SecurityUtil.encryptMd5(userReqBase.getPassword()));
+		}
+	
 		user.setName(userReqBase.getName());
 		user.setEmail(userReqBase.getEmail());
 		user.setFax(userReqBase.getFax());
 		user.setMobile(userReqBase.getMobile());
 		user.setPhone(userReqBase.getPhone());
 		user.setDepId(userReqBase.getDepId());
-		user.setBuiltin(userReqBase.isBuiltin());
+		user.setIsBuiltin(SystemContants.SysUserIsBuiltin.NOT_BUILTIN);
 		user.setOrderNum(userReqBase.getOrderNum());
-		user.setStatus(userReqBase.getStatus());
+		user.setStatus(SystemContants.SysUserStatus.EFFECT);
 		user.setCreateTime(new Date());
 		
 		boolean result = sysUserService.saveUser(user);
@@ -138,7 +147,7 @@ public class SysUserController extends BaseController {
 			return getResponse(HttpCode.BAD_REQUEST, false, msg);
 		}
 		
-		SysUser user =new SysUser();
+		SysUserInfo user =new SysUserInfo();
 		user.setId(IdUtil.generateId().toString());
 		user.setAccount(userReq.getAccount());
 		user.setPassword(SecurityUtil.encryptMd5(userReq.getPassword()));
@@ -148,9 +157,9 @@ public class SysUserController extends BaseController {
 		user.setMobile(userReq.getMobile());
 		user.setPhone(userReq.getPhone());
 		user.setDepId(userReq.getDepId());
-		user.setBuiltin(userReq.isBuiltin());
+		user.setIsBuiltin(SystemContants.SysUserIsBuiltin.NOT_BUILTIN);
 		user.setOrderNum(userReq.getOrderNum());
-		user.setStatus(userReq.getStatus());
+		user.setStatus(SystemContants.SysUserStatus.EFFECT);
 		user.setCreateTime(new Date());
 		
 		List<String> roleIds = userReq.getRoleIds();
@@ -181,7 +190,7 @@ public class SysUserController extends BaseController {
 //			return getResponse(HttpCode.CONFLICT, false, "admin用户为系统保留账号");
 //		}
 		
-		SysUser user = new SysUser();
+		SysUserInfo user = new SysUserInfo();
 		user.setId(id);
 		//user.setName(userReqBase.getName());
 		user.setEmail(userReqBase.getEmail());
@@ -189,7 +198,7 @@ public class SysUserController extends BaseController {
 		user.setMobile(userReqBase.getMobile());
 		user.setPhone(userReqBase.getPhone());
 		user.setDepId(userReqBase.getDepId());
-		user.setBuiltin(userReqBase.isBuiltin());
+		user.setIsBuiltin(SystemContants.SysUserIsBuiltin.NOT_BUILTIN);
 		user.setOrderNum(userReqBase.getOrderNum());
 		user.setStatus(userReqBase.getStatus());
 		
@@ -219,7 +228,7 @@ public class SysUserController extends BaseController {
 //			return getResponse(HttpCode.CONFLICT, false, "admin用户为系统保留账号");
 //		}
 		
-		SysUser user = new SysUser();
+		SysUserInfo user = new SysUserInfo();
 		user.setId(id);
 		//user.setName(UserReqBase.getName());
 		user.setEmail(userReq.getEmail());
@@ -227,7 +236,7 @@ public class SysUserController extends BaseController {
 		user.setMobile(userReq.getMobile());
 		user.setPhone(userReq.getPhone());
 		user.setDepId(userReq.getDepId());
-		user.setBuiltin(userReq.isBuiltin());
+		user.setIsBuiltin(SystemContants.SysUserIsBuiltin.NOT_BUILTIN);
 		user.setOrderNum(userReq.getOrderNum());
 		user.setStatus(userReq.getStatus());
 		
@@ -252,7 +261,7 @@ public class SysUserController extends BaseController {
 
 		//TODO 此处的userId应由session提供
 		String userId = changePswReq.getUserId();
-		SysUser u = sysUserService.getUserById(userId);
+		SysUserInfo u = sysUserService.getUserById(userId);
 		if(!u.getPassword().equals(SecurityUtil.encryptMd5(changePswReq.getOldPassword()))) {
 			logger.error("password is not correct.");
 			return getResponse(HttpCode.BAD_REQUEST, false, "旧密码不正确");
@@ -275,11 +284,11 @@ public class SysUserController extends BaseController {
 			return getResponse(HttpCode.BAD_REQUEST, false);
 		}
 		
-		SysUser user = sysUserService.getUserById(id);
+		SysUserInfo user = sysUserService.getUserById(id);
 		
 		//TODO session 获取登陆用户id,自身不允许删除
 		
-		if(user.getAccount().equals("admin") || user.isBuiltin()) {
+		if(user.getAccount().equals("admin") || user.getIsBuiltin()) {
 			logger.error("'admin', 'buildin' and itsself can't be deleted.");
 			return getResponse(HttpCode.CONFLICT, false, "admin账号,内建账号，自身账号等不能删除");
 		}
@@ -310,6 +319,23 @@ public class SysUserController extends BaseController {
 		if(result) {
 			return getResponse(result);
 		}else return getResponse(HttpCode.INTERNAL_SERVER_ERROR, result, "更新用户角色失败");
+		
+	}
+	
+	@ApiOperation(value = "根据账号(用户名)获取判断用户是否存在", notes = "根据账号(用户名)获取判断用户是否存在，用于添加用户或者更新用户")
+	@GetMapping(value = { "/account/exist/{account}" })
+	public Object userNameExist(@PathVariable String account )
+	{
+		logger.debug("UserController.userNameExist()");
+		
+		if(StringUtils.isEmpty(account)) {
+			logger.error("account is null.");
+			return getResponse(HttpCode.BAD_REQUEST, false);
+		}
+		
+		boolean result=sysUserService.getUserExist(account);
+		
+		return getResponse(result);
 		
 	}
 }
