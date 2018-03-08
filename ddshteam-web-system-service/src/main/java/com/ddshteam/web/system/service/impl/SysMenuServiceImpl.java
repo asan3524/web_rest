@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.dubbo.config.annotation.Service;
-import com.ddshteam.web.core.util.IdUtil;
 import com.ddshteam.web.system.service.api.SysMenuService;
 import com.ddshteam.web.system.service.api.data.Tree;
 import com.ddshteam.web.system.service.api.model.SysMenuInfo;
@@ -95,7 +94,6 @@ public class SysMenuServiceImpl implements SysMenuService {
 	@Override
 	public boolean saveMenu(SysMenuInfo sysMenuInfo) {
 		// TODO Auto-generated method stub
-		sysMenuInfo.setId(IdUtil.generateId().toString());
 		int result = sysMenuInfoDao.insert(sysMenuInfo);
 		return result > 0;
 	}

@@ -1,5 +1,8 @@
 package com.ddshteam.web.controller.system;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,14 +27,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.ddshteam.web.core.base.BaseController;
 import com.ddshteam.web.core.support.HttpCode;
+import com.ddshteam.web.core.util.IdUtil;
 import com.ddshteam.web.dto.system.RoleReq;
 import com.ddshteam.web.dto.system.SetRole2MenuReq;
 import com.ddshteam.web.system.service.api.SysRoleService;
 import com.ddshteam.web.system.service.api.model.SysRoleInfo;
 import com.github.pagehelper.PageInfo;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 
 @Api(value = "/role", description = "角色接口-完成后端测试")
 @RestController
@@ -80,6 +81,7 @@ public class SysRoleController extends BaseController {
 		}
 		
 		SysRoleInfo role = new SysRoleInfo();
+		role.setId(IdUtil.generateId().toString());
 		role.setName(roleReq.getName());
 		role.setRemark(roleReq.getRemark());
 		
