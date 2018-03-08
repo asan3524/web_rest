@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+	<classPathEntry
+		location="D:\my_repo\.m2\repository\mysql\mysql-connector-java\5.0.2\mysql-connector-java-5.0.2.jar" />
+	<context id="context1">
+
+		<!-- JavaBean 实现 序列化 接口 -->
+		<plugin type="org.mybatis.generator.plugins.SerializablePlugin">
+		</plugin>
+		<!-- genenat entity时,生成toString -->
+		<plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
+		<!-- 自定义物理分页 可生成支持Mysql数据的limit 不支持Oracle -->
+		<plugin type="org.mybatis.generator.plugins.page.PaginationPlugin" />
+		<!-- 自定义查询指定字段 -->
+		<plugin type="org.mybatis.generator.plugins.field.FieldsPlugin" />
+		<!-- 开启支持内存分页 可生成 支持内存分布的方法及参数 <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin" 
+			/> -->
+
+		<!-- 此处是将Example改名为Criteria 当然 想改成什么都行~ -->
+		<plugin type="org.mybatis.generator.plugins.RenameExampleClassPlugin">
+			<property name="searchString" value="Example$" />
+			<property name="replaceString" value="Criteria" />
+		</plugin>
+		
+		<!-- 此处是将UserMapper.xml改名为UserDao.xml 当然 想改成什么都行~ 
+		<plugin type="org.mybatis.generator.plugins.rename.RenameSqlMapperPlugin">
+			<property name="searchString" value="Mapper" />
+			<property name="replaceString" value="Dao" />
+		</plugin>-->
+
+		<!-- 此处是将UserMapper改名为UserDao 接口 当然 想改成什么都行~ -->
+<!-- 		<plugin type="org.mybatis.generator.plugins.rename.RenameJavaMapperPlugin">
+			<property name="searchString" value="Mapper$" />
+			<property name="replaceString" value="Dao" />
+		</plugin> -->
+
+		<!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+		<commentGenerator>
+			<property name="suppressAllComments" value="true" />
+			<property name="suppressDate" value="true" />
+		</commentGenerator>
+
+
+		<jdbcConnection
+			connectionURL="jdbc:mysql://47.91.208.194:3306/stock?useUnicode=true&amp;characterEncoding=UTF8"
+			driverClass="com.mysql.jdbc.Driver" password="bitlife888T3!@#$"
+			userId="stock" />
+
+		<!-- 默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer，为 true时把JDBC DECIMAL 
+			和 NUMERIC 类型解析为java.math.BigDecimal -->
+		<javaTypeResolver>
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+
+		<!-- targetProject:生成PO类的位置 -->
+		<javaModelGenerator targetPackage="com.ddshteam.web.system.service.api.model"
+			targetProject="ddshteam-web-system-service-api\src\main\java">
+			<!-- enableSubPackages:是否让schema作为包的后缀 -->
+			<property name="enableSubPackages" value="false" />
+			<!-- 从数据库返回的值被清理前后的空格 -->
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+
+		<!-- targetProject:mapper映射文件生成的位置 -->
+		<sqlMapGenerator targetPackage="mapper"
+			targetProject="ddshteam-web-system-service\src\main\resources">
+			<!-- enableSubPackages:是否让schema作为包的后缀 -->
+			<property name="enableSubPackages" value="false" />
+		</sqlMapGenerator>
+		<!-- targetPackage：mapper接口生成的位置 -->
+		<javaClientGenerator targetPackage="com.ddshteam.web.system.service.dao"
+			targetProject="ddshteam-web-system-service\src\main\java" type="XMLMAPPER">
+			<!-- enableSubPackages:是否让schema作为包的后缀 -->
+			<property name="enableSubPackages" value="false" />
+		</javaClientGenerator>
+
+		<!-- 指定数据库表 -->
+		<table schema="stock" tableName="sys_op_logs"
+			enableDeleteByPrimaryKey="true" enableInsert="true"
+			enableUpdateByPrimaryKey="true" enableSelectByPrimaryKey="true"
+			enableCountByExample="true" enableUpdateByExample="true"
+			enableDeleteByExample="true" enableSelectByExample="true"
+			selectByExampleQueryId="true" >
+		</table>
+
+
+	</context>
+</generatorConfiguration>

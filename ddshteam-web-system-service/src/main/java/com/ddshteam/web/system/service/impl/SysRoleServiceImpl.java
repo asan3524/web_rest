@@ -1,15 +1,21 @@
 package com.ddshteam.web.system.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.ddshteam.web.core.util.IdUtil;
 import com.ddshteam.web.system.service.api.SysRoleService;
 import com.ddshteam.web.system.service.api.data.Tree;
-import com.ddshteam.web.system.service.api.model.SysRole;
-import com.ddshteam.web.system.service.dao.SysRoleDao;
+import com.ddshteam.web.system.service.api.model.SysRoleInfo;
+import com.ddshteam.web.system.service.api.model.SysRoleInfoCriteria;
+import com.ddshteam.web.system.service.api.model.SysRoleInfoCriteria.Criteria;
+import com.ddshteam.web.system.service.dao.SysRoleInfoCustomizeMapper;
+import com.ddshteam.web.system.service.dao.SysRoleInfoMapper;
+import com.ddshteam.web.system.service.dao.SysRoleToMenuMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
@@ -18,54 +24,63 @@ import com.github.pagehelper.PageInfo;
 public class SysRoleServiceImpl implements SysRoleService{
 	
 	@Autowired
-	private SysRoleDao sysRoleDao;
-
+	private SysRoleInfoMapper sysRoleInfoDao;
+	@Autowired
+	private SysRoleInfoCustomizeMapper sysRoleInfoCustomizeDao;
+	@Autowired
+	private SysRoleToMenuMapper SysRoleToMenuDao;
 	@Override
-	public PageInfo<SysRole> getRoleList(int pageNum, int pageSize) {
+	public PageInfo<SysRoleInfo> getRoleList(int pageNum, int pageSize) {
 		PageHelper.startPage(pageNum, pageSize);
-		List<SysRole> list = sysRoleDao.getRoleList();
-		PageInfo<SysRole> pageInfo = new PageInfo<SysRole>(list, 10);
+		SysRoleInfoCriteria sysRoleInfoCriteria=new SysRoleInfoCriteria(); 
+		sysRoleInfoCriteria.setOrderByClause(" create_time desc");
+		Criteria criteria=sysRoleInfoCriteria.createCriteria();
+		criteria.andIdIsNotNull();
+		List<SysRoleInfo> list = sysRoleInfoDao.selectByExample(sysRoleInfoCriteria);
+		PageInfo<SysRoleInfo> pageInfo = new PageInfo<SysRoleInfo>(list, pageSize);
 		return pageInfo;
 	}
 
 	@Override
-	public SysRole getRoleById(String roleId) {
-		return sysRoleDao.getRoleById(roleId);
+	public SysRoleInfo getRoleById(String roleId) {
+		return sysRoleInfoDao.selectByPrimaryKey(roleId);
 	}
 
 	@Override
-	public boolean saveRole(SysRole sysRole) {
-		int result = sysRoleDao.saveRole(sysRole);
+	public boolean saveRole(SysRoleInfo sysRole) {
+		sysRole.setId(IdUtil.generateId().toString());
+		sysRole.setCreateTime(new Date());
+		int result = sysRoleInfoDao.insert(sysRole);
 		return result > 0;
 	}
 
 	@Override
-	public boolean updateRole(SysRole sysRole) {
-		int result = sysRoleDao.updateRole(sysRole);
+	public boolean updateRole(SysRoleInfo sysRole) {
+		int result = sysRoleInfoDao.updateByPrimaryKeySelective(sysRole);
 		return result > 0;
 	}
 
 	@Override
 	public boolean deleteRole(String roleId) {
-		int result = sysRoleDao.deleteRole(roleId);
+		int result = sysRoleInfoDao.deleteByPrimaryKey(roleId);
 		return result > 0;
 	}
 
 	@Override
 	public List<Tree> getRoleTreeByUser(String userId) {
-		// TODO 角色目前无树结构
 		return null;
 	}
 
 	@Override
 	public boolean setRoleMenu(String roleId, String... menuIds) {
-		int result = sysRoleDao.setRoleMenu(roleId, menuIds);
+		int result = sysRoleInfoCustomizeDao.setRoleMenu(roleId, menuIds);
 		return result > 0;
 	}
 
 	@Override
 	public List<String> getMenuIdByRole(String... roleIds) {
-		return sysRoleDao.getMenuIdByRole(roleIds);
+ 		return sysRoleInfoCustomizeDao.getMenuIdByRole(roleIds);
+		 
 	}
 	
 }

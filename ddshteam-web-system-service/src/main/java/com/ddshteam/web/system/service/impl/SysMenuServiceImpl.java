@@ -1,89 +1,75 @@
 package com.ddshteam.web.system.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.ddshteam.web.core.util.IdUtil;
 import com.ddshteam.web.system.service.api.SysMenuService;
 import com.ddshteam.web.system.service.api.data.Tree;
-import com.ddshteam.web.system.service.api.model.SysMenu;
-import com.ddshteam.web.system.service.dao.SysMenuDao;
+import com.ddshteam.web.system.service.api.model.SysMenuInfo;
+import com.ddshteam.web.system.service.api.model.SysMenuInfoCriteria;
+import com.ddshteam.web.system.service.dao.SysMenuInfoCustomizeMapper;
+import com.ddshteam.web.system.service.dao.SysMenuInfoMapper;
+import com.ddshteam.web.system.service.dao.SysRoleToMenuMapper;
 import com.ddshteam.web.system.service.util.MenuTreeBuilder;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.google.common.base.Splitter;
-import com.google.common.collect.Lists;
 import com.mysql.cj.core.util.StringUtils;
 
 @Service(version = "1.0.0")
 @Transactional(rollbackFor = Exception.class)
-public class SysMenuServiceImpl implements SysMenuService{
+public class SysMenuServiceImpl implements SysMenuService {
 
 	@Autowired
-	private SysMenuDao sysMenuDao;
+	private SysMenuInfoMapper sysMenuInfoDao;
 
-	@Override
-	public PageInfo<SysMenu> getMenuList(int pageNum, int pageSize) {
-		PageHelper.startPage(pageNum, pageSize);
-		List<SysMenu> list = sysMenuDao.getMenuList();
-		PageInfo<SysMenu> pageInfo = new PageInfo<SysMenu>(list, 10);
-		return pageInfo;
-	}
+	@Autowired
+	private SysRoleToMenuMapper sysRoleToMenuDao;
+
+	@Autowired
+	private SysMenuInfoCustomizeMapper sysMenuInfoCustomizeDao;
 
 	@Override
 	public List<Tree> getMenuTree() {
-		//{id,name,url,iconClass,children}
-		List<SysMenu> list = sysMenuDao.getMenu$NoFuncList();
+		// TODO Auto-generated method stub
+		SysMenuInfoCriteria criteria = new SysMenuInfoCriteria();
+		criteria.createCriteria().andTypeNotEqualTo(3);
+		List<SysMenuInfo> list = sysMenuInfoDao.selectByExample(criteria);
 		List<Tree> trees = MenuTreeBuilder.build(list);
 		return trees;
 	}
-	
+
 	@Override
-	public List<Tree> getAllMenuTree() {
-		//{id,name,url,iconClass,children}
-		List<SysMenu> list = sysMenuDao.getMenuList();
-		List<Tree> trees = MenuTreeBuilder.build(list);
-		return trees;
+	public List<Tree> getMenuTreeByRole(String roleId) {
+		// TODO Auto-generated method stub
+		if (StringUtils.isNullOrEmpty(roleId)) {
+			return MenuTreeBuilder.convert(sysMenuInfoCustomizeDao.getMenuTree());
+		} else {
+			return MenuTreeBuilder.convert(sysMenuInfoCustomizeDao.getMenuTreeByRole(roleId));
+		}
 	}
 
 	@Override
 	public List<Tree> getMenuTreeByUser(String userId) {
-		
-//		SysUser user = sysUserDao.getUserById(userId);
-//		
-//		List<String> ids = Lists.transform(user.getRoles(), new Function<SysRole, String>() {
-//			@Override
-//			public String apply(SysRole r) {
-//				return r.getId();
-//			}
-//		});
-//		
-//		ids = new ArrayList<String>(new HashSet<String>(ids));
-//		
-//		List<String> menuIds = sysRoleDao.getMenuIdByRole(ids.toArray(new String[ids.size()]));
-//		
-//		List<SysMenu> menuList = sysMenuDao.getMenuByIds(menuIds.toArray(new String[menuIds.size()]));
-//		
-//		List<SysMenu> result = (List<SysMenu>) Collections2.filter(menuList, x -> !x.getType().equals("3"));
-		
-		//TODO 过滤type=3， 合并SQL
-		List<SysMenu> result = sysMenuDao.getMenus$NoFuncByUser(userId);
-		List<Tree> trees = MenuTreeBuilder.build(result);
+		// TODO Auto-generated method stub
+		List<SysMenuInfo> list = sysMenuInfoCustomizeDao.getMenusByUser(userId);
+		List<Tree> trees = MenuTreeBuilder.build(list);
 		return trees;
 	}
-	
 
 	@Override
 	public List<String> getPermissionByUser(String userId) {
-		List<String> list = sysMenuDao.getPermissionByUser(userId);
-		List<String> result = Lists.newArrayList();
+		// TODO Auto-generated method stub
+		List<String> list = sysMenuInfoCustomizeDao.getPermissionByUser(userId);
+		List<String> result = new ArrayList<String>();
 		for (String perm : list) {
-			if(!StringUtils.isNullOrEmpty(perm) && perm.contains(",")) {
+			if (!StringUtils.isNullOrEmpty(perm) && perm.contains(",")) {
 				List<String> temp = Splitter.on(",").trimResults().splitToList(perm);
 				result.addAll(temp);
-			}else{
+			} else {
 				result.add(perm);
 			}
 		}
@@ -91,37 +77,41 @@ public class SysMenuServiceImpl implements SysMenuService{
 	}
 
 	@Override
-	public List<Tree> getMenuTreeByRole(String roleId) {
-		// TODO 暂时不需要
-		return null;
+	public List<Tree> getMenuTreeByRole(String userId, String roleId) {
+		// TODO Auto-generated method stub
+		if (StringUtils.isNullOrEmpty(roleId)) {
+			return MenuTreeBuilder.convert(sysMenuInfoCustomizeDao.getMenuTreeByUser(userId));
+		} else {
+			return MenuTreeBuilder.convert(sysMenuInfoCustomizeDao.getMenuTreeByUserRole(userId, roleId));
+		}
 	}
 
 	@Override
-	public SysMenu getMenuById(String menuId) {
-		return sysMenuDao.getMenuById(menuId);
+	public SysMenuInfo getMenuById(String menuId) {
+		// TODO Auto-generated method stub
+		return sysMenuInfoDao.selectByPrimaryKey(menuId);
 	}
 
 	@Override
-	public boolean saveMenu(SysMenu sysMenu) {
-		int result = sysMenuDao.saveMenu(sysMenu);
+	public boolean saveMenu(SysMenuInfo sysMenuInfo) {
+		// TODO Auto-generated method stub
+		sysMenuInfo.setId(IdUtil.generateId().toString());
+		int result = sysMenuInfoDao.insert(sysMenuInfo);
 		return result > 0;
 	}
 
 	@Override
-	public boolean updateMenu(SysMenu sysMenu) {
-		int result = sysMenuDao.updateMenu(sysMenu);
+	public boolean updateMenu(SysMenuInfo sysMenuInfo) {
+		// TODO Auto-generated method stub
+		int result = sysMenuInfoDao.updateByPrimaryKey(sysMenuInfo);
 		return result > 0;
 	}
 
 	@Override
+	@Transactional
 	public boolean deleteMenuById(String menuId) {
-		int result = sysMenuDao.deleteMenuById(menuId);
+		// TODO Auto-generated method stub
+		int result = sysMenuInfoCustomizeDao.deleteByPrimaryKey(menuId);
 		return result > 0;
 	}
-
-	@Override
-	public List<SysMenu> getMenuByIds(String... menuIds) {
-		return sysMenuDao.getMenuByIds(menuIds);
-	}
-
 }

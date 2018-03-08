@@ -3,7 +3,7 @@ package com.ddshteam.web.system.service.api;
 import java.util.List;
 
 import com.ddshteam.web.system.service.api.data.Tree;
-import com.ddshteam.web.system.service.api.model.SysDept;
+import com.ddshteam.web.system.service.api.model.SysDepInfo;
 
 public interface SysDeptService {
 
@@ -41,35 +41,35 @@ public interface SysDeptService {
 	 * @return
 	 */
 	@Deprecated
-	public List<SysDept> getSysDeptDetailList();
+	public List<SysDepInfo> getSysDeptDetailList();
 
 	/**
 	 * 获取部门详情(包含部门人员)
 	 * @param deptId  部门id
 	 * @return
 	 */
-	public SysDept getSysDeptById(String deptId);
+	public SysDepInfo getSysDeptById(String deptId);
 
 	/**
 	 * 添加部门
 	 * @param sysDept
 	 * @return
 	 */
-	public boolean saveDept(SysDept sysDept);
+	public boolean saveDept(SysDepInfo sysDept);
 
 	/**
 	 * 批量导入部门
 	 * @param sysDepts
 	 * @return
 	 */
-	public boolean saveDept(List<SysDept> sysDepts);
+	public boolean saveDept(List<SysDepInfo> sysDepts);
 
 	/**
 	 * 更新部门
 	 * @param sysDept
 	 * @return
 	 */
-	public boolean updateDept(SysDept sysDept);
+	public boolean updateDept(SysDepInfo sysDept);
 
 	/**
 	 * 根据id删除部门

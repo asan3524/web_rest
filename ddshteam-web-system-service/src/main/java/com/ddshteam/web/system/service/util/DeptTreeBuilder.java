@@ -3,21 +3,21 @@ package com.ddshteam.web.system.service.util;
 import java.util.List;
 
 import com.ddshteam.web.system.service.api.data.Tree;
-import com.ddshteam.web.system.service.api.model.SysDept;
+import com.ddshteam.web.system.service.api.model.SysDepInfo;
 import com.google.common.collect.Lists;
 import com.mysql.cj.core.util.StringUtils;
 
 
 public class DeptTreeBuilder {
 	
-public static List<Tree> build(List<SysDept> list, String rootDeptId) {
+public static List<Tree> build(List<SysDepInfo> list, String rootDeptId) {
 		
 		List<Tree> result = Lists.newArrayList();
 		
 		//未指定根部门
 		if(StringUtils.isNullOrEmpty(rootDeptId)){
 			
-			for (SysDept dept : list) {
+			for (SysDepInfo dept : list) {
 				//root
 				if (StringUtils.isNullOrEmpty(dept.getParentId())) {
 					//{id,name,url,iconClass,children}
@@ -46,7 +46,7 @@ public static List<Tree> build(List<SysDept> list, String rootDeptId) {
 		} 
 		//指定根部门
 		else {
-			for (SysDept dept : list) {
+			for (SysDepInfo dept : list) {
 				String deptId = dept.getId();
 				
 				if(!StringUtils.isNullOrEmpty(deptId) && deptId.equals(rootDeptId)) {
@@ -79,11 +79,11 @@ public static List<Tree> build(List<SysDept> list, String rootDeptId) {
 		return result;
 	}
 	
-	public static List<Tree> childrenBuild(List<SysDept> list) {
+	public static List<Tree> childrenBuild(List<SysDepInfo> list) {
 		
 		List<Tree> result = Lists.newArrayList();
 		
-		for (SysDept dept : list) {
+		for (SysDepInfo dept : list) {
 			//{id,name,url,iconClass,children}
 			Tree tree = Tree.builder()
 					.id(dept.getId())
@@ -111,11 +111,11 @@ public static List<Tree> build(List<SysDept> list, String rootDeptId) {
 		return result;
 	}
 	
-	public static List<Tree> getChildren(List<SysDept> list, String pid) {
+	public static List<Tree> getChildren(List<SysDepInfo> list, String pid) {
 		
 		List<Tree> children = Lists.newArrayList();
 		
-		for(SysDept dept : list) {
+		for(SysDepInfo dept : list) {
 			String p_id = dept.getParentId();
 			if(!StringUtils.isNullOrEmpty(p_id) && p_id.equals(pid)) {
 				Tree tree = Tree.builder()
@@ -141,9 +141,9 @@ public static List<Tree> build(List<SysDept> list, String rootDeptId) {
 		return children;
 	}
 	
-	public static boolean ifHasChild(List<SysDept> list, String pid) {
+	public static boolean ifHasChild(List<SysDepInfo> list, String pid) {
 		boolean flag = false;  
-		for(SysDept r : list) {
+		for(SysDepInfo r : list) {
 			String p_id = r.getParentId();
 			if(!StringUtils.isNullOrEmpty(p_id) && p_id.equals(pid)) {
 				flag = true;

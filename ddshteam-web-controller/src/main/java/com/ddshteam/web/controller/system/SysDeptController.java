@@ -26,14 +26,14 @@ import com.ddshteam.web.core.support.HttpCode;
 import com.ddshteam.web.dto.system.DeptReq;
 import com.ddshteam.web.system.service.api.SysDeptService;
 import com.ddshteam.web.system.service.api.data.Tree;
-import com.ddshteam.web.system.service.api.model.SysDept;
+import com.ddshteam.web.system.service.api.model.SysDepInfo;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
-@Api(value = "/dept", description = "部门接口")
+@Api(value = "/system/dept", description = "部门接口-完成后端测试")
 @RestController
-@RequestMapping(value = "/dept")
+@RequestMapping(value = "/system/dept")
 public class SysDeptController extends BaseController {
 	
 	private final static Logger logger = LoggerFactory.getLogger(SysDeptController.class);
@@ -47,7 +47,7 @@ public class SysDeptController extends BaseController {
 		logger.debug("SysDeptController.getDeptList()");
 
 		@SuppressWarnings("deprecation")
-		List<SysDept> list = sysDeptService.getSysDeptDetailList();
+		List<SysDepInfo> list = sysDeptService.getSysDeptDetailList();
 		return getResponse(list);
 	}
 	
@@ -100,7 +100,7 @@ public class SysDeptController extends BaseController {
 			return getResponse(HttpCode.BAD_REQUEST, false);
 		}
 		
-		SysDept dept = sysDeptService.getSysDeptById(deptId);
+		SysDepInfo dept = sysDeptService.getSysDeptById(deptId);
 		return getResponse(dept);
 	}
 	
@@ -115,15 +115,13 @@ public class SysDeptController extends BaseController {
 			return getResponse(HttpCode.BAD_REQUEST, false, msg);
 		}
 		
-		SysDept dept = new SysDept();
+		SysDepInfo dept = new SysDepInfo();
 		
 		dept.setName(deptReq.getName());
 		dept.setParentId(deptReq.getParentId());
 		dept.setTypeId(deptReq.getTypeId());
 		dept.setRemark(deptReq.getRemark());
 		dept.setOrderNum(deptReq.getOrderNum());
-		dept.setStatus(deptReq.getStatus());
-		
 		boolean result = sysDeptService.saveDept(dept);
 		if(result) {
 			return getResponse(result);	
@@ -141,7 +139,7 @@ public class SysDeptController extends BaseController {
 			return getResponse(HttpCode.BAD_REQUEST, false, msg);
 		}
 		
-		SysDept dept = new SysDept();
+		SysDepInfo dept = new SysDepInfo();
 		dept.setId(deptId);
 		dept.setName(deptReq.getName());
 		dept.setParentId(deptReq.getParentId());

@@ -2,7 +2,7 @@ package com.ddshteam.web.system.service.api;
 
 import java.util.List;
 
-import com.ddshteam.web.system.service.api.model.SysUser;
+import com.ddshteam.web.system.service.api.model.SysUserInfo;
 import com.github.pagehelper.PageInfo;
 
 public interface SysUserService {
@@ -18,15 +18,14 @@ public interface SysUserService {
 	 * @return PageInfo<SysUser>
 	 * @author lishibang
 	 */
-	public PageInfo<SysUser> getUserList(int pageNum, int pageSize, String name, String depId);
+	public PageInfo<SysUserInfo> getUserList(int pageNum, int pageSize, String name, String depId);
 
 	/**
 	 * 根据账号(用户名)获取用户
-	 * <p>需关联部门,角色</p>
 	 * @param account
 	 * @return
 	 */
-	public SysUser getUserByAccount(String account);
+	public SysUserInfo getUserByAccount(String account);
 
 	/**
 	 * 根据用户id获取用户
@@ -34,21 +33,21 @@ public interface SysUserService {
 	 * @param userId
 	 * @return
 	 */
-	public SysUser getUserById(String userId);
+	public SysUserInfo getUserById(String userId);
 
 	/**
 	 * 添加用户，只添加用户信息不指定角色时使用
 	 * @param sysUser
 	 * @return
 	 */
-	public boolean saveUser(SysUser sysUser);
+	public boolean saveUser(SysUserInfo sysUser);
 
 	/**
 	 * 批量导入用户
 	 * @param sysUsers
 	 * @return
 	 */
-	public boolean saveUser(List<SysUser> sysUsers);
+	public boolean saveUser(List<SysUserInfo> sysUsers);
 
 	/**
 	 * 添加用户
@@ -56,14 +55,14 @@ public interface SysUserService {
 	 * @param roleIds 角色id数组(必填)
 	 * @return
 	 */
-	public boolean saveUser(SysUser sysUser, String... roleIds);
+	public boolean saveUser(SysUserInfo sysUser, String... roleIds);
 
 	/**
 	 * 修改用户，只修改用户信息时使用
 	 * @param sysUser
 	 * @return
 	 */
-	public boolean updateUser(SysUser sysUser);
+	public boolean updateUser(SysUserInfo sysUser);
 
 	/**
 	 * 修改用户
@@ -72,7 +71,7 @@ public interface SysUserService {
 	 * @param roleIds 角色id数组(必填)
 	 * @return
 	 */
-	public boolean updateUser(SysUser sysUser, String... roleIds);
+	public boolean updateUser(SysUserInfo sysUser, String... roleIds);
 
 	/**
 	 * 更新用户密码
@@ -99,4 +98,16 @@ public interface SysUserService {
 	 * @author lishibang
 	 */
 	public boolean setUserRole(String userId, String... roleIds);
+	
+	
+	/**
+	 *  判断用户账号是否存在
+	 * @Title: getUserExist
+	 * @param account
+	 * @return boolean
+	 * @see 
+	 * @throws
+	 * @author arpgate
+	 */
+	public boolean getUserExist(String account);
 }
