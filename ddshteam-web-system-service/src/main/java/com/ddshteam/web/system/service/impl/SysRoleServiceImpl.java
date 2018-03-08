@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.dubbo.config.annotation.Service;
-import com.ddshteam.web.core.util.IdUtil;
 import com.ddshteam.web.system.service.api.SysRoleService;
 import com.ddshteam.web.system.service.api.data.Tree;
 import com.ddshteam.web.system.service.api.model.SysRoleInfo;
@@ -48,7 +47,6 @@ public class SysRoleServiceImpl implements SysRoleService{
 
 	@Override
 	public boolean saveRole(SysRoleInfo sysRole) {
-		sysRole.setId(IdUtil.generateId().toString());
 		sysRole.setCreateTime(new Date());
 		int result = sysRoleInfoDao.insert(sysRole);
 		return result > 0;

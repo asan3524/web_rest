@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.ddshteam.web.core.base.BaseController;
 import com.ddshteam.web.core.support.HttpCode;
+import com.ddshteam.web.core.util.IdUtil;
 import com.ddshteam.web.dto.system.DeptReq;
 import com.ddshteam.web.system.service.api.SysDeptService;
 import com.ddshteam.web.system.service.api.data.Tree;
@@ -116,7 +117,8 @@ public class SysDeptController extends BaseController {
 		}
 		
 		SysDepInfo dept = new SysDepInfo();
-		
+
+		dept.setId(IdUtil.generateId().toString());
 		dept.setName(deptReq.getName());
 		dept.setParentId(deptReq.getParentId());
 		dept.setTypeId(deptReq.getTypeId());

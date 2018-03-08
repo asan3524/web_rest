@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.ddshteam.web.core.base.BaseController;
 import com.ddshteam.web.core.support.HttpCode;
+import com.ddshteam.web.core.util.IdUtil;
 import com.ddshteam.web.dto.system.MenuReq;
 import com.ddshteam.web.shrio.Constant;
 import com.ddshteam.web.system.service.api.SysMenuService;
@@ -155,6 +156,7 @@ public class SysMenuController extends BaseController {
 
 		SysMenuInfo menu = new SysMenuInfo();
 
+		menu.setId(IdUtil.generateId().toString());
 		menu.setName(menuReq.getName());
 		menu.setParentId(menuReq.getParentId());
 		menu.setType(menuReq.getType());
