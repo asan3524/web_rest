@@ -14,6 +14,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.ddshteam.web.core.util.IdUtil;
 import com.ddshteam.web.core.util.IpUtil;
 import com.ddshteam.web.system.service.api.SysOpLogAsyncService;
 import com.ddshteam.web.system.service.api.model.SysOpLogs;
@@ -92,6 +93,7 @@ public class HttpLogAspect {
 					.getRequestAttributes();
 			HttpServletRequest request = attributes.getRequest();
 			SysOpLogs sysOpLogs = new SysOpLogs();
+			sysOpLogs.setId(IdUtil.generateId().toString());
 			sysOpLogs.setAccount(user.get().getAccount());
 			sysOpLogs.setName(user.get().getName());
 			sysOpLogs.setExcuteTime((int) (System.currentTimeMillis() - startTime.get()));
