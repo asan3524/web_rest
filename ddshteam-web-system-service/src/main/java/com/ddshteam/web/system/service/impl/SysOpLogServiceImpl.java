@@ -30,10 +30,23 @@ public class SysOpLogServiceImpl implements SysOpLogService {
 		SysOpLogsCriteria sysOpLogsCriteria = new SysOpLogsCriteria();
 		if (null != reqData) {
 			Criteria criteria = sysOpLogsCriteria.createCriteria();
-			if (!StringUtils.isNullOrEmpty(reqData.getName()))
+			if (!StringUtils.isNullOrEmpty(reqData.getName())) {
 				criteria.andNameLike(reqData.getName());
-			if (!StringUtils.isNullOrEmpty(reqData.getIp()))
+			}
+			if (!StringUtils.isNullOrEmpty(reqData.getIp())) {
 				criteria.andIpLike(reqData.getIp());
+			}
+			if (null != reqData.getCreateTime_s()) {
+				if (null != reqData.getCreateTime_e()) {
+					criteria.andCreateTimeBetween(reqData.getCreateTime_s(), reqData.getCreateTime_e());
+				} else {
+					criteria.andCreateTimeGreaterThanOrEqualTo(reqData.getCreateTime_s());
+				}
+			} else {
+				if (null != reqData.getCreateTime_e()) {
+					criteria.andCreateTimeLessThanOrEqualTo(reqData.getCreateTime_e());
+				}
+			}
 		}
 		sysOpLogsCriteria.setOrderByClause("create_time desc");
 		List<SysOpLogs> sysOpLogs = sysOpLogsDao.selectByExample(sysOpLogsCriteria);
