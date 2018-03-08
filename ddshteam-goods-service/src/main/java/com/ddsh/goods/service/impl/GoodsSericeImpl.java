@@ -17,7 +17,6 @@ import com.ddsh.goods.service.api.model.GoodsInfoCriteria.Criteria;
 import com.ddsh.goods.service.dao.GoodsInfoCustomizeMapper;
 import com.ddsh.goods.service.dao.GoodsInfoMapper;
 import com.ddsh.goods.service.util.GoodsCoder;
-import com.ddshteam.web.core.util.IdUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
@@ -71,7 +70,6 @@ public class GoodsSericeImpl  implements IGoodsService{
 		String code=GoodsCoder.getGoodsCode(goodsInfo.getTypeId(),goodsInfo.getBrandId(),goodsInfo.getColor(),goodsInfo.getName());
 		goodsInfo.setCode(code);
 		goodsInfo.setCreateTime(new Date());
-		goodsInfo.setId(IdUtil.generateId().toString());
 		goodsInfo.setStatus(GoodsContants.GoodsStatus.EFFECT);
 		int result = goodsInfoDao.insert(goodsInfo);
 		return result>0;
