@@ -28,6 +28,7 @@ import com.ddsh.goods.service.api.data.GoodsInfoSearchReqData;
 import com.ddsh.goods.service.api.model.GoodsInfo;
 import com.ddshteam.web.core.base.BaseController;
 import com.ddshteam.web.core.support.HttpCode;
+import com.ddshteam.web.core.util.IdUtil;
 import com.ddshteam.web.dto.goods.GoodsInfoReq;
 import com.ddshteam.web.dto.goods.GoodsInfoSearchReq;
 import com.github.pagehelper.PageInfo;
@@ -98,6 +99,7 @@ public class GoodsInfoController extends BaseController {
 		}
 		
 		GoodsInfo goodsInfo=new GoodsInfo();
+		goodsInfo.setId(IdUtil.generateId().toString());
 		goodsInfo.setBrandId(goodsInforeq.getBrandId());
 		goodsInfo.setColor(goodsInforeq.getColor());
 		goodsInfo.setName(goodsInforeq.getName());

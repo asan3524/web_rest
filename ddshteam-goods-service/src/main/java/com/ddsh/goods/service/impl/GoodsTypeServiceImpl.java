@@ -15,7 +15,6 @@ import com.ddsh.goods.service.api.model.GoodsTypeInfoCriteria.Criteria;
 import com.ddsh.goods.service.dao.GoodsTypeInfoMapper;
 import com.ddsh.goods.service.dao.GoodsTypeInfoTreeMapper;
 import com.ddsh.goods.service.util.GoodsCoder;
-import com.ddshteam.web.core.util.IdUtil;
 import com.ddshteam.web.system.service.api.data.Tree;
 
 @Service(version = "1.0.0")
@@ -40,7 +39,6 @@ public class GoodsTypeServiceImpl implements IGoodsTypeService {
 
 	@Override
 	public boolean save(GoodsTypeInfo typeInfo) {
-		typeInfo.setId(IdUtil.generateId().toString());
 		typeInfo.setCreateTime(new Date());
 		typeInfo.setStatus(GoodsContants.GoodsTypeStatus.EFFECT);
 		typeInfo.setCode(GoodsCoder.getGoodsCode(typeInfo.getName(),typeInfo.getParentId()));
@@ -60,7 +58,6 @@ public class GoodsTypeServiceImpl implements IGoodsTypeService {
 		return result>0;
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public boolean delete(List id) {
 		GoodsTypeInfoCriteria goodsTypeInfoCriteria=new GoodsTypeInfoCriteria();

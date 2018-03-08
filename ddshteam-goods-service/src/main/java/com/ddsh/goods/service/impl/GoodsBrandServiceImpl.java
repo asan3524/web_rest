@@ -14,7 +14,6 @@ import com.ddsh.goods.service.api.model.GoodsBrandInfoCriteria.Criteria;
 import com.ddsh.goods.service.dao.GoodsBrandInfoMapper;
 import com.ddsh.goods.service.dao.GoodsBrandInfoTreeMapper;
 import com.ddsh.goods.service.util.GoodsCoder;
-import com.ddshteam.web.core.util.IdUtil;
 import com.ddshteam.web.system.service.api.data.Tree;
 
 @Service(version = "1.0.0")
@@ -38,7 +37,6 @@ public class GoodsBrandServiceImpl implements IGoodsBrandService {
 
 	@Override
 	public boolean save(GoodsBrandInfo Info) {
-		Info.setId(IdUtil.generateId().toString());
 		Info.setCreateTime(new Date());
 		Info.setCode(GoodsCoder.getGoodsCode(Info.getName(),Info.getParentId()));
 		int result=goodsBrandInfoDao.insert(Info);
@@ -57,7 +55,6 @@ public class GoodsBrandServiceImpl implements IGoodsBrandService {
 		return result>0;
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public boolean delete(List id) {
 		GoodsBrandInfoCriteria goodsBrandInfoCriteria=new GoodsBrandInfoCriteria();

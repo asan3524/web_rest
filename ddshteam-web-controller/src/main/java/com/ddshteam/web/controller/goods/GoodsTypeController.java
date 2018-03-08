@@ -25,6 +25,7 @@ import com.ddsh.goods.service.api.model.GoodsBrandInfo;
 import com.ddsh.goods.service.api.model.GoodsTypeInfo;
 import com.ddshteam.web.core.base.BaseController;
 import com.ddshteam.web.core.support.HttpCode;
+import com.ddshteam.web.core.util.IdUtil;
 import com.ddshteam.web.dto.goods.GoodsTypeInoReq;
 import com.ddshteam.web.system.service.api.data.Tree;
 
@@ -71,6 +72,7 @@ public class GoodsTypeController extends BaseController {
 		}
 		
 		GoodsTypeInfo goodsTypeInfo=new GoodsTypeInfo();
+		goodsTypeInfo.setId(IdUtil.generateId().toString());
 		goodsTypeInfo.setName(goodsTypeInoReq.getName());
 		goodsTypeInfo.setParentId(goodsTypeInoReq.getParentid());
 		goodsTypeInfo.setRemark(goodsTypeInoReq.getRemark());
@@ -179,6 +181,7 @@ public class GoodsTypeController extends BaseController {
 		}
 		
 		GoodsBrandInfo goodsTypeInfo=new GoodsBrandInfo();
+		goodsTypeInfo.setId(IdUtil.generateId().toString());
 		goodsTypeInfo.setName(goodsTypeInoReq.getName());
 		goodsTypeInfo.setParentId(goodsTypeInoReq.getParentid());
 		goodsTypeInfo.setRemark(goodsTypeInoReq.getRemark());
