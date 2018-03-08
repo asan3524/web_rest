@@ -138,4 +138,13 @@ public class SysUserServiceImpl implements SysUserService {
 		return result > 0;
 	}
 
+	@Override
+	public boolean getUserExist(String account) {
+		SysUserInfoCriteria sysUserInfoCriteria=new SysUserInfoCriteria();
+        com.ddshteam.web.system.service.api.model.SysUserInfoCriteria.Criteria criteria=sysUserInfoCriteria.createCriteria();
+        criteria.andAccountEqualTo(account);
+        long  result=SysUserInfoInfoDao.countByExample(sysUserInfoCriteria);
+		return result>0;
+	}
+
 }

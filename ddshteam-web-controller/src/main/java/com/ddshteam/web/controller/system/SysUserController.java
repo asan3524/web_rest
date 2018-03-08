@@ -321,4 +321,21 @@ public class SysUserController extends BaseController {
 		}else return getResponse(HttpCode.INTERNAL_SERVER_ERROR, result, "更新用户角色失败");
 		
 	}
+	
+	@ApiOperation(value = "根据账号(用户名)获取判断用户是否存在", notes = "根据账号(用户名)获取判断用户是否存在，用于添加用户或者更新用户")
+	@GetMapping(value = { "/account/exist/{account}" })
+	public Object userNameExist(@PathVariable String account )
+	{
+		logger.debug("UserController.userNameExist()");
+		
+		if(StringUtils.isEmpty(account)) {
+			logger.error("account is null.");
+			return getResponse(HttpCode.BAD_REQUEST, false);
+		}
+		
+		boolean result=sysUserService.getUserExist(account);
+		
+		return getResponse(result);
+		
+	}
 }

@@ -98,4 +98,16 @@ public interface SysUserService {
 	 * @author lishibang
 	 */
 	public boolean setUserRole(String userId, String... roleIds);
+	
+	
+	/**
+	 *  判断用户账号是否存在
+	 * @Title: getUserExist
+	 * @param account
+	 * @return boolean
+	 * @see 
+	 * @throws
+	 * @author arpgate
+	 */
+	public boolean getUserExist(String account);
 }
