@@ -22,8 +22,10 @@ public class UserReqBase {
 	private boolean isBuiltin; //是否是内置账户，1是0不是，内置账户页面不可见而且有不进行权限过滤
 	@NotNull
 	private int orderNum;
+	
 	@NotNull
 	private int status;
+	
 	@NotNull
 	private Integer sex;
 	
