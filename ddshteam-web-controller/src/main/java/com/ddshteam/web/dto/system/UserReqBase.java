@@ -24,7 +24,10 @@ public class UserReqBase {
 	private int orderNum;
 	@NotNull
 	private int status;
+	@NotNull
+	private Integer sex;
 	
+	private String remark;
 	
 	public String getAccount() {
 		return account;
@@ -91,5 +94,17 @@ public class UserReqBase {
 	}
 	public void setStatus(int status) {
 		this.status = status;
+	}
+	public Integer getSex() {
+		return sex;
+	}
+	public void setSex(Integer sex) {
+		this.sex = sex;
+	}
+	public String getRemark() {
+		return remark;
+	}
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}     
 }

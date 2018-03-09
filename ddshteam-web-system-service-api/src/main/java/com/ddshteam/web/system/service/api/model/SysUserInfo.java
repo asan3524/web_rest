@@ -5,35 +5,36 @@ import java.util.Date;
 
 @SuppressWarnings("serial")
 public class SysUserInfo implements Serializable {
-    private String id;
+	
+    protected String id;
 
-    private String account;
+    protected String account;
 
-    private String password;
+    protected String password;
 
-    private String name;
+    protected String name;
 
-    private Integer sex;
+    protected Integer sex;
 
-    private String email;
+    protected String email;
 
-    private String fax;
+    protected String fax;
 
-    private String phone;
+    protected String phone;
 
-    private String mobile;
+    protected String mobile;
 
-    private String depId;
+    protected String depId;
 
-    private Boolean isBuiltin;
+    protected Boolean isBuiltin;
 
-    private String remark;
+    protected String remark;
 
-    private Integer orderNum;
+    protected Integer orderNum;
 
-    private Integer status;
+    protected Integer status;
 
-    private Date createTime;
+    protected Date createTime;
 
     public String getId() {
         return id;

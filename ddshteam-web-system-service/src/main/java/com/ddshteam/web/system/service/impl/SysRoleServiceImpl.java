@@ -12,9 +12,12 @@ import com.ddshteam.web.system.service.api.data.Tree;
 import com.ddshteam.web.system.service.api.model.SysRoleInfo;
 import com.ddshteam.web.system.service.api.model.SysRoleInfoCriteria;
 import com.ddshteam.web.system.service.api.model.SysRoleInfoCriteria.Criteria;
+import com.ddshteam.web.system.service.api.model.SysRoleToMenuCriteria;
+import com.ddshteam.web.system.service.api.model.SysRoleToUserCriteria;
 import com.ddshteam.web.system.service.dao.SysRoleInfoCustomizeMapper;
 import com.ddshteam.web.system.service.dao.SysRoleInfoMapper;
 import com.ddshteam.web.system.service.dao.SysRoleToMenuMapper;
+import com.ddshteam.web.system.service.dao.SysRoleToUserMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
@@ -27,7 +30,9 @@ public class SysRoleServiceImpl implements SysRoleService{
 	@Autowired
 	private SysRoleInfoCustomizeMapper sysRoleInfoCustomizeDao;
 	@Autowired
-	private SysRoleToMenuMapper SysRoleToMenuDao;
+	private SysRoleToMenuMapper sysRoleToMenuDao;
+	
+	private SysRoleToUserMapper sysRoleToUserDao;
 	@Override
 	public PageInfo<SysRoleInfo> getRoleList(int pageNum, int pageSize) {
 		PageHelper.startPage(pageNum, pageSize);
@@ -61,6 +66,17 @@ public class SysRoleServiceImpl implements SysRoleService{
 	@Override
 	public boolean deleteRole(String roleId) {
 		int result = sysRoleInfoDao.deleteByPrimaryKey(roleId);
+		
+		SysRoleToUserCriteria sysRoleToUserCriteria=new SysRoleToUserCriteria();
+		com.ddshteam.web.system.service.api.model.SysRoleToUserCriteria.Criteria  criteria=sysRoleToUserCriteria.createCriteria();
+		criteria.andRoleIdEqualTo(roleId);
+		result = sysRoleToUserDao.deleteByExample(sysRoleToUserCriteria);
+		
+		SysRoleToMenuCriteria sysRoleToMenuCriteria=new SysRoleToMenuCriteria(); 
+		com.ddshteam.web.system.service.api.model.SysRoleToMenuCriteria.Criteria mcriteria=sysRoleToMenuCriteria.createCriteria();
+		mcriteria.andRoleIdEqualTo(roleId);
+		result = sysRoleToMenuDao.deleteByExample(sysRoleToMenuCriteria);
+		
 		return result > 0;
 	}
 

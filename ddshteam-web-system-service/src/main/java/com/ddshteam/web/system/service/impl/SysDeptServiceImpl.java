@@ -124,9 +124,19 @@ public class SysDeptServiceImpl implements SysDeptService{
 
 	@Override
 	public boolean deleteDept(String deptId) {
-		int result = sysDepInfoDao.deleteByPrimaryKey(deptId);
-				//sysDeptDao.deleteDept(deptId);
-		return result > 0;
+		//sysDepInfoDao.deleteByPrimaryKey(deptId);
+		
+		
+		SysUserInfo sysUserInfo=new SysUserInfo();
+		sysUserInfo.setDepId("");
+		SysUserInfoCriteria sysUserInfoCriteria=new SysUserInfoCriteria();
+		com.ddshteam.web.system.service.api.model.SysUserInfoCriteria.Criteria criteria=sysUserInfoCriteria.createCriteria();
+		criteria.andDepIdEqualTo(deptId);
+		SysUserInfoDao.updateByExampleSelective(sysUserInfo, sysUserInfoCriteria);
+		
+		sysDeptCustomizeDao.deleteDept(deptId);
+		
+		return true;
 	}
 
 	@Override

@@ -21,10 +21,10 @@
 		create_time
 	</sql>
 
-	<resultMap id="sysUserListMap" type="SysUserInfo">
+	<resultMap id="sysUserListMap" type="com.ddshteam.web.system.service.api.data.SysUserInfoResp">
 		<id column="id" property="id" />
 		<result column="account" property="account" />
-		<result column="password" property="password" />
+		<result column="remark" property="remark" />
 		<result column="name" property="name" />
 		<result column="email" property="email" />
 		<result column="fax" property="fax" />
@@ -33,7 +33,7 @@
 		<result column="dep_id" property="depId" />
 		<result column="is_builtin" property="isBuiltin" />
 		<result column="order_num" property="orderNum" />
-		<result column="status" property="status" />
+		<result column="sex" property="sex" />
 		<result column="create_time" property="createTime" />
 
 		<result property="dept.id" column="d_id" />
@@ -57,7 +57,7 @@
 		select
 		user.id,
 		user.account,
-		user.password,
+		user.remark,
 		user.name,
 		user.email,
 		user.fax,
@@ -66,7 +66,7 @@
 		user.dep_id,
 		user.is_builtin,
 		user.order_num,
-		user.status,
+		user.sex,
 		user.create_time,
 
 		dept.id as d_id,
@@ -100,7 +100,7 @@
 			</if>
 			AND user.status=1
 			AND user.is_builtin=0
-			ORDER BY user.create_time DESC
+			ORDER BY user.order_num DESC, user.create_time DESC
 		</where>
 	</select>
 
@@ -108,7 +108,7 @@
 		select
 		user.id,
 		user.account,
-		user.password,
+		user.remark,
 		user.name,
 		user.email,
 		user.fax,
@@ -117,7 +117,7 @@
 		user.dep_id,
 		user.is_builtin,
 		user.order_num,
-		user.status,
+		user.sex,
 		user.create_time,
 
 		dept.id as d_id,
@@ -148,7 +148,7 @@
 		select
 		user.id,
 		user.account,
-		user.password,
+		user.remark,
 		user.name,
 		user.email,
 		user.fax,
@@ -157,9 +157,9 @@
 		user.dep_id,
 		user.is_builtin,
 		user.order_num,
-		user.status,
+		user.sex,
 		user.create_time,
-
+		
 		dept.id as d_id,
 		dept.name as d_name,
 		dept.parent_id as d_parent_id,

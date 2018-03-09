@@ -37,6 +37,7 @@ import com.ddshteam.web.dto.system.UserReq;
 import com.ddshteam.web.dto.system.UserReqBase;
 import com.ddshteam.web.system.service.api.SysUserService;
 import com.ddshteam.web.system.service.api.constant.SystemContants;
+import com.ddshteam.web.system.service.api.data.SysUserInfoResp;
 import com.ddshteam.web.system.service.api.model.SysUserInfo;
 import com.github.pagehelper.PageInfo;
 
@@ -61,8 +62,7 @@ public class SysUserController extends BaseController {
 		String name = paremeters.get("name");
 		String depId = paremeters.get("depId");
 
-		PageInfo<SysUserInfo> pi = sysUserService
-				.getUserList(pageable.getPageNumber(), pageable.getPageSize(), name, depId);
+		PageInfo<SysUserInfoResp> pi = sysUserService.getUserList(pageable.getPageNumber(), pageable.getPageSize(), name, depId);
 		return getResponse(pi);
 	}
 	
@@ -76,7 +76,7 @@ public class SysUserController extends BaseController {
 			return getResponse(HttpCode.BAD_REQUEST, false);
 		}
 		
-		SysUserInfo user = sysUserService.getUserByAccount(account);
+		SysUserInfoResp user = sysUserService.getUserByAccount(account);
 		user.setPassword(null);
 		return getResponse(user);
 	}
@@ -91,7 +91,7 @@ public class SysUserController extends BaseController {
 			return getResponse(HttpCode.BAD_REQUEST, false);
 		}
 		
-		SysUserInfo user = sysUserService.getUserById(id);
+		SysUserInfoResp user = sysUserService.getUserById(id);
 		user.setPassword(null);
 		return getResponse(user);
 	}
@@ -129,6 +129,8 @@ public class SysUserController extends BaseController {
 		user.setOrderNum(userReqBase.getOrderNum());
 		user.setStatus(SystemContants.SysUserStatus.EFFECT);
 		user.setCreateTime(new Date());
+		user.setRemark(userReqBase.getRemark());
+		user.setSex(userReqBase.getSex());
 		
 		boolean result = sysUserService.saveUser(user);
 		if(result) {
@@ -161,6 +163,8 @@ public class SysUserController extends BaseController {
 		user.setOrderNum(userReq.getOrderNum());
 		user.setStatus(SystemContants.SysUserStatus.EFFECT);
 		user.setCreateTime(new Date());
+		user.setRemark(userReq.getRemark());
+		user.setSex(userReq.getSex());
 		
 		List<String> roleIds = userReq.getRoleIds();
 		boolean result = sysUserService.saveUser(user, roleIds.toArray(new String[roleIds.size()]));
@@ -201,6 +205,8 @@ public class SysUserController extends BaseController {
 		user.setIsBuiltin(SystemContants.SysUserIsBuiltin.NOT_BUILTIN);
 		user.setOrderNum(userReqBase.getOrderNum());
 		user.setStatus(userReqBase.getStatus());
+		user.setRemark(userReqBase.getRemark());
+		user.setSex(userReqBase.getSex());
 		
 		boolean result = sysUserService.updateUser(user);
 		if(result) {
@@ -239,6 +245,9 @@ public class SysUserController extends BaseController {
 		user.setIsBuiltin(SystemContants.SysUserIsBuiltin.NOT_BUILTIN);
 		user.setOrderNum(userReq.getOrderNum());
 		user.setStatus(userReq.getStatus());
+		user.setRemark(userReq.getRemark());
+		user.setSex(userReq.getSex());
+		
 		
 		List<String> roleIds = userReq.getRoleIds();
 		
@@ -248,10 +257,29 @@ public class SysUserController extends BaseController {
 		}else return getResponse(HttpCode.INTERNAL_SERVER_ERROR, result, "修改用户失败");
 	}
 
-	@ApiOperation(value = "更新用户密码")
+	@ApiOperation(value = "重置用户密码", notes = "重置用户密码")
 	@PutMapping(value={"/update/pwd"})
     public Object updatePassword(@Valid @RequestBody ChangePswReq changePswReq, BindingResult errors) {
 		logger.debug("UserController.updatePassword()");
+		
+		if (errors.hasErrors()) {
+			String msg = errors.getAllErrors().get(0).getDefaultMessage();
+			logger.error(msg);
+			return getResponse(HttpCode.BAD_REQUEST, false, msg);
+		}
+
+		String userId = changePswReq.getUserId();
+		boolean result = sysUserService.updatePassword(userId, SecurityUtil.encryptMd5(changePswReq.getNewPassword()));
+		if(result) {
+			return getResponse(result);
+		}else return getResponse(HttpCode.INTERNAL_SERVER_ERROR, result, "更新用户密码失败");
+		
+	}
+	
+	@ApiOperation(value = "修改用户密码", notes = "修改用户密码,修改密码必需传入新的密码")
+	@PutMapping(value={"/update/changepwd"})
+    public Object chagePassword(@Valid @RequestBody ChangePswReq changePswReq, BindingResult errors) {
+		logger.debug("UserController.chagePassword()");
 		
 		if (errors.hasErrors()) {
 			String msg = errors.getAllErrors().get(0).getDefaultMessage();
@@ -274,7 +302,7 @@ public class SysUserController extends BaseController {
 		
 	}
 	
-	@ApiOperation(value = "删除用户", notes = "内置/admin/自己不能删除")
+	@ApiOperation(value = "删除用户", notes = "内置/admin/自己不能删除(暂不调用)")
 	@DeleteMapping(value={"/delete/{id}"})
     public Object deleteUser(@PathVariable String id) {
 		logger.debug("UserController.deleteUser()");
@@ -293,7 +321,7 @@ public class SysUserController extends BaseController {
 			return getResponse(HttpCode.CONFLICT, false, "admin账号,内建账号，自身账号等不能删除");
 		}
 
-		boolean result = sysUserService.deleteUser(id);
+		boolean result = sysUserService.deleteUser(user);
 		if(result) {
 			return getResponse(result);
 		}else return getResponse(HttpCode.INTERNAL_SERVER_ERROR, result, "删除用户失败");
@@ -334,7 +362,6 @@ public class SysUserController extends BaseController {
 		}
 		
 		boolean result=sysUserService.getUserExist(account);
-		
 		return getResponse(result);
 		
 	}
