@@ -15,9 +15,11 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import com.alibaba.fastjson.parser.ParserConfig;
@@ -152,4 +154,27 @@ public class SpringMvcConfig extends WebMvcConfigurerAdapter {
 		// factory.setLocation("/upload");
 		return factory.createMultipartConfig();
 	}
+	
+    /**
+     * spring 跨域处理
+     * @Title: corsConfigurer
+     * @return WebMvcConfigurer
+     * @see 
+     * @throws
+     * @author arpgate
+     */
+    @Bean  
+    public WebMvcConfigurer corsConfigurer() {  
+        return new WebMvcConfigurerAdapter() {  
+            
+            @Override  
+            public void addCorsMappings(CorsRegistry registry) {  
+                registry.addMapping("/**")  
+                .allowCredentials(true)  
+                .allowedMethods("GET","POST","OPTIONS","HEAD","PUT","DELETE")
+                .allowedHeaders("x-requested-with","Access-Control-Allow-Origin","EX-SysAuthToken","EX-JSESSIONID","Content-Type");
+            }  
+        };  
+    }  
+
 }
