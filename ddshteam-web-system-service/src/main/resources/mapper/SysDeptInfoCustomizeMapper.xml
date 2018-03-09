@@ -221,7 +221,7 @@
 	</update>
 
 	<delete id="deleteDept">
-		DELETE FROM sys_dep_info WHERE id=#{deptId}
+	call delete_dept_childrens(#{deptId,jdbcType=VARCHAR})
 	</delete>
 
 	<select id="isDeptHasUser" parameterType="string" resultType="int">

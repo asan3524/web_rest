@@ -22,9 +22,14 @@ public class UserReqBase {
 	private boolean isBuiltin; //是否是内置账户，1是0不是，内置账户页面不可见而且有不进行权限过滤
 	@NotNull
 	private int orderNum;
+	
 	@NotNull
 	private int status;
 	
+	@NotNull
+	private Integer sex;
+	
+	private String remark;
 	
 	public String getAccount() {
 		return account;
@@ -91,5 +96,17 @@ public class UserReqBase {
 	}
 	public void setStatus(int status) {
 		this.status = status;
+	}
+	public Integer getSex() {
+		return sex;
+	}
+	public void setSex(Integer sex) {
+		this.sex = sex;
+	}
+	public String getRemark() {
+		return remark;
+	}
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}     
 }

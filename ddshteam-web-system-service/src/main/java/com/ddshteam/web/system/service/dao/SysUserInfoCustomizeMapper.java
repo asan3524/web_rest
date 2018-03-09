@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import com.ddshteam.web.system.service.api.data.SysUserInfoResp;
 import com.ddshteam.web.system.service.api.model.SysUserInfo;
 
 
@@ -12,11 +13,11 @@ import com.ddshteam.web.system.service.api.model.SysUserInfo;
 //@Mapper
 public interface SysUserInfoCustomizeMapper {
 	
-	public List<SysUserInfo> getUserList(@Param("name") String name, @Param("depId") String depId);
+	public List<SysUserInfoResp> getUserList(@Param("name") String name, @Param("depId") String depId);
 	
-	public SysUserInfo getUserByAccount(@Param("account") String account);
+	public SysUserInfoResp getUserByAccount(@Param("account") String account);
 	
-	public SysUserInfo getUserById(@Param("userId") String userId);
+	public SysUserInfoResp getUserById(@Param("userId") String userId);
 	
 	/**
 	 * <p>注意开启mysql驱动批量执行开关</p>

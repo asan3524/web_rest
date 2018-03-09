@@ -2,6 +2,7 @@ package com.ddshteam.web.system.service.api;
 
 import java.util.List;
 
+import com.ddshteam.web.system.service.api.data.SysUserInfoResp;
 import com.ddshteam.web.system.service.api.model.SysUserInfo;
 import com.github.pagehelper.PageInfo;
 
@@ -18,14 +19,14 @@ public interface SysUserService {
 	 * @return PageInfo<SysUser>
 	 * @author lishibang
 	 */
-	public PageInfo<SysUserInfo> getUserList(int pageNum, int pageSize, String name, String depId);
+	public PageInfo<SysUserInfoResp> getUserList(int pageNum, int pageSize, String name, String depId);
 
 	/**
 	 * 根据账号(用户名)获取用户
 	 * @param account
 	 * @return
 	 */
-	public SysUserInfo getUserByAccount(String account);
+	public SysUserInfoResp getUserByAccount(String account);
 
 	/**
 	 * 根据用户id获取用户
@@ -33,7 +34,7 @@ public interface SysUserService {
 	 * @param userId
 	 * @return
 	 */
-	public SysUserInfo getUserById(String userId);
+	public SysUserInfoResp getUserById(String userId);
 
 	/**
 	 * 添加用户，只添加用户信息不指定角色时使用
@@ -87,7 +88,7 @@ public interface SysUserService {
 	 * @param userId 用户id
 	 * @return
 	 */
-	public boolean deleteUser(String userId);
+	public boolean deleteUser(SysUserInfo sysUserInfo);
 
 	/**
 	 * 为指定用户设置角色列表
