@@ -13,7 +13,7 @@ import com.ddshteam.web.system.service.api.model.SysUserInfo;
 //@Mapper
 public interface SysUserInfoCustomizeMapper {
 	
-	public List<SysUserInfoResp> getUserList(@Param("name") String name, @Param("depId") String depId);
+	public List<SysUserInfoResp> getUserList(@Param("name") String name, @Param("depIds")  String... depIds);
 	
 	public SysUserInfoResp getUserByAccount(@Param("account") String account);
 	

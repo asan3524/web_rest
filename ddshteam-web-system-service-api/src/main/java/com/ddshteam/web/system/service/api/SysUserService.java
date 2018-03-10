@@ -19,7 +19,7 @@ public interface SysUserService {
 	 * @return PageInfo<SysUser>
 	 * @author lishibang
 	 */
-	public PageInfo<SysUserInfoResp> getUserList(int pageNum, int pageSize, String name, String depId);
+	public PageInfo<SysUserInfoResp> getUserList(int pageNum, int pageSize, String name,  String[] depIds);
 
 	/**
 	 * 根据账号(用户名)获取用户，仅登录使用

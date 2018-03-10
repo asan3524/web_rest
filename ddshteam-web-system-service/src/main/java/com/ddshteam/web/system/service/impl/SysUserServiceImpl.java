@@ -1,5 +1,6 @@
 package com.ddshteam.web.system.service.impl;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class SysUserServiceImpl implements SysUserService {
 	private SysRoleToUserCustomizeMapper sysRoleToUserCustomizeDao;
 
 	@Override
-	public PageInfo<SysUserInfoResp> getUserList(int pageNum, int pageSize, String name, String depId) {
+	public PageInfo<SysUserInfoResp> getUserList(int pageNum, int pageSize, String name, String[] depIds) {
 		PageHelper.startPage(pageNum, pageSize);
 		/*
 		 * SysUserInfoCriteria sysUserInfoCriteria=new SysUserInfoCriteria();
@@ -55,7 +56,7 @@ public class SysUserServiceImpl implements SysUserService {
 		 * sysUserInfos=SysUserInfoInfoDao.selectByExample(sysUserInfoCriteria);
 		 */
 
-		List<SysUserInfoResp> sysUserInfos = sysUserInfoInfoCustomizeDao.getUserList(name, depId);
+		List<SysUserInfoResp> sysUserInfos = sysUserInfoInfoCustomizeDao.getUserList(name,depIds);
 
 		PageInfo<SysUserInfoResp> pageInfo = new PageInfo<SysUserInfoResp>(sysUserInfos, pageSize);
 		return pageInfo;

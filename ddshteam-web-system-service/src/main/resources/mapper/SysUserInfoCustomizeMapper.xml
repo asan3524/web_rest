@@ -95,8 +95,11 @@
 			<if test="name != null and name != ''">
 				AND user.name LIKE CONCAT('%',#{name},'%')
 			</if>
-			<if test="depId != null and depId != ''">
-				AND user.dep_id = #{depId}
+			<if test="depIds != null">
+				AND user.dep_id in
+                  <foreach close=")" collection="depIds" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
 			</if>
 			AND user.status=1
 			AND user.is_builtin=0
