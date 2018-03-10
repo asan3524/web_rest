@@ -116,16 +116,20 @@ public class SysUserServiceImpl implements SysUserService {
 
 	@Override
 	public boolean deleteUser(SysUserInfo sysUserInfo) {
-
-		sysUserInfo.setStatus(SystemContants.SysUserStatus.LOSE_EFFECT);
-		sysUserInfo.setAccount(sysUserInfo.getAccount() + "_" + System.currentTimeMillis());
-		long result = sysUserInfoInfoDao.updateByPrimaryKeySelective(sysUserInfo);
-
 		SysRoleToUserCriteria sysRoleToUserCriteria = new SysRoleToUserCriteria();
 		com.ddshteam.web.system.service.api.model.SysRoleToUserCriteria.Criteria criteria = sysRoleToUserCriteria
 				.createCriteria();
 		criteria.andUserIdEqualTo(sysUserInfo.getId());
-		result = sysRoleToUserDao.deleteByExample(sysRoleToUserCriteria);
+		long result = sysRoleToUserDao.deleteByExample(sysRoleToUserCriteria);
+
+		sysUserInfo.setStatus(SystemContants.SysUserStatus.LOSE_EFFECT);
+		sysUserInfo.setAccount(sysUserInfo.getAccount() + "_" + System.currentTimeMillis());
+		if(sysUserInfo.getIsBuiltin()==SystemContants.SysUserIsBuiltin.BUILTIN)
+		{
+			return false;
+		}
+		result = sysUserInfoInfoDao.updateByPrimaryKeySelective(sysUserInfo);
+		
 		return result > 0;
 	}
 
@@ -156,7 +160,8 @@ public class SysUserServiceImpl implements SysUserService {
 		int result = sysRoleToUserDao.deleteByExample(sysRoleToUserCriteria);
 
 		result = sysUserInfoInfoCustomizeDao.setUserRole(userId, roleIds);
-		return result > 0;
+
+		return true;
 	}
 
 	@Override
@@ -167,6 +172,23 @@ public class SysUserServiceImpl implements SysUserService {
 		criteria.andAccountEqualTo(account);
 		long result = sysUserInfoInfoDao.countByExample(sysUserInfoCriteria);
 		return result > 0;
+	}
+
+	@Override
+	public boolean deleteUsers(List<SysUserInfo> sysUserInfo) {
+		boolean result = false;
+		for (SysUserInfo userinfo : sysUserInfo) {
+			result = deleteUser(userinfo);
+		}
+		return result;
+	}
+
+	@Override
+	public List<SysUserInfo> getUsersByUserid(List<String> userids) {
+		SysUserInfoCriteria sysUserInfoCriteria=new SysUserInfoCriteria();
+		com.ddshteam.web.system.service.api.model.SysUserInfoCriteria.Criteria criteria=sysUserInfoCriteria.createCriteria();
+		criteria.andIdIn(userids);
+		return sysUserInfoInfoDao.selectByExample(sysUserInfoCriteria);
 	}
 
 }

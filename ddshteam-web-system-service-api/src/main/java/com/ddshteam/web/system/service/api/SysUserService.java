@@ -91,6 +91,15 @@ public interface SysUserService {
 	public boolean deleteUser(SysUserInfo sysUserInfo);
 
 	/**
+	 * 批量删除用户，内置用户不能被删除，考虑在上层做判定当前登录用户不能删除自己，admin账户不能被删除
+	 * <p>用户置为失效（无法登陆），但是删除user2role中间表</p>
+	 * @param userId 用户id
+	 * @return
+	 */
+	public boolean deleteUsers(List<SysUserInfo> sysUserInfo);
+
+	
+	/**
 	 * 为指定用户设置角色列表
 	 * @Title: setUserRole
 	 * @param userId
@@ -111,4 +120,16 @@ public interface SysUserService {
 	 * @author arpgate
 	 */
 	public boolean getUserExist(String account);
+	
+	
+	/**
+	 * 根据用户ids获取用户详情列表
+	 * @Title: getUsersByUserid
+	 * @param userids
+	 * @return List<SysUserInfo>
+	 * @see 
+	 * @throws
+	 * @author arpgate
+	 */
+	public List<SysUserInfo> getUsersByUserid(List<String> userids);
 }

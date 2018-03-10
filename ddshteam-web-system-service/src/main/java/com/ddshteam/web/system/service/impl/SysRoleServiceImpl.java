@@ -23,22 +23,23 @@ import com.github.pagehelper.PageInfo;
 
 @Service(version = "1.0.0")
 @Transactional(rollbackFor = Exception.class)
-public class SysRoleServiceImpl implements SysRoleService{
-	
+public class SysRoleServiceImpl implements SysRoleService {
+
 	@Autowired
 	private SysRoleInfoMapper sysRoleInfoDao;
 	@Autowired
 	private SysRoleInfoCustomizeMapper sysRoleInfoCustomizeDao;
 	@Autowired
 	private SysRoleToMenuMapper sysRoleToMenuDao;
-	
+	@Autowired
 	private SysRoleToUserMapper sysRoleToUserDao;
+
 	@Override
 	public PageInfo<SysRoleInfo> getRoleList(int pageNum, int pageSize) {
 		PageHelper.startPage(pageNum, pageSize);
-		SysRoleInfoCriteria sysRoleInfoCriteria=new SysRoleInfoCriteria(); 
+		SysRoleInfoCriteria sysRoleInfoCriteria = new SysRoleInfoCriteria();
 		sysRoleInfoCriteria.setOrderByClause(" create_time desc");
-		Criteria criteria=sysRoleInfoCriteria.createCriteria();
+		Criteria criteria = sysRoleInfoCriteria.createCriteria();
 		criteria.andIdIsNotNull();
 		List<SysRoleInfo> list = sysRoleInfoDao.selectByExample(sysRoleInfoCriteria);
 		PageInfo<SysRoleInfo> pageInfo = new PageInfo<SysRoleInfo>(list, pageSize);
@@ -65,18 +66,20 @@ public class SysRoleServiceImpl implements SysRoleService{
 
 	@Override
 	public boolean deleteRole(String roleId) {
-		int result = sysRoleInfoDao.deleteByPrimaryKey(roleId);
-		
-		SysRoleToUserCriteria sysRoleToUserCriteria=new SysRoleToUserCriteria();
-		com.ddshteam.web.system.service.api.model.SysRoleToUserCriteria.Criteria  criteria=sysRoleToUserCriteria.createCriteria();
+		SysRoleToUserCriteria sysRoleToUserCriteria = new SysRoleToUserCriteria();
+		com.ddshteam.web.system.service.api.model.SysRoleToUserCriteria.Criteria criteria = sysRoleToUserCriteria
+				.createCriteria();
 		criteria.andRoleIdEqualTo(roleId);
-		result = sysRoleToUserDao.deleteByExample(sysRoleToUserCriteria);
-		
-		SysRoleToMenuCriteria sysRoleToMenuCriteria=new SysRoleToMenuCriteria(); 
-		com.ddshteam.web.system.service.api.model.SysRoleToMenuCriteria.Criteria mcriteria=sysRoleToMenuCriteria.createCriteria();
+		int result = sysRoleToUserDao.deleteByExample(sysRoleToUserCriteria);
+
+		SysRoleToMenuCriteria sysRoleToMenuCriteria = new SysRoleToMenuCriteria();
+		com.ddshteam.web.system.service.api.model.SysRoleToMenuCriteria.Criteria mcriteria = sysRoleToMenuCriteria
+				.createCriteria();
 		mcriteria.andRoleIdEqualTo(roleId);
 		result = sysRoleToMenuDao.deleteByExample(sysRoleToMenuCriteria);
-		
+
+		result = sysRoleInfoDao.deleteByPrimaryKey(roleId);
+
 		return result > 0;
 	}
 
@@ -93,8 +96,31 @@ public class SysRoleServiceImpl implements SysRoleService{
 
 	@Override
 	public List<String> getMenuIdByRole(String... roleIds) {
- 		return sysRoleInfoCustomizeDao.getMenuIdByRole(roleIds);
-		 
+		return sysRoleInfoCustomizeDao.getMenuIdByRole(roleIds);
+
 	}
-	
+
+	@Override
+	public boolean deleteRoles(List<String> roles) {
+
+		SysRoleToUserCriteria sysRoleToUserCriteria = new SysRoleToUserCriteria();
+		com.ddshteam.web.system.service.api.model.SysRoleToUserCriteria.Criteria criteria = sysRoleToUserCriteria
+				.createCriteria();
+		criteria.andRoleIdIn(roles);
+		int result = sysRoleToUserDao.deleteByExample(sysRoleToUserCriteria);
+
+		SysRoleToMenuCriteria sysRoleToMenuCriteria = new SysRoleToMenuCriteria();
+		com.ddshteam.web.system.service.api.model.SysRoleToMenuCriteria.Criteria mcriteria = sysRoleToMenuCriteria
+				.createCriteria();
+		mcriteria.andRoleIdIn(roles);
+		result = sysRoleToMenuDao.deleteByExample(sysRoleToMenuCriteria);
+
+		SysRoleInfoCriteria  sysRoleInfoCriteria=new SysRoleInfoCriteria();
+		com.ddshteam.web.system.service.api.model.SysRoleInfoCriteria.Criteria roleCriteria=sysRoleInfoCriteria.createCriteria();
+		roleCriteria.andIdIn(roles);
+		result = sysRoleInfoDao.deleteByExample(sysRoleInfoCriteria);
+
+		return result > 0;
+	}
+
 }

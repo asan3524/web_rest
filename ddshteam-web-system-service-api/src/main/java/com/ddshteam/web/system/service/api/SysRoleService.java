@@ -45,6 +45,15 @@ public interface SysRoleService {
 	 */
 	public boolean deleteRole(String roleId);
 
+	
+	/**
+	 * 批量删除角色
+	 * <p>删除user2role,role2menu中间表</p>
+	 * @param roleId 角色id，admin角色不能被删除
+	 * @return
+	 */
+	public boolean deleteRoles(List<String> roles);
+	
 	/**
 	 * 获取指定用户的可选（带可选标记）角色树
 	 * {id,name,disabled,isLeaf,checkStatus=1/0}
