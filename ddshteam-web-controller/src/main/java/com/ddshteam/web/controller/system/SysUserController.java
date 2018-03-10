@@ -66,7 +66,10 @@ public class SysUserController extends BaseController {
 
 		String name = userSearchReq.getUsername();
 		String[] depIds =userSearchReq.getDepids();
-
+		if(depIds==null||depIds.length<1)
+		{
+			depIds=null;
+		}
 		PageInfo<SysUserInfoResp> pi = sysUserService.getUserList(pageable.getPageNumber(), pageable.getPageSize(),name, depIds);
 		return getResponse(pi);
 	}
