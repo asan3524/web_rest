@@ -66,20 +66,20 @@ public class SysUserController extends BaseController {
 		return getResponse(pi);
 	}
 	
-	@ApiOperation(value = "根据账号(用户名)获取用户", notes = "")
-	@GetMapping(value = { "/account/{account}" })
-	public Object getUserByAccount(@PathVariable String account) {
-		logger.debug("SysUserController.getUserByAccount()");
-
-		if(StringUtils.isEmpty(account)) {
-			logger.error("account is null.");
-			return getResponse(HttpCode.BAD_REQUEST, false);
-		}
-		
-		SysUserInfoResp user = sysUserService.getUserByAccount(account);
-		user.setPassword(null);
-		return getResponse(user);
-	}
+//	@ApiOperation(value = "根据账号(用户名)获取用户", notes = "")
+//	@GetMapping(value = { "/account/{account}" })
+//	public Object getUserByAccount(@PathVariable String account) {
+//		logger.debug("SysUserController.getUserByAccount()");
+//
+//		if(StringUtils.isEmpty(account)) {
+//			logger.error("account is null.");
+//			return getResponse(HttpCode.BAD_REQUEST, false);
+//		}
+//		
+//		SysUserInfoResp user = sysUserService.getUserByAccount(account);
+//		user.setPassword(null);
+//		return getResponse(user);
+//	}
 	
 	@ApiOperation(value = "根据用户id获取用户", notes = "")
 	@GetMapping(value = { "/id/{id}" })

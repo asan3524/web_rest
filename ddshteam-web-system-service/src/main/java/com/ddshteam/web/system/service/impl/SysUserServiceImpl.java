@@ -64,14 +64,14 @@ public class SysUserServiceImpl implements SysUserService {
 	}
 
 	@Override
-	public SysUserInfoResp getUserByAccount(String account) {
-/*		SysUserInfoCriteria sysUserInfoCriteria=new SysUserInfoCriteria();
+	public SysUserInfo getUserByAccount(String account) {
+		SysUserInfoCriteria sysUserInfoCriteria=new SysUserInfoCriteria();
 		Criteria criteria=sysUserInfoCriteria.createCriteria();
 		criteria.andAccountEqualTo(account);
 		criteria.andStatusEqualTo(SystemContants.SysUserStatus.EFFECT);
 		List<SysUserInfo> sysUserInfos=SysUserInfoInfoDao.selectByExample(sysUserInfoCriteria);
-		return sysUserInfos.size()>0?sysUserInfos.get(0):null;*/
-		return SysUserInfoInfoCustomizeDao.getUserByAccount(account);
+		return sysUserInfos.size()>0?sysUserInfos.get(0):null;
+//		return SysUserInfoInfoCustomizeDao.getUserByAccount(account);
 	}
 
 	@Override
