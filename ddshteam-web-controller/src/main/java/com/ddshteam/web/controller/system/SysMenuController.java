@@ -36,9 +36,9 @@ import com.ddshteam.web.system.service.api.data.Tree;
 import com.ddshteam.web.system.service.api.model.SysMenuInfo;
 import com.ddshteam.web.system.service.api.model.SysUserInfo;
 
-@Api(value = "/menu", description = "菜单接口")
+@Api(value = "/system/menu", description = "菜单接口")
 @RestController
-@RequestMapping(value = "/menu")
+@RequestMapping(value = "/system/menu")
 public class SysMenuController extends BaseController {
 
 	private final static Logger logger = LoggerFactory.getLogger(SysMenuController.class);
