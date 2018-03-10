@@ -38,6 +38,7 @@ import com.ddshteam.web.dto.system.UserReqBase;
 import com.ddshteam.web.system.service.api.SysUserService;
 import com.ddshteam.web.system.service.api.constant.SystemContants;
 import com.ddshteam.web.system.service.api.data.SysUserInfoResp;
+import com.ddshteam.web.system.service.api.data.UserSearchReq;
 import com.ddshteam.web.system.service.api.model.SysUserInfo;
 import com.github.pagehelper.PageInfo;
 
@@ -52,18 +53,21 @@ public class SysUserController extends BaseController {
 	private SysUserService sysUserService;
 
 	@ApiOperation(value = "用户列表", notes = "可指定参数: name(用户姓名), depId(指定部门ID)")
-	@GetMapping(value = { "/list" })
-	public Object getUserList(HttpServletRequest request, HttpServletResponse response,
-			@PageableDefault(page = 1, size = 10, sort = "createTime,asc") Pageable pageable) {
+	@PostMapping(value = { "/list" })
+	public Object getUserList(@RequestBody UserSearchReq userSearchReq,
+			@PageableDefault(page = 1, size = 10, sort = "createTime,asc") Pageable pageable, BindingResult errors) {
 		logger.debug("SysUserController.getUserList()");
+		
+		if (errors.hasErrors()) {
+			String msg = errors.getAllErrors().get(0).getDefaultMessage();
+			logger.error(msg);
+			return getResponse(HttpCode.BAD_REQUEST, false, msg);
+		}
 
-		Map<String, String> paremeters = loadParemeter(request);
+		String name = userSearchReq.getUsername();
+		String[] depIds =userSearchReq.getDepids();
 
-		String name = paremeters.get("name");
-		String depId = paremeters.get("depId");
-
-		PageInfo<SysUserInfoResp> pi = sysUserService.getUserList(pageable.getPageNumber(), pageable.getPageSize(),
-				name, depId);
+		PageInfo<SysUserInfoResp> pi = sysUserService.getUserList(pageable.getPageNumber(), pageable.getPageSize(),name, depIds);
 		return getResponse(pi);
 	}
 
