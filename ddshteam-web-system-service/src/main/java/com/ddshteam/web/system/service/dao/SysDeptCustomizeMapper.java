@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import com.ddshteam.web.system.service.api.data.Tree;
 import com.ddshteam.web.system.service.api.model.SysDepInfo;
 
 @Repository
@@ -39,4 +40,6 @@ public interface SysDeptCustomizeMapper {
 	public int deleteDept(@Param("deptId") String deptId);
 	
 	public int isDeptHasUser(@Param("deptId") String deptId);
+	
+	List<Tree> selectByPrimaryKey(String id);
 }

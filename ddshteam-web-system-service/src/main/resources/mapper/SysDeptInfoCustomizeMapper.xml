@@ -221,12 +221,34 @@
 	</update>
 
 	<delete id="deleteDept">
-	call delete_dept_childrens(#{deptId,jdbcType=VARCHAR})
+		call delete_dept_childrens(#{deptId,jdbcType=VARCHAR})
 	</delete>
 
 	<select id="isDeptHasUser" parameterType="string" resultType="int">
 		select count(1) as total
 		from sys_user_info u
 		where u.dep_id=#{deptId}
+	</select>
+
+
+	<resultMap id="TreeBaseResultMap" type="com.ddshteam.web.system.service.api.data.Tree">
+		<id column="id" jdbcType="VARCHAR" property="id" />
+		<result column="parent_id" jdbcType="VARCHAR" property="parentId" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="isLeaf" jdbcType="INTEGER" property="isLeaf" />
+	</resultMap>
+	<sql id="Tree_Base_Column_List">
+		p.id, p.parent_id, p.name, 1 > count(c.id) as isLeaf
+	</sql>
+	<!-- select p.id, p.parent_id, p.name, count(c.id) > 0 as isLeaf from sys_dep_info 
+		p left join sys_dep_info c on p.id=c.parent_id group by p.id; -->
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="TreeBaseResultMap">
+		select
+		p.id, p.parent_id, p.name, 1> count(c.id) as isLeaf
+		from sys_dep_info p left join sys_dep_info c on
+		p.id=c.parent_id
+		where p.parent_id = #{id,jdbcType=VARCHAR} group by
+		p.id
 	</select>
 </mapper>

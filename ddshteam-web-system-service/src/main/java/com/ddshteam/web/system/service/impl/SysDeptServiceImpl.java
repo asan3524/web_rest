@@ -72,14 +72,16 @@ public class SysDeptServiceImpl implements SysDeptService{
 	
 	@Override
 	public List<Tree> getChildrenDeptList(String deptId) {
-		SysDepInfoCriteria sysDepInfoCriteria=new SysDepInfoCriteria();
+       /*		SysDepInfoCriteria sysDepInfoCriteria=new SysDepInfoCriteria();
 		Criteria criteria=sysDepInfoCriteria.createCriteria();
 		criteria.andStatusEqualTo(SystemContants.SysDeptStatus.EFFECT);
 		criteria.andParentIdEqualTo(deptId);
 		List<SysDepInfo> list = sysDepInfoDao.selectByExample(sysDepInfoCriteria);
-				//sysDeptCustomizeDao.getChildrenDeptList(deptId);
 		List<Tree> trees = DeptTreeBuilder.childrenBuild(list);
-		return trees;
+		return trees;*/
+		//sysDeptCustomizeDao.getChildrenDeptList(deptId);
+		return sysDeptCustomizeDao.selectByPrimaryKey(deptId);
+	
 	}
 
 
