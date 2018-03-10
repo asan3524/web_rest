@@ -22,11 +22,11 @@ public interface SysUserService {
 	public PageInfo<SysUserInfoResp> getUserList(int pageNum, int pageSize, String name, String depId);
 
 	/**
-	 * 根据账号(用户名)获取用户
+	 * 根据账号(用户名)获取用户，仅登录使用
 	 * @param account
 	 * @return
 	 */
-	public SysUserInfoResp getUserByAccount(String account);
+	public SysUserInfo getUserByAccount(String account);
 
 	/**
 	 * 根据用户id获取用户

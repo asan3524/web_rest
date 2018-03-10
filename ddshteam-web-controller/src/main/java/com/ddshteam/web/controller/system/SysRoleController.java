@@ -34,9 +34,9 @@ import com.ddshteam.web.system.service.api.SysRoleService;
 import com.ddshteam.web.system.service.api.model.SysRoleInfo;
 import com.github.pagehelper.PageInfo;
 
-@Api(value = "/role", description = "角色接口-完成后端测试")
+@Api(value = "/system/role", description = "角色接口-完成后端测试")
 @RestController
-@RequestMapping(value = "/role")
+@RequestMapping(value = "/system/role")
 public class SysRoleController extends BaseController {
 	
 	private final static Logger logger = LoggerFactory.getLogger(SysRoleController.class);

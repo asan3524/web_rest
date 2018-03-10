@@ -25,9 +25,9 @@ import com.ddshteam.web.system.service.api.data.OpLogListReqData;
 import com.ddshteam.web.system.service.api.model.SysOpLogs;
 import com.github.pagehelper.PageInfo;
 
-@Api(value = "/oplog", description = "操作日志接口")
+@Api(value = "/system/oplog", description = "操作日志接口")
 @RestController
-@RequestMapping(value = "/oplog")
+@RequestMapping(value = "/system/oplog")
 public class OpLogController extends BaseController {
 
 	private final static Logger logger = LoggerFactory.getLogger(OpLogController.class);
