@@ -137,6 +137,24 @@ public class SysRoleController extends BaseController {
 		}else return getResponse(HttpCode.INTERNAL_SERVER_ERROR, result, "删除角色失败");
 	}
 	
+	
+	@ApiOperation(value = "批量删除角色", notes = "批量删除角色")
+	@PostMapping(value = { "/delete/roles" })
+	public Object deleteRoles(@RequestBody List<String> roles) {
+		logger.debug("SysRoleController.deleteRoles()");
+		
+		if(roles==null||roles.isEmpty()) {
+			logger.error("roles is null.");
+			return getResponse(HttpCode.BAD_REQUEST, false);
+		}
+		
+		boolean result = sysRoleService.deleteRoles(roles);
+		
+		if(result) {
+			return getResponse(result);	
+		}else return getResponse(HttpCode.INTERNAL_SERVER_ERROR, result, "删除角色失败");
+	}
+	
 	@ApiOperation(value = "为角色设置菜单权限", notes = "")
 	@PostMapping(value = { "/role2menu/{roleId}" })
 	public Object setRole2Menu(@Valid @RequestBody SetRole2MenuReq setRole2MenuReq, @PathVariable String roleId, BindingResult errors) {

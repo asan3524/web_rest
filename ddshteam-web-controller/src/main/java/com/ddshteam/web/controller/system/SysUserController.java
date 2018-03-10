@@ -329,6 +329,37 @@ public class SysUserController extends BaseController {
 			return getResponse(HttpCode.INTERNAL_SERVER_ERROR, result, "删除用户失败");
 
 	}
+	
+	@ApiOperation(value = "批量删除用户", notes = "批量删除用户，内置/admin/自己不能删除(暂不调用)")
+	@PostMapping(value = { "/delete/ids" })
+	public Object deleteUsers(@RequestBody List<String> userids) {
+		logger.debug("UserController.deleteUsers()");
+
+		if (userids==null||userids.isEmpty()) {
+			logger.error("userids is null.");
+			return getResponse(HttpCode.BAD_REQUEST, false);
+		}
+
+		List<SysUserInfo> users = sysUserService.getUsersByUserid(userids);
+
+		// TODO session 获取登陆用户id,自身不允许删除
+
+		for(SysUserInfo user:users)
+		{
+			if (user.getAccount().equals("admin") || user.getIsBuiltin()) {
+				logger.error("'admin', 'buildin' and itsself can't be deleted.");
+				return getResponse(HttpCode.CONFLICT, false, "admin账号,内建账号，自身账号等不能删除");
+			}
+
+		}
+	
+		boolean result = sysUserService.deleteUsers(users);
+		if (result) {
+			return getResponse(result);
+		} else
+			return getResponse(HttpCode.INTERNAL_SERVER_ERROR, result, "删除用户失败");
+
+	}
 
 	@ApiOperation(value = "更新用户角色")
 	@PutMapping(value = { "/update/role/{id}" })
