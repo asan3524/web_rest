@@ -1,6 +1,5 @@
 package com.ddshteam.web.system.service.impl;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +55,7 @@ public class SysUserServiceImpl implements SysUserService {
 		 * sysUserInfos=SysUserInfoInfoDao.selectByExample(sysUserInfoCriteria);
 		 */
 
-		List<SysUserInfoResp> sysUserInfos = sysUserInfoInfoCustomizeDao.getUserList(name,depIds);
+		List<SysUserInfoResp> sysUserInfos = sysUserInfoInfoCustomizeDao.getUserList(name, depIds);
 
 		PageInfo<SysUserInfoResp> pageInfo = new PageInfo<SysUserInfoResp>(sysUserInfos, pageSize);
 		return pageInfo;
@@ -125,12 +124,11 @@ public class SysUserServiceImpl implements SysUserService {
 
 		sysUserInfo.setStatus(SystemContants.SysUserStatus.LOSE_EFFECT);
 		sysUserInfo.setAccount(sysUserInfo.getAccount() + "_" + System.currentTimeMillis());
-		if(sysUserInfo.getIsBuiltin()==SystemContants.SysUserIsBuiltin.BUILTIN)
-		{
+		if (sysUserInfo.getIsBuiltin() == SystemContants.SysUserIsBuiltin.BUILTIN) {
 			return false;
 		}
 		result = sysUserInfoInfoDao.updateByPrimaryKeySelective(sysUserInfo);
-		
+
 		return result > 0;
 	}
 
@@ -162,7 +160,7 @@ public class SysUserServiceImpl implements SysUserService {
 
 		result = sysUserInfoInfoCustomizeDao.setUserRole(userId, roleIds);
 
-		return true;
+		return result > 0;
 	}
 
 	@Override
@@ -186,8 +184,9 @@ public class SysUserServiceImpl implements SysUserService {
 
 	@Override
 	public List<SysUserInfo> getUsersByUserid(List<String> userids) {
-		SysUserInfoCriteria sysUserInfoCriteria=new SysUserInfoCriteria();
-		com.ddshteam.web.system.service.api.model.SysUserInfoCriteria.Criteria criteria=sysUserInfoCriteria.createCriteria();
+		SysUserInfoCriteria sysUserInfoCriteria = new SysUserInfoCriteria();
+		com.ddshteam.web.system.service.api.model.SysUserInfoCriteria.Criteria criteria = sysUserInfoCriteria
+				.createCriteria();
 		criteria.andIdIn(userids);
 		return sysUserInfoInfoDao.selectByExample(sysUserInfoCriteria);
 	}

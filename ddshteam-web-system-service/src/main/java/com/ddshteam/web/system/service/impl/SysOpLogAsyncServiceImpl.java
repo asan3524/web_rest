@@ -19,7 +19,7 @@ public class SysOpLogAsyncServiceImpl implements SysOpLogAsyncService {
 	@Override
 	public boolean write(SysOpLogs sysOpLogs) {
 		// TODO Auto-generated method stub
-		int result = sysOpLogsDao.insert(sysOpLogs);
+		int result = sysOpLogsDao.insertSelective(sysOpLogs);
 		return result > 0;
 	}
 }
