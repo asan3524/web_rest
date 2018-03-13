@@ -26,8 +26,10 @@ import com.ddshteam.web.core.support.HttpCode;
 import com.ddshteam.web.core.util.IdUtil;
 import com.ddshteam.web.dto.system.DeptReq;
 import com.ddshteam.web.system.service.api.SysDeptService;
+import com.ddshteam.web.system.service.api.data.DeptInfoResp;
 import com.ddshteam.web.system.service.api.data.Tree;
 import com.ddshteam.web.system.service.api.model.SysDepInfo;
+import com.ddshteam.web.system.service.api.model.SysDeptypeInfo;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -48,7 +50,7 @@ public class SysDeptController extends BaseController {
 		logger.debug("SysDeptController.getDeptList()");
 
 		@SuppressWarnings("deprecation")
-		List<SysDepInfo> list = sysDeptService.getSysDeptDetailList();
+		List<DeptInfoResp> list = sysDeptService.getSysDeptDetailList();
 		return getResponse(list);
 	}
 	
@@ -101,7 +103,7 @@ public class SysDeptController extends BaseController {
 			return getResponse(HttpCode.BAD_REQUEST, false);
 		}
 		
-		SysDepInfo dept = sysDeptService.getSysDeptById(deptId);
+		DeptInfoResp dept = sysDeptService.getSysDeptById(deptId);
 		return getResponse(dept);
 	}
 	
@@ -178,5 +180,76 @@ public class SysDeptController extends BaseController {
 			}else return getResponse(HttpCode.INTERNAL_SERVER_ERROR, result, "删除部门失败");
 		}
 		
+	}
+	
+	@ApiOperation(value = "增加部门类型", notes = "增加部门类型")
+	@PostMapping(value = {"/type/save" })
+	public Object addDeptType(@Valid @RequestBody SysDeptypeInfo typeinfo, BindingResult errors) {
+		logger.debug("SysDeptController.addDeptType()");
+		
+		if (errors.hasErrors()) {
+			String msg = errors.getAllErrors().get(0).getDefaultMessage();
+			logger.error(msg);
+			return getResponse(HttpCode.BAD_REQUEST, false, msg);
+		}
+		else {
+			typeinfo.setId(IdUtil.generateId().toString());
+			boolean result = sysDeptService.saveType(typeinfo);
+			
+			if(result) {
+				return getResponse(result);	
+			}else return getResponse(HttpCode.INTERNAL_SERVER_ERROR, result, "新增部门类型失败");
+		}
+		
+	}
+	
+	
+	@ApiOperation(value = "增加部门类型", notes = "")
+	@PutMapping(value = { "/type/update" })
+	public Object updateDeptType(@Valid @RequestBody SysDeptypeInfo typeinfo, BindingResult errors) {
+		logger.debug("SysDeptController.updateDeptType()");
+		
+		if (errors.hasErrors()) {
+			String msg = errors.getAllErrors().get(0).getDefaultMessage();
+			logger.error(msg);
+			return getResponse(HttpCode.BAD_REQUEST, false, msg);
+		}
+		else {
+			boolean result = sysDeptService.updateType(typeinfo);
+			
+			if(result) {
+				return getResponse(result);	
+			}else return getResponse(HttpCode.INTERNAL_SERVER_ERROR, result, "更新部门类型失败");
+		}
+		
+	}
+	
+	@ApiOperation(value = "根据部门类型id获取部门详情", notes = "根据部门类型id获取部门详情")
+	@GetMapping(value = { "/type/{depttypeid}" })
+	public Object getDeptTypeByid(@PathVariable String depttypeid) {
+		logger.debug("SysDeptController.getDeptTypeByid()");
+		
+		if(StringUtils.isEmpty(depttypeid)) {
+			logger.error("deptId is null.");
+			return getResponse(HttpCode.BAD_REQUEST, false);
+		}
+		SysDeptypeInfo typeinfo=sysDeptService.getTypeinfoById(depttypeid);
+		return getResponse(typeinfo);	
+		
+	}
+	
+	@ApiOperation(value = "查看部门类型列表", notes = "查看部门类型列表")
+	@GetMapping(value = { "/type/list" })
+	public Object listDeptType() {
+		logger.debug("SysDeptController.listDeptType()");
+		return getResponse(sysDeptService.ListType());	
+	}
+	
+	@ApiOperation(value = "删除部门类型", notes = "根据id删除部门类型")
+	@DeleteMapping(value = { "/type/delete/{depttypeid}" })
+	public Object deleteTypeinfoByid(@PathVariable String depttypeid) {
+		logger.debug("SysDeptController.deleteTypeinfoByid()");
+		boolean result=sysDeptService.deleteTypeByid(depttypeid);
+		return getResponse(result);	
 	}
 }

@@ -2,8 +2,10 @@ package com.ddshteam.web.system.service.api;
 
 import java.util.List;
 
+import com.ddshteam.web.system.service.api.data.DeptInfoResp;
 import com.ddshteam.web.system.service.api.data.Tree;
 import com.ddshteam.web.system.service.api.model.SysDepInfo;
+import com.ddshteam.web.system.service.api.model.SysDeptypeInfo;
 
 public interface SysDeptService {
 
@@ -41,14 +43,14 @@ public interface SysDeptService {
 	 * @return
 	 */
 	@Deprecated
-	public List<SysDepInfo> getSysDeptDetailList();
+	public List<DeptInfoResp> getSysDeptDetailList();
 
 	/**
 	 * 获取部门详情(包含部门人员)
 	 * @param deptId  部门id
 	 * @return
 	 */
-	public SysDepInfo getSysDeptById(String deptId);
+	public DeptInfoResp getSysDeptById(String deptId);
 
 	/**
 	 * 添加部门
@@ -85,4 +87,62 @@ public interface SysDeptService {
 	 * @return
 	 */
 	public boolean isDeptHasUser(String deptId);
+	
+	
+	/**
+	 * 保存部门类型
+	 * @Title: saveType
+	 * @param typeinfo
+	 * @return boolean
+	 * @see 
+	 * @throws
+	 * @author arpgate
+	 */
+	public boolean saveType(SysDeptypeInfo typeinfo);
+	
+	
+	/**
+	 * 更新部门类型
+	 * @Title: updateType
+	 * @param typeinfo
+	 * @return boolean
+	 * @see 
+	 * @throws
+	 * @author arpgate
+	 */
+	public boolean updateType(SysDeptypeInfo typeinfo);
+	
+	
+	/**
+	 * 根据类型id获取类型信息
+	 * @Title: getTypeinfoById
+	 * @param depttypeid
+	 * @return boolean
+	 * @see 
+	 * @throws
+	 * @author arpgate
+	 */
+	public SysDeptypeInfo getTypeinfoById(String depttypeid);
+	
+	
+	/**
+	 * 根据id删除类型信息
+	 * @Title: deleteTypeByid
+	 * @param typeinfo
+	 * @return boolean
+	 * @see 
+	 * @throws
+	 * @author arpgate
+	 */
+	public boolean deleteTypeByid(String typeid);
+	
+	/**
+	 * 类型列表
+	 * @Title: ListType
+	 * @return boolean
+	 * @see 
+	 * @throws
+	 * @author arpgate
+	 */
+	public List<SysDeptypeInfo> ListType();
 }

@@ -529,6 +529,11 @@ public class SysDepInfoCriteria {
             addCriterion("status =", value, "status");
             return (Criteria) this;
         }
+        
+        public Criteria andCustomizeStatusEqualTo(Integer value) {
+            addCriterion(" sdi.status =", value, "status");
+            return (Criteria) this;
+        }
 
         public Criteria andStatusNotEqualTo(Integer value) {
             addCriterion("status <>", value, "status");
