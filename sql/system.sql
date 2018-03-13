@@ -163,6 +163,7 @@ CREATE TABLE `sys_op_logs` (
   `uri` varchar(128) DEFAULT NULL COMMENT 'uri',
   `excute_time` int(11) NOT NULL DEFAULT 1000 COMMENT '执行时间',
   `resp` varchar(512) DEFAULT NULL COMMENT '响应',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='操作日志表';
 
@@ -211,47 +212,68 @@ END
 DELIMITER ;
 
 -- ----------------------------
--- Function structure for `menu_check_parent`
--- 删除菜单时事务执行：
--- delete from sys_role_to_menu where menu_check_parent('当前菜单ID', menu_id) or id='当前菜单ID';
--- delete from sys_menu_info where menu_check_parent('当前菜单ID', id) or id='当前菜单ID';
+-- Function structure for `delete_dept_childrens`
 -- ----------------------------
-DROP FUNCTION IF EXISTS `menu_check_parent`;
+DROP PROCEDURE  IF EXISTS `delete_dept_childrens`;
 DELIMITER ;;
-CREATE FUNCTION `menu_check_parent`(`parent` varchar(64), `self` varchar(64)) RETURNS tinyint(1)
+CREATE PROCEDURE  `delete_dept_childrens`(`self` varchar(64))
 BEGIN
 DECLARE temp varchar(64) default '';
-DECLARE temp_self varchar(64) default '';
-DECLARE c int default 0;
-
-IF
-  (self IS NULL OR parent IS NULL OR self = parent) THEN return 0;
-  END IF;
+DECLARE STOP INT DEFAULT 0; 
   
-SET temp_self = self;
+DECLARE _Cur CURSOR FOR SELECT id FROM sys_dep_info WHERE parent_id = self;
+DECLARE CONTINUE HANDLER FOR SQLSTATE '02000' SET STOP = 1;
+SET @@max_sp_recursion_depth = 100; 
 
-SELECT count(*) INTO c FROM sys_menu_info WHERE id = temp_self;
-IF
-  c = 0 THEN return 0;
-  END IF;
-  
-WHILE temp IS NOT NULL DO 
+OPEN _Cur; 
+	FETCH _Cur INTO temp;  
+	WHILE STOP <> 1 DO
+		IF
+		  (temp IS NOT NULL) THEN 
+				call delete_dept_childrens(temp);
+				DELETE FROM sys_dep_info WHERE id = temp;
+		  END IF;
+		FETCH _Cur INTO temp;
+	END WHILE;
+CLOSE _Cur;
 
-SELECT parent_id INTO temp FROM sys_menu_info WHERE id = temp_self;
+DELETE FROM sys_dep_info WHERE id = self;
 
-IF
-  (temp IS NULL) THEN return 0;
-  END IF;
-  
-IF
-  (temp IS NOT NULL AND temp = parent) THEN return 1;
-  END IF;
-
-SET temp_self = temp;
-
-END WHILE;
-
-RETURN 0;
 END
 ;;
 DELIMITER ;
+
+-- ----------------------------
+-- Function structure for `delete_menu_childrens`
+-- ----------------------------
+DROP PROCEDURE  IF EXISTS `delete_menu_childrens`;
+DELIMITER ;;
+CREATE PROCEDURE  `delete_menu_childrens`(`self` varchar(64))
+BEGIN
+DECLARE temp varchar(64) default '';
+DECLARE STOP INT DEFAULT 0; 
+  
+DECLARE _Cur CURSOR FOR SELECT id FROM sys_menu_info WHERE parent_id = self;
+DECLARE CONTINUE HANDLER FOR SQLSTATE '02000' SET STOP = 1;
+SET @@max_sp_recursion_depth = 100; 
+
+OPEN _Cur; 
+	FETCH _Cur INTO temp;  
+	WHILE STOP <> 1 DO
+		IF
+		  (temp IS NOT NULL) THEN 
+				call delete_menu_childrens(temp);
+				DELETE FROM sys_menu_info WHERE id = temp;
+                DELETE FROM sys_role_to_menu WHERE menu_id = temp;
+		  END IF;
+		FETCH _Cur INTO temp;
+	END WHILE;
+CLOSE _Cur;
+
+DELETE FROM sys_role_to_menu WHERE menu_id = self;
+DELETE FROM sys_menu_info WHERE id = self;
+
+END
+;;
+DELIMITER ;
+
