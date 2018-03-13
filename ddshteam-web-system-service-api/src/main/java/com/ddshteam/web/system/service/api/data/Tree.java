@@ -97,6 +97,7 @@ public class Tree implements Serializable{
 		this.disabled = target.disabled;
 		this.isLeaf = target.isLeaf;
 		this.checked = target.checked;
+		this.type = target.type;
 		this.children = target.children;
 	}
 

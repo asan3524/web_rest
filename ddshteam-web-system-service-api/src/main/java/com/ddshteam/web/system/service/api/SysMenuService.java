@@ -26,7 +26,7 @@ import com.ddshteam.web.system.service.api.model.SysMenuInfo;
 public interface SysMenuService {
 
 	/**
-	 * 获取所有非功能菜单树结构，（只返回目录及页面，功能点不返回）提供给内置账户使用
+	 * 获取所有非功能菜单树结构，（只返回目录及页面/功能点）提供给内置账户使用
 	 * 作用：添加菜单时选择父级菜单弹窗
 	 * {id,name,url,iconClass,children}
 	 * @Title: getMenuTree

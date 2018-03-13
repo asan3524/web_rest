@@ -10,7 +10,6 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.ddshteam.web.system.service.api.SysMenuService;
 import com.ddshteam.web.system.service.api.data.Tree;
 import com.ddshteam.web.system.service.api.model.SysMenuInfo;
-import com.ddshteam.web.system.service.api.model.SysMenuInfoCriteria;
 import com.ddshteam.web.system.service.dao.SysMenuInfoCustomizeMapper;
 import com.ddshteam.web.system.service.dao.SysMenuInfoMapper;
 import com.ddshteam.web.system.service.dao.SysRoleToMenuMapper;
@@ -34,9 +33,9 @@ public class SysMenuServiceImpl implements SysMenuService {
 	@Override
 	public List<Tree> getMenuTree() {
 		// TODO Auto-generated method stub
-		SysMenuInfoCriteria criteria = new SysMenuInfoCriteria();
-		criteria.createCriteria().andTypeNotEqualTo(3);
-		List<SysMenuInfo> list = sysMenuInfoDao.selectByExample(criteria);
+		// SysMenuInfoCriteria criteria = new SysMenuInfoCriteria();
+		// criteria.createCriteria().andTypeNotEqualTo(3);
+		List<SysMenuInfo> list = sysMenuInfoDao.selectByExample(null);
 		List<Tree> trees = MenuTreeBuilder.build(list);
 		return trees;
 	}
