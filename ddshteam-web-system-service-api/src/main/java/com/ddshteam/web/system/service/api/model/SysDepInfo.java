@@ -5,21 +5,21 @@ import java.util.Date;
 
 @SuppressWarnings("serial")
 public class SysDepInfo implements  Serializable{
-    private String id;
+    protected String id;
 
-    private String name;
+    protected String name;
 
-    private String parentId;
+    protected String parentId;
 
-    private String typeId;
+    protected String typeId;
 
-    private String remark;
+    protected String remark;
 
-    private Integer orderNum;
+    protected Integer orderNum;
 
-    private Integer status;
+    protected Integer status;
 
-    private Date createTime;
+    protected Date createTime;
 
     public String getId() {
         return id;

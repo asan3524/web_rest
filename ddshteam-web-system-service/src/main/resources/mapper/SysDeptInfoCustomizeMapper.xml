@@ -221,7 +221,8 @@
 	</update>
 
 	<delete id="deleteDept">
-		call delete_dept_childrens(#{deptId,jdbcType=VARCHAR})
+		call
+		delete_dept_childrens(#{deptId,jdbcType=VARCHAR})
 	</delete>
 
 	<select id="isDeptHasUser" parameterType="string" resultType="int">
@@ -242,13 +243,91 @@
 	</sql>
 	<!-- select p.id, p.parent_id, p.name, count(c.id) > 0 as isLeaf from sys_dep_info 
 		p left join sys_dep_info c on p.id=c.parent_id group by p.id; -->
-	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+	<select id="selectTreeByPrimaryKey" parameterType="java.lang.String"
 		resultMap="TreeBaseResultMap">
 		select
 		p.id, p.parent_id, p.name, 1> count(c.id) as isLeaf
 		from sys_dep_info p left join sys_dep_info c on
 		p.id=c.parent_id
-		where p.parent_id = #{id,jdbcType=VARCHAR} group by
+		where
+		p.parent_id = #{id,jdbcType=VARCHAR} group by
 		p.id
 	</select>
+
+	<resultMap id="BaseResultMap"
+		type="com.ddshteam.web.system.service.api.data.DeptInfoResp">
+		<id column="id" jdbcType="VARCHAR" property="id" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="parent_id" jdbcType="VARCHAR" property="parentId" />
+		<result column="type_id" jdbcType="VARCHAR" property="typeId" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
+		<result column="order_num" jdbcType="INTEGER" property="orderNum" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="depttypename" jdbcType="VARCHAR" property="depttypename" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		sdi.id as id, sdi.name as  name, sdi.parent_id as parent_id, sdi.type_id as type_id, sdi.remark as remark, sdi.order_num as order_num, sdi.status as status,
+		sdi.create_time as create_time,sdti.name as depttypename
+	</sql>
+
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" prefixOverrides="and" suffix=")">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach close=")" collection="criterion.value" item="listItem"
+										open="(" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+
+	<select id="selectByExample"
+		parameterType="com.ddshteam.web.system.service.api.model.SysDepInfoCriteria"
+		resultMap="BaseResultMap">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		'true' as QUERYID,
+		<include refid="Base_Column_List" />
+		from sys_dep_info sdi,sys_deptype_info sdti
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			and sdi.type_id=sdti.id order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from sys_dep_info sdi,sys_deptype_info sdti
+		where sdi.id = #{id,jdbcType=VARCHAR} and sdi.type_id=sdti.id
+	</select>
+
 </mapper>

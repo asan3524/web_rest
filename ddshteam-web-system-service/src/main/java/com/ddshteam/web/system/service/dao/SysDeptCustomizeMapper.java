@@ -5,8 +5,10 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import com.ddshteam.web.system.service.api.data.DeptInfoResp;
 import com.ddshteam.web.system.service.api.data.Tree;
 import com.ddshteam.web.system.service.api.model.SysDepInfo;
+import com.ddshteam.web.system.service.api.model.SysDepInfoCriteria;
 
 @Repository
 //@Mapper
@@ -41,5 +43,9 @@ public interface SysDeptCustomizeMapper {
 	
 	public int isDeptHasUser(@Param("deptId") String deptId);
 	
-	List<Tree> selectByPrimaryKey(String id);
+	List<Tree> selectTreeByPrimaryKey(String id);
+	
+    List<DeptInfoResp> selectByExample(SysDepInfoCriteria example);
+
+    DeptInfoResp selectByPrimaryKey(String id);
 }
