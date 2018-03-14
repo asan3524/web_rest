@@ -20,8 +20,8 @@
 		<result column="name" jdbcType="VARCHAR" property="name" />
 		<result column="parent_id" jdbcType="VARCHAR" property="parentId" />
 		<result column="url" jdbcType="VARCHAR" property="url" />
-		<result column="icon" jdbcType="VARCHAR" property="iconClass" />
-		<result column="checkStatus" jdbcType="INTEGER" property="checkStatus" />
+		<result column="icon" jdbcType="VARCHAR" property="icon" />
+		<result column="checked" jdbcType="INTEGER" property="checked" />
 		<result column="isLeaf" jdbcType="INTEGER" property="isLeaf" />
 	</resultMap>
 	<select id="getMenusByUser" resultMap="BaseResultMap">
@@ -60,7 +60,7 @@
 	<select id="getMenuTreeByUserRole" resultMap="treeMap">
 		select
 		smi.id,smi.name,smi.parent_id,smi.url,smi.icon,smi.type=3 as
-		isLeaf,srm1.id is not null as checkStatus from sys_menu_info smi
+		isLeaf,srm1.id is not null as checked from sys_menu_info smi
 		inner
 		join sys_role_to_menu srm
 		on smi.id=srm.menu_id
@@ -75,7 +75,7 @@
 	<select id="getMenuTreeByRole" resultMap="treeMap">
 		select
 		smi.id,smi.name,smi.parent_id,smi.url,smi.icon,smi.type=3 as
-		isLeaf,srm1.id is not null as checkStatus from sys_menu_info smi
+		isLeaf,srm1.id is not null as checked from sys_menu_info smi
 		inner
 		join sys_role_to_menu srm
 		on smi.id=srm.menu_id
@@ -86,7 +86,7 @@
 	<select id="getMenuTreeByUser" resultMap="treeMap">
 		select
 		smi.id,smi.name,smi.parent_id,smi.url,smi.icon,smi.type=3 as
-		isLeaf,false as checkStatus from sys_menu_info smi
+		isLeaf,false as checked from sys_menu_info smi
 		inner
 		join
 		sys_role_to_menu srm
@@ -100,7 +100,7 @@
 	<select id="getMenuTree" resultMap="treeMap">
 		select
 		id,name,parent_id,url,icon,type=3 as
-		isLeaf,false as checkStatus from
+		isLeaf,false as checked from
 		sys_menu_info
 	</select>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">

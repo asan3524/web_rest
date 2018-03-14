@@ -60,7 +60,7 @@ public class ShiroConfig {
 		map.put("/static/**", "anon");
 
 		// all,开发模式下不验证权限
-		// map.put("/**", "authc");
+		map.put("/**", "authc");
 
 		shiroFilterFactoryBean.setLoginUrl("/login");
 		shiroFilterFactoryBean.setUnauthorizedUrl("/unauthorized");
