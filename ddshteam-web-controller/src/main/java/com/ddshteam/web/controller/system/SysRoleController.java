@@ -44,6 +44,7 @@ public class SysRoleController extends BaseController {
 	@Reference(version = "1.0.0")
 	private SysRoleService sysRoleService;
 	
+	
 	@ApiOperation(value = "角色列表", notes = "")
 	@GetMapping(value = { "/list" })
 	public Object getRoleList(HttpServletRequest request, HttpServletResponse response,
@@ -85,7 +86,18 @@ public class SysRoleController extends BaseController {
 		role.setName(roleReq.getName());
 		role.setRemark(roleReq.getRemark());
 		
-		boolean result = sysRoleService.saveRole(role);
+		boolean result =false;
+
+		if(roleReq.getMenuids()!=null&&!roleReq.getMenuids().isEmpty()&&result)
+		{
+			result=sysRoleService.saveRole(role,(String [])roleReq.getMenuids().toArray());
+		}
+		else
+		{
+			result=sysRoleService.saveRole(role,null);
+
+		}
+		
 		
 		if(result) {
 			return getResponse(result);	
@@ -113,7 +125,16 @@ public class SysRoleController extends BaseController {
 		role.setName(roleReq.getName());
 		role.setRemark(roleReq.getRemark());
 		
-		boolean result = sysRoleService.updateRole(role);
+		boolean result =false;
+
+		if(roleReq.getMenuids()!=null&&!roleReq.getMenuids().isEmpty()&&result)
+		{
+			result=sysRoleService.updateRole(role,(String [])roleReq.getMenuids().toArray());
+		}
+		else
+		{
+			result=sysRoleService.updateRole(role,null);
+		}
 		
 		if(result) {
 			return getResponse(result);	

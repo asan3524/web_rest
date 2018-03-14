@@ -28,14 +28,14 @@ public interface SysRoleService {
 	 * @param sysRole
 	 * @return
 	 */
-	public boolean saveRole(SysRoleInfo sysRole);
+	public boolean saveRole(SysRoleInfo sysRole,String ...menuIds);
 
 	/**
 	 * 更新角色
 	 * @param sysRole
 	 * @return
 	 */
-	public boolean updateRole(SysRoleInfo sysRole);
+	public boolean updateRole(SysRoleInfo sysRole,String ...menuIds);
 
 	/**
 	 * 删除角色
