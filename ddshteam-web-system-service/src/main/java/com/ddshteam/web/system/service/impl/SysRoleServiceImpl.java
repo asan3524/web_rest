@@ -52,15 +52,24 @@ public class SysRoleServiceImpl implements SysRoleService {
 	}
 
 	@Override
-	public boolean saveRole(SysRoleInfo sysRole) {
+	public boolean saveRole(SysRoleInfo sysRole,String ...menuIds) {
 		sysRole.setCreateTime(new Date());
 		int result = sysRoleInfoDao.insert(sysRole);
+         if(result>0&&menuIds!=null)
+         {
+        	 result=sysRoleInfoCustomizeDao.setRoleMenu(sysRole.getId(), menuIds);
+         }
+		
 		return result > 0;
 	}
 
 	@Override
-	public boolean updateRole(SysRoleInfo sysRole) {
+	public boolean updateRole(SysRoleInfo sysRole,String ...menuIds) {
 		int result = sysRoleInfoDao.updateByPrimaryKeySelective(sysRole);
+		  if(result>0&&menuIds!=null)
+	         {
+	        	 result=sysRoleInfoCustomizeDao.setRoleMenu(sysRole.getId(), menuIds);
+	         }
 		return result > 0;
 	}
 

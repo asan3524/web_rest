@@ -94,13 +94,17 @@ public class SysUserServiceImpl implements SysUserService {
 	public boolean updateUser(SysUserInfo SysUserInfo, String... roleIds) {
 		int result = sysUserInfoInfoDao.updateByPrimaryKeySelective(SysUserInfo);
 
-		SysRoleToUserCriteria sysRoleToUserCriteria = new SysRoleToUserCriteria();
-		com.ddshteam.web.system.service.api.model.SysRoleToUserCriteria.Criteria criteria = sysRoleToUserCriteria
-				.createCriteria();
-		criteria.andUserIdEqualTo(SysUserInfo.getId());
-		result = sysRoleToUserDao.deleteByExample(sysRoleToUserCriteria);
+		if(result>0&&roleIds!=null&&roleIds.length>0)
+		{
+			SysRoleToUserCriteria sysRoleToUserCriteria = new SysRoleToUserCriteria();
+			com.ddshteam.web.system.service.api.model.SysRoleToUserCriteria.Criteria criteria = sysRoleToUserCriteria
+					.createCriteria();
+			criteria.andUserIdEqualTo(SysUserInfo.getId());
+			sysRoleToUserDao.deleteByExample(sysRoleToUserCriteria);
 
-		result = sysRoleToUserCustomizeDao.insertRoleToUsers(SysUserInfo.getId(), roleIds);
+			sysRoleToUserCustomizeDao.insertRoleToUsers(SysUserInfo.getId(), roleIds);
+		}
+
 		// SysUserInfoInfoCustomizeDao.updateUser(SysUserInfo, roleIds);
 		return result > 0;
 	}
