@@ -46,13 +46,25 @@ public class SysMenuController extends BaseController {
 	@Reference(version = "1.0.0")
 	private SysMenuService sysMenuService;
 
-	@ApiOperation(value = "菜单树(不含功能点)", notes = "用于添加菜单时选择父级菜单弹窗(root专用)")
+	@ApiOperation(value = "菜单树", notes = "用于菜单管理树展示")
 	@GetMapping(value = { "/tree" })
 	@RequiresPermissions(Constant.PERMISSION_MENU_TREE)
 	public Object getMenuTree(HttpServletRequest request, HttpServletResponse response) {
 		logger.debug("SysMenuController.getMenuTree()");
 
-		List<Tree> list = sysMenuService.getMenuTree();
+		Subject subject = SecurityUtils.getSubject();
+		SysUserInfo user = (SysUserInfo) subject.getPrincipals().getPrimaryPrincipal();
+
+		if (StringUtils.isEmpty(user)) {
+			return getResponse(HttpCode.UNAUTHORIZED, false);
+		}
+
+		List<Tree> list = null;
+		if (user.getIsBuiltin()) {
+			list = sysMenuService.getAllMenuTree();
+		} else {
+			list = sysMenuService.getMenuTreeByUser(user.getId());
+		}
 		return getResponse(list);
 	}
 

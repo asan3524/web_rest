@@ -32,8 +32,14 @@ public class SysMenuServiceImpl implements SysMenuService {
 	private SysMenuInfoCustomizeMapper sysMenuInfoCustomizeDao;
 
 	@Override
+	public List<Tree> getAllMenuTree() {
+		List<SysMenuInfo> list = sysMenuInfoDao.selectByExample(null);
+		List<Tree> trees = MenuTreeBuilder.build(list);
+		return trees;
+	}
+
+	@Override
 	public List<Tree> getMenuTree() {
-		// TODO Auto-generated method stub
 		SysMenuInfoCriteria criteria = new SysMenuInfoCriteria();
 		criteria.createCriteria().andTypeNotEqualTo(3);
 		List<SysMenuInfo> list = sysMenuInfoDao.selectByExample(criteria);
@@ -43,7 +49,6 @@ public class SysMenuServiceImpl implements SysMenuService {
 
 	@Override
 	public List<Tree> getMenuTreeByRole(String roleId) {
-		// TODO Auto-generated method stub
 		if (StringUtils.isNullOrEmpty(roleId)) {
 			return MenuTreeBuilder.convert(sysMenuInfoCustomizeDao.getMenuTree());
 		} else {

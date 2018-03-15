@@ -27,9 +27,9 @@ import com.ddshteam.web.core.util.SecurityUtil;
 import com.ddshteam.web.dto.system.LoginReqObj;
 import com.ddshteam.web.system.service.api.model.SysUserInfo;
 
-@Api(value = "/system/", description = "登陆接口")
+@Api(value = "/", description = "登陆接口")
 @RestController
-@RequestMapping(value = "/system/")
+@RequestMapping(value = "/")
 public class LoginController extends BaseController {
 
 	private final static Logger logger = LoggerFactory.getLogger(LoginController.class);

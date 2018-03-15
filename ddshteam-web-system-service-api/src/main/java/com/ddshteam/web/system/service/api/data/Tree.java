@@ -33,12 +33,12 @@ public class Tree implements Serializable{
 	 * @param path
 	 * @param iconClass
 	 */
-	public Tree(String id, String name, String url, String iconClass) {
+	public Tree(String id, String name, String url, String icon) {
 		// TODO Auto-generated constructor stub
 		this.id = id;
 		this.name = name;
 		this.url = url;
-		this.iconClass = iconClass;
+		this.icon = icon;
 	}
 
 	/**
@@ -52,12 +52,12 @@ public class Tree implements Serializable{
 	 * @param disabled
 	 * @param isLeaf
 	 */
-	public Tree(String id, String parentId, String name, String iconClass, boolean disabled, boolean isLeaf) {
+	public Tree(String id, String parentId, String name, String icon, boolean disabled, boolean isLeaf) {
 		// TODO Auto-generated constructor stub
 		this.id = id;
 		this.parentId = parentId;
 		this.name = name;
-		this.iconClass = iconClass;
+		this.icon = icon;
 		this.disabled = disabled;
 		this.isLeaf = isLeaf;
 	}
@@ -75,16 +75,16 @@ public class Tree implements Serializable{
 	 * @param isLeaf
 	 * @param checkStatus
 	 */
-	public Tree(String id, String parentId, String name, String iconClass, boolean disabled, boolean isLeaf,
-			int checkStatus) {
+	public Tree(String id, String parentId, String name, String icon, boolean disabled, boolean isLeaf,
+			boolean checked) {
 		// TODO Auto-generated constructor stub
 		this.id = id;
 		this.parentId = parentId;
 		this.name = name;
-		this.iconClass = iconClass;
+		this.icon = icon;
 		this.disabled = disabled;
 		this.isLeaf = isLeaf;
-		this.checkStatus = checkStatus;
+		this.checked = checked;
 	}
 	
 	public Tree(Tree target) {
@@ -93,10 +93,11 @@ public class Tree implements Serializable{
 		this.name = target.name;
 		this.parentId = target.parentId;
 		this.url = target.url;
-		this.iconClass = target.iconClass;
+		this.icon = target.icon;
 		this.disabled = target.disabled;
 		this.isLeaf = target.isLeaf;
-		this.checkStatus = target.checkStatus;
+		this.checked = target.checked;
+		this.type = target.type;
 		this.children = target.children;
 	}
 
@@ -105,7 +106,7 @@ public class Tree implements Serializable{
 	private String name;
 	private String url;
 	private List<Tree> children;
-	private String iconClass;
+	private String icon;
 	private boolean disabled;
 	private boolean isLeaf;
 	/**
@@ -113,7 +114,9 @@ public class Tree implements Serializable{
 	 * 0未选中
 	 * 1选中
 	 */
-	private int checkStatus;
+	private boolean checked;
+
+	private int type;
 	
 	public static TreeNodeBuilder builder(){
     	return new TreeNodeBuilder();
@@ -142,8 +145,8 @@ public class Tree implements Serializable{
     		target.url = url;
     		return this;
     	}
-    	public TreeNodeBuilder iconClass(String iconClass){
-    		target.iconClass = iconClass;
+    	public TreeNodeBuilder icon(String icon){
+    		target.icon = icon;
     		return this;
     	}
     	public TreeNodeBuilder disabled(Boolean disabled){
@@ -154,15 +157,18 @@ public class Tree implements Serializable{
     		target.isLeaf = isLeaf;
     		return this;
     	}
-    	public TreeNodeBuilder checkStatus(Integer checkStatus){
-    		target.checkStatus = checkStatus;
+    	public TreeNodeBuilder checked(Boolean checked){
+    		target.checked = checked;
     		return this;
     	}
     	public TreeNodeBuilder children(List<Tree> children){
     		target.children = children;
     		return this;
     	}
-    	
+    	public TreeNodeBuilder type(int type){
+    		target.type = type;
+    		return this;
+    	}
     	public Tree build(){
     		return new Tree(target);
     	}
@@ -208,12 +214,12 @@ public class Tree implements Serializable{
 		this.children = children;
 	}
 
-	public String getIconClass() {
-		return iconClass;
+	public String getIcon() {
+		return icon;
 	}
 
-	public void setIconClass(String iconClass) {
-		this.iconClass = iconClass;
+	public void setIcon(String icon) {
+		this.icon = icon;
 	}
 
 	public boolean isDisabled() {
@@ -232,11 +238,19 @@ public class Tree implements Serializable{
 		this.isLeaf = isLeaf;
 	}
 
-	public int getCheckStatus() {
-		return checkStatus;
+	public boolean getChecked() {
+		return checked;
 	}
 
-	public void setCheckStatus(int checkStatus) {
-		this.checkStatus = checkStatus;
+	public void setChecked(boolean checked) {
+		this.checked = checked;
+	}
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
 	}
 }

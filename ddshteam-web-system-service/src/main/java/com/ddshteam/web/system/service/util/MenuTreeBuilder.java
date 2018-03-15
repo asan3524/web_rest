@@ -18,8 +18,8 @@ public class MenuTreeBuilder {
 			if (StringUtils.isNullOrEmpty(menu.getParentId())) {
 				// {id,name,url,iconClass,children}
 				Tree tree = Tree.builder().id(menu.getId()).name(menu.getName()).parentId(menu.getParentId())
-						.url(menu.getUrl()).iconClass(menu.getIcon()).disabled(false).isLeaf(false).checkStatus(0)
-						.children(Lists.newArrayList()).build();
+						.url(menu.getUrl()).icon(menu.getIcon()).disabled(false).isLeaf(false).checked(false)
+						.type(menu.getType()).children(Lists.newArrayList()).build();
 
 				if (ifHasChild(list, menu.getId())) {
 					List<Tree> children = getChildren(list, menu.getId());
@@ -43,8 +43,8 @@ public class MenuTreeBuilder {
 			String p_id = menu.getParentId();
 			if (!StringUtils.isNullOrEmpty(p_id) && p_id.equals(pid)) {
 				Tree tree = Tree.builder().id(menu.getId()).name(menu.getName()).parentId(menu.getParentId())
-						.url(menu.getUrl()).iconClass(menu.getIcon()).disabled(false).isLeaf(false).checkStatus(0)
-						.children(Lists.newArrayList()).build();
+						.url(menu.getUrl()).icon(menu.getIcon()).disabled(false).isLeaf(false).checked(false)
+						.type(menu.getType()).children(Lists.newArrayList()).build();
 				if (ifHasChild(list, menu.getId())) {
 					List<Tree> c = getChildren(list, menu.getId());
 					tree.setChildren(c);
