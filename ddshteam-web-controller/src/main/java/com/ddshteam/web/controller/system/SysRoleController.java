@@ -88,9 +88,9 @@ public class SysRoleController extends BaseController {
 		
 		boolean result =false;
 
-		if(roleReq.getMenuids()!=null&&!roleReq.getMenuids().isEmpty()&&result)
+		if(roleReq.getMenuids()!=null&&!roleReq.getMenuids().isEmpty())
 		{
-			result=sysRoleService.saveRole(role,(String [])roleReq.getMenuids().toArray());
+			result=sysRoleService.saveRole(role,roleReq.getMenuids().toArray(new String[] {}));
 		}
 		else
 		{
@@ -127,9 +127,9 @@ public class SysRoleController extends BaseController {
 		
 		boolean result =false;
 
-		if(roleReq.getMenuids()!=null&&!roleReq.getMenuids().isEmpty()&&result)
+		if(roleReq.getMenuids()!=null&&!roleReq.getMenuids().isEmpty())
 		{
-			result=sysRoleService.updateRole(role,(String [])roleReq.getMenuids().toArray());
+			result=sysRoleService.updateRole(role,roleReq.getMenuids().toArray(new String[] {}));
 		}
 		else
 		{

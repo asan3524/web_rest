@@ -57,7 +57,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 		int result = sysRoleInfoDao.insert(sysRole);
          if(result>0&&menuIds!=null)
          {
-        	 result=sysRoleInfoCustomizeDao.setRoleMenu(sysRole.getId(), menuIds);
+        	 sysRoleInfoCustomizeDao.setRoleMenu(sysRole.getId(), menuIds);
          }
 		
 		return result > 0;
