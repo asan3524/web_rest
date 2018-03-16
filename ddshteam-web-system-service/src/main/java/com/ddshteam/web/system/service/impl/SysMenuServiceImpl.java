@@ -33,7 +33,9 @@ public class SysMenuServiceImpl implements SysMenuService {
 
 	@Override
 	public List<Tree> getAllMenuTree() {
-		List<SysMenuInfo> list = sysMenuInfoDao.selectByExample(null);
+		SysMenuInfoCriteria criteria = new SysMenuInfoCriteria();
+		criteria.setOrderByClause("order_num asc");
+		List<SysMenuInfo> list = sysMenuInfoDao.selectByExample(criteria);
 		List<Tree> trees = MenuTreeBuilder.build(list);
 		return trees;
 	}
@@ -42,6 +44,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 	public List<Tree> getMenuTree() {
 		SysMenuInfoCriteria criteria = new SysMenuInfoCriteria();
 		criteria.createCriteria().andTypeNotEqualTo(3);
+		criteria.setOrderByClause("order_num asc");
 		List<SysMenuInfo> list = sysMenuInfoDao.selectByExample(criteria);
 		List<Tree> trees = MenuTreeBuilder.build(list);
 		return trees;
