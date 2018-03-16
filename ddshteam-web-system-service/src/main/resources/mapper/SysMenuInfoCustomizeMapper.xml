@@ -37,7 +37,8 @@
 		from sys_role_to_user r2u
 		where r2u.user_id=#{userId}
 		)
-		)
+		) order by
+		order_num
 	</select>
 	<select id="getPermissionByUser" resultType="java.lang.String">
 		select
@@ -62,26 +63,33 @@
 		smi.id,smi.name,smi.parent_id,smi.url,smi.icon,smi.type=3 as
 		isLeaf,srm1.id is not null as checked from sys_menu_info smi
 		inner
-		join sys_role_to_menu srm
+		join
+		sys_role_to_menu srm
 		on smi.id=srm.menu_id
 		inner join
-		sys_role_to_user sru
+		sys_role_to_user
+		sru
 		on srm.role_id=sru.role_id and
 		sru.user_id=#{userId}
-		left join sys_role_to_menu srm1
+		left join
+		sys_role_to_menu srm1
 		on
 		smi.id=srm1.menu_id and srm1.role_id=#{roleId}
+		order by smi.order_num
 	</select>
 	<select id="getMenuTreeByRole" resultMap="treeMap">
 		select
 		smi.id,smi.name,smi.parent_id,smi.url,smi.icon,smi.type=3 as
 		isLeaf,srm1.id is not null as checked from sys_menu_info smi
 		left
-		join sys_role_to_menu srm
+		join
+		sys_role_to_menu srm
 		on smi.id=srm.menu_id
 		left join
-		sys_role_to_menu srm1
-		on smi.id=srm1.menu_id and srm1.role_id=#{roleId}
+		sys_role_to_menu
+		srm1
+		on smi.id=srm1.menu_id and srm1.role_id=#{roleId} order by
+		smi.order_num
 	</select>
 	<select id="getMenuTreeByUser" resultMap="treeMap">
 		select
@@ -95,19 +103,19 @@
 		sys_role_to_user
 		sru
 		on srm.role_id=sru.role_id and
-		sru.user_id=#{userId}
+		sru.user_id=#{userId} order by
+		smi.order_num
 	</select>
 	<select id="getMenuTree" resultMap="treeMap">
 		select
 		id,name,parent_id,url,icon,type=3 as
 		isLeaf,false as checked from
-		sys_menu_info
+		sys_menu_info order by order_num
 	</select>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-		<!--delete from sys_role_to_menu where menu_check_parent(#{id,jdbcType=VARCHAR},
-		menu_id) or id=#{id,jdbcType=VARCHAR};
-		delete from sys_menu_info where menu_check_parent(#{id,jdbcType=VARCHAR},
-		id) or id=#{id,jdbcType=VARCHAR} -->
+		<!--delete from sys_role_to_menu where menu_check_parent(#{id,jdbcType=VARCHAR}, 
+			menu_id) or id=#{id,jdbcType=VARCHAR}; delete from sys_menu_info where menu_check_parent(#{id,jdbcType=VARCHAR}, 
+			id) or id=#{id,jdbcType=VARCHAR} -->
 		call delete_menu_childrens(#{id,jdbcType=VARCHAR})
 	</delete>
 </mapper>
