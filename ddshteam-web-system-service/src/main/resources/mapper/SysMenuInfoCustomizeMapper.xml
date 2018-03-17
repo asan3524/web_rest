@@ -72,19 +72,21 @@
 		on srm.role_id=sru.role_id and
 		sru.user_id=#{userId}
 		left join
-		sys_role_to_menu srm1
-		on
-		smi.id=srm1.menu_id and srm1.role_id=#{roleId}
-		order by smi.order_num
+		(select distinct menu_id from sys_role_to_menu where
+		role_id=#{roleId}) srm1
+		on smi.id=srm1.menu_id
+		order by
+		smi.order_num
 	</select>
 	<select id="getMenuTreeByRole" resultMap="treeMap">
 		select
 		smi.id,smi.name,smi.parent_id,smi.url,smi.icon,smi.type=3 as
-		isLeaf,srm.id is not null as checked from sys_menu_info smi
+		isLeaf,srm.menu_id is not null as checked from sys_menu_info smi
 		left
 		join
-		sys_role_to_menu srm
-		on smi.id=srm.menu_id and srm.role_id=#{roleId}
+		(select distinct menu_id from sys_role_to_menu where
+		role_id=#{roleId}) srm
+		on smi.id=srm.menu_id
 		order by
 		smi.order_num
 	</select>
@@ -92,16 +94,19 @@
 		select
 		smi.id,smi.name,smi.parent_id,smi.url,smi.icon,smi.type=3 as
 		isLeaf,false as checked from sys_menu_info smi
-		inner
-		join
-		sys_role_to_menu srm
-		on smi.id=srm.menu_id
-		inner join
-		sys_role_to_user
-		sru
-		on srm.role_id=sru.role_id and
-		sru.user_id=#{userId} order by
-		smi.order_num
+		where smi.id in (
+		select
+		distinct
+		menu_id
+		from sys_role_to_menu r2m
+		where r2m.role_id in (
+		select
+		role_id
+		from sys_role_to_user r2u
+		where r2u.user_id=#{userId}
+		)
+		) order by
+		order_num;
 	</select>
 	<select id="getMenuTree" resultMap="treeMap">
 		select
