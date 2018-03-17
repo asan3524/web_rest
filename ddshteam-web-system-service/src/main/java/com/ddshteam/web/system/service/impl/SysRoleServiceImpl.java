@@ -52,14 +52,13 @@ public class SysRoleServiceImpl implements SysRoleService {
 	}
 
 	@Override
-	public boolean saveRole(SysRoleInfo sysRole,String ...menuIds) {
+	public boolean saveRole(SysRoleInfo sysRole, String... menuIds) {
 		sysRole.setCreateTime(new Date());
 		int result = sysRoleInfoDao.insert(sysRole);
-         if(result>0&&menuIds!=null)
-         {
-        	 sysRoleInfoCustomizeDao.setRoleMenu(sysRole.getId(), menuIds);
-         }
-		
+		if (result > 0 && menuIds != null) {
+			sysRoleInfoCustomizeDao.setRoleMenu(sysRole.getId(), menuIds);
+		}
+
 		return result > 0;
 	}
 
@@ -70,6 +69,13 @@ public class SysRoleServiceImpl implements SysRoleService {
 	         {
 	        	 sysRoleInfoCustomizeDao.setRoleMenu(sysRole.getId(), menuIds);
 	         }
+		  else
+		  {
+			  SysRoleToMenuCriteria sysRoleToMenuCriteria=new SysRoleToMenuCriteria();
+			  com.ddshteam.web.system.service.api.model.SysRoleToMenuCriteria.Criteria criteria=sysRoleToMenuCriteria.createCriteria();
+			  criteria.andRoleIdEqualTo(sysRole.getId());
+			  sysRoleToMenuDao.deleteByExample(sysRoleToMenuCriteria);
+		  }
 		return result > 0;
 	}
 
@@ -124,8 +130,9 @@ public class SysRoleServiceImpl implements SysRoleService {
 		mcriteria.andRoleIdIn(roles);
 		result = sysRoleToMenuDao.deleteByExample(sysRoleToMenuCriteria);
 
-		SysRoleInfoCriteria  sysRoleInfoCriteria=new SysRoleInfoCriteria();
-		com.ddshteam.web.system.service.api.model.SysRoleInfoCriteria.Criteria roleCriteria=sysRoleInfoCriteria.createCriteria();
+		SysRoleInfoCriteria sysRoleInfoCriteria = new SysRoleInfoCriteria();
+		com.ddshteam.web.system.service.api.model.SysRoleInfoCriteria.Criteria roleCriteria = sysRoleInfoCriteria
+				.createCriteria();
 		roleCriteria.andIdIn(roles);
 		result = sysRoleInfoDao.deleteByExample(sysRoleInfoCriteria);
 
