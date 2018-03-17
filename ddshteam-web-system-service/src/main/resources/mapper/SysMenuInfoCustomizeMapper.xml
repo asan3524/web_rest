@@ -80,15 +80,12 @@
 	<select id="getMenuTreeByRole" resultMap="treeMap">
 		select
 		smi.id,smi.name,smi.parent_id,smi.url,smi.icon,smi.type=3 as
-		isLeaf,srm1.id is not null as checked from sys_menu_info smi
+		isLeaf,srm.id is not null as checked from sys_menu_info smi
 		left
 		join
 		sys_role_to_menu srm
-		on smi.id=srm.menu_id
-		left join
-		sys_role_to_menu
-		srm1
-		on smi.id=srm1.menu_id and srm1.role_id=#{roleId} order by
+		on smi.id=srm.menu_id and srm.role_id=#{roleId}
+		order by
 		smi.order_num
 	</select>
 	<select id="getMenuTreeByUser" resultMap="treeMap">

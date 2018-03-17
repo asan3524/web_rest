@@ -47,7 +47,7 @@ public class LoginController extends BaseController {
 
 		Subject subject = SecurityUtils.getSubject();
 
-		subject.logout();
+		// subject.logout();
 		if (!subject.isAuthenticated()) {
 			String clientIp = IpUtil.getIpAddr(request);
 			UsernamePasswordToken token = new UsernamePasswordToken(loginReqObj.getUsername(),

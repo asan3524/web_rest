@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.SessionListener;
 import org.apache.shiro.session.mgt.SessionManager;
@@ -36,7 +37,7 @@ public class ShiroConfig {
 
 	@Autowired
 	private AuthRealm authRealm;
-	
+
 	@Bean
 	public ShiroFilterFactoryBean shiroFilter(@Qualifier("securityManager") SecurityManager securityManager) {
 		ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
@@ -113,11 +114,11 @@ public class ShiroConfig {
 		return manager;
 	}
 
-//	@Bean(name = "authRealm")
-//	public AuthRealm authRealm() {
-//		AuthRealm authRealm = new AuthRealm();
-//		return authRealm;
-//	}
+	// @Bean(name = "authRealm")
+	// public AuthRealm authRealm() {
+	// AuthRealm authRealm = new AuthRealm();
+	// return authRealm;
+	// }
 
 	@Bean
 	public SimpleCookie rememberMeCookie() {
@@ -131,8 +132,9 @@ public class ShiroConfig {
 	// cookie管理器
 	@Bean(name = "cookieRememberMeManager")
 	public CookieRememberMeManager rememberMeManager() {
-		System.out.println("rememberMeManager()");
+		// System.out.println("rememberMeManager()");
 		CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
+		cookieRememberMeManager.setCipherKey(Base64.decode("'6ZmI6I2j5Y+R5aSn5ZOlAA=='"));
 		cookieRememberMeManager.setCookie(rememberMeCookie());
 		return cookieRememberMeManager;
 	}
