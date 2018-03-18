@@ -123,15 +123,6 @@ public class SystemContants {
 	@ConstantDescription(desc = SystemContants.PERMISSION)
 	public static final class Permission {
 		/**
-		 *  登录
-		 */
-		public static final String PERMISSION_LOGIN = "system:login";
-		/**
-		 *  登出
-		 */
-		public static final String PERMISSION_LOGOUT = "system:logout";
-
-		/**
 		 *  菜单
 		 */
 		public static final String PERMISSION_MENU_TREE = "system:menu:tree";
