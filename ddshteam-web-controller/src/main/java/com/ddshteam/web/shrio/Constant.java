@@ -17,7 +17,7 @@ public class Constant {
 	private static List<String> permissions = new ArrayList<String>();
 
 	static {
-		permissions.addAll(SystemContants.CONSTANT_TYPE_LIST.get("permission"));
+		permissions.addAll(SystemContants.CONSTANT_TYPE_LIST.get(SystemContants.PERMISSION));
 	}
 
 	/**
@@ -29,7 +29,4 @@ public class Constant {
 	public static List<String> rootPermission() {
 		return permissions;
 	}
-
-	
-
 }
