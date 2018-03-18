@@ -18,19 +18,20 @@ import com.ddshteam.web.system.service.api.annotation.ConstantDescription;
  */
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class SystemContants {
+	public static final String PERMISSION = "permission";
 
 	public static final Map<String, Map<String, String>> CONSTANT_DESC = new HashMap<String, Map<String, String>>(40);
 
 	public static final Map<String, String> CONSTANT_TYPE_DESC = new HashMap<String, String>(20);
 
-	public static final Map<String, List<String>> CONSTANT_TYPE_LIST =  new HashMap<String, List<String>>();
-	
+	public static final Map<String, List<String>> CONSTANT_TYPE_LIST = new HashMap<String, List<String>>();
+
 	static {
 		try {
 			for (Class cls : SystemContants.class.getClasses()) {
 				ConstantDescription cds = (ConstantDescription) cls.getAnnotation(ConstantDescription.class);
 				if (cds != null) {
-					if("permission".equals(cds.desc())) {
+					if (PERMISSION.equals(cds.desc())) {
 
 						List<String> ps = new ArrayList<String>();
 						for (Field fd : cls.getDeclaredFields()) {
@@ -38,15 +39,15 @@ public class SystemContants {
 								ps.add(fd.get(cls).toString());
 							}
 						}
-						
-						CONSTANT_TYPE_LIST.put("permission", ps);
+
+						CONSTANT_TYPE_LIST.put(PERMISSION, ps);
 						continue;
 					}
-					
+
 					CONSTANT_TYPE_DESC.put(cls.getSimpleName(), cds.desc());
 					Map<String, String> valueDesc = new HashMap<String, String>(10);
 					CONSTANT_DESC.put(cls.getSimpleName(), valueDesc);
-					
+
 					for (Field fd : cls.getDeclaredFields()) {
 						ConstantDescription cdf = fd.getAnnotation(ConstantDescription.class);
 						if (cdf != null) {
@@ -54,7 +55,7 @@ public class SystemContants {
 
 						}
 					}
-					
+
 				}
 
 			}
@@ -119,8 +120,17 @@ public class SystemContants {
 
 	}
 
-	@ConstantDescription(desc = "permission")
+	@ConstantDescription(desc = SystemContants.PERMISSION)
 	public static final class Permission {
+		/**
+		 *  登录
+		 */
+		public static final String PERMISSION_LOGIN = "system:login";
+		/**
+		 *  登出
+		 */
+		public static final String PERMISSION_LOGOUT = "system:logout";
+
 		/**
 		 *  菜单
 		 */
@@ -131,10 +141,53 @@ public class SystemContants {
 		public static final String PERMISSION_MENU_SAVE = "system:menu:save";
 		public static final String PERMISSION_MENU_UPDATE = "system:menu:update";
 		public static final String PERMISSION_MENU_DELETE = "system:menu:delete";
-		
+
 		/**
 		 * 操作日志
 		 */
 		public static final String PERMISSION_OPLOG_LIST = "system:oplog:list";
+
+		/**
+		 * 部门
+		 */
+		public static final String PERMISSION_DEPT_TREE = "system:dept:tree";
+		public static final String PERMISSION_DEPT_TREE2USER = "system:dept:tree2user";
+		public static final String PERMISSION_DEPT_LIST = "system:dept:list";
+		public static final String PERMISSION_DEPT_INFO = "system:dept:info";
+		public static final String PERMISSION_DEPT_SAVE = "system:dept:save";
+		public static final String PERMISSION_DEPT_UPDATE = "system:dept:update";
+		public static final String PERMISSION_DEPT_DELETE = "system:dept:delete";
+
+		/**
+		 * 部门类型
+		 */
+		public static final String PERMISSION_DEPTTYPE_LIST = "system:depttype:list";
+		public static final String PERMISSION_DEPTTYPE_INFO = "system:depttype:info";
+		public static final String PERMISSION_DEPTTYPE_SAVE = "system:depttype:save";
+		public static final String PERMISSION_DEPTTYPE_UPDATE = "system:depttype:update";
+		public static final String PERMISSION_DEPTTYPE_DELETE = "system:depttype:delete";
+
+		/**
+		 * 角色
+		 */
+		public static final String PERMISSION_ROLE_ROLE2MENU = "system:role:role2menu";
+		public static final String PERMISSION_ROLE_LIST = "system:role:list";
+		public static final String PERMISSION_ROLE_INFO = "system:role:info";
+		public static final String PERMISSION_ROLE_SAVE = "system:role:save";
+		public static final String PERMISSION_ROLE_UPDATE = "system:role:update";
+		public static final String PERMISSION_ROLE_DELETE = "system:role:delete";
+		public static final String PERMISSION_ROLE_DELETES = "system:role:deletes";
+
+		/**
+		 * 用户
+		 */
+		public static final String PERMISSION_USER_CHANGEPWD = "system:user:changepwd";
+		public static final String PERMISSION_USER_PWD = "system:user:pwd";
+		public static final String PERMISSION_USER_LIST = "system:user:list";
+		public static final String PERMISSION_USER_INFO = "system:user:info";
+		public static final String PERMISSION_USER_SAVE = "system:user:save";
+		public static final String PERMISSION_USER_UPDATE = "system:user:update";
+		public static final String PERMISSION_USER_DELETE = "system:user:delete";
+		public static final String PERMISSION_USER_DELETES = "system:user:deletes";
 	}
 }
