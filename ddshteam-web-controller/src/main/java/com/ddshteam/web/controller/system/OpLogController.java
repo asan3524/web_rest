@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.ddshteam.web.core.base.BaseController;
 import com.ddshteam.web.dto.system.OpLogReq;
-import com.ddshteam.web.shrio.Constant;
 import com.ddshteam.web.system.service.api.SysOpLogService;
+import com.ddshteam.web.system.service.api.constant.SystemContants;
 import com.ddshteam.web.system.service.api.data.OpLogListReqData;
 import com.ddshteam.web.system.service.api.model.SysOpLogs;
 import com.github.pagehelper.PageInfo;
@@ -37,7 +37,7 @@ public class OpLogController extends BaseController {
 
 	@ApiOperation(value = "日志列表", notes = "可指定参数: name(用户名称), ip(访问IP), 时间范围等")
 	@PostMapping(value = { "/list" })
-	@RequiresPermissions(Constant.PERMISSION_OPLOG_LIST)
+	@RequiresPermissions(SystemContants.Permission.PERMISSION_OPLOG_LIST)
 	public Object getOpLogList(@Valid @RequestBody OpLogReq opLogReq,
 			@PageableDefault(page = 1, size = 10, sort = "create_time,desc") Pageable pageable, BindingResult errors) {
 
