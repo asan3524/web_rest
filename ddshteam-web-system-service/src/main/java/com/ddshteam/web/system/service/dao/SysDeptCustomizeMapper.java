@@ -48,4 +48,6 @@ public interface SysDeptCustomizeMapper {
     List<DeptInfoResp> selectByExample(SysDepInfoCriteria example);
 
     DeptInfoResp selectByPrimaryKey(String id);
+    
+    List<Tree> selectTreeByUserDefault(String id);
 }

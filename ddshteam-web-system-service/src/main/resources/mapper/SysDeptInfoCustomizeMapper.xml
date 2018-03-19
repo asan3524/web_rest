@@ -253,6 +253,17 @@
 		p.parent_id = #{id,jdbcType=VARCHAR} group by
 		p.id
 	</select>
+	
+		<select id="selectTreeByUserDefault" parameterType="java.lang.String"
+		resultMap="TreeBaseResultMap">
+		select
+		p.id, p.parent_id, p.name, 1> count(c.id) as isLeaf
+		from sys_dep_info p left join sys_dep_info c on
+		p.id=c.parent_id
+		where
+		p.id = #{id,jdbcType=VARCHAR} group by
+		p.id
+	</select>
 
 	<resultMap id="BaseResultMap"
 		type="com.ddshteam.web.system.service.api.data.DeptInfoResp">

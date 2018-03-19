@@ -35,7 +35,7 @@ public interface SysDeptService {
 	 * @return List<Tree>
 	 * @author duyu
 	 */
-	public List<Tree> getChildrenDeptList(String deptId);
+	public List<Tree> getChildrenDeptList(String deptId,String userdepid);
 
 	/**
 	 * 获取部门详情列表(包含部门下的人员)

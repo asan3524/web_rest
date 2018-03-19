@@ -9,7 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -21,7 +23,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.dubbo.config.annotation.Reference;
@@ -35,6 +36,7 @@ import com.ddshteam.web.system.service.api.data.DeptInfoResp;
 import com.ddshteam.web.system.service.api.data.Tree;
 import com.ddshteam.web.system.service.api.model.SysDepInfo;
 import com.ddshteam.web.system.service.api.model.SysDeptypeInfo;
+import com.ddshteam.web.system.service.api.model.SysUserInfo;
 
 @Api(value = "/system/dept", description = "部门接口-完成后端测试")
 @RestController
@@ -46,59 +48,70 @@ public class SysDeptController extends BaseController {
 	@Reference(version = "1.0.0")
 	private SysDeptService sysDeptService;
 
-	@ApiOperation(value = "部门列表", notes = "")
-	@GetMapping(value = { "/list" })
-	@RequiresPermissions(SystemContants.Permission.PERMISSION_DEPT_LIST)
-	public Object getDeptList(HttpServletRequest request, HttpServletResponse response) {
-		logger.debug("SysDeptController.getDeptList()");
+	/*
+	 * @ApiOperation(value = "部门列表", notes = "")
+	 * 
+	 * @GetMapping(value = { "/list" })
+	 * 
+	 * @RequiresPermissions(SystemContants.Permission.PERMISSION_DEPT_LIST)
+	 * public Object getDeptList(HttpServletRequest request, HttpServletResponse
+	 * response) { logger.debug("SysDeptController.getDeptList()");
+	 * 
+	 * @SuppressWarnings("deprecation") List<DeptInfoResp> list =
+	 * sysDeptService.getSysDeptDetailList(); return getResponse(list); }
+	 */
 
-		@SuppressWarnings("deprecation")
-		List<DeptInfoResp> list = sysDeptService.getSysDeptDetailList();
-		return getResponse(list);
-	}
-
-	@ApiOperation(value = "部门树(全部)", notes = "")
-	@GetMapping(value = { "/tree2all" })
-	public Object getDeptTree(HttpServletRequest request, HttpServletResponse response) {
-		logger.debug("SysDeptController.getDeptTree()");
-
-		List<Tree> trees = sysDeptService.getDeptTree(false);
-		return getResponse(trees);
-	}
+	/*
+	 * @ApiOperation(value = "部门树(全部)", notes = "")
+	 * 
+	 * @GetMapping(value = { "/tree2all" }) public Object
+	 * getDeptTree(HttpServletRequest request, HttpServletResponse response) {
+	 * logger.debug("SysDeptController.getDeptTree()");
+	 * 
+	 * List<Tree> trees = sysDeptService.getDeptTree(false); return
+	 * getResponse(trees); }
+	 */
 
 	@ApiOperation(value = "部门树(当前用户)", notes = "当前登录用户的部门及子部门")
 	@GetMapping(value = { "/tree2user" })
 	@RequiresPermissions(SystemContants.Permission.PERMISSION_DEPT_TREE2USER)
-	public Object getDeptTreeByUser(@RequestParam("userId") String userId, HttpServletRequest request,
-			HttpServletResponse response) {
+	public Object getDeptTreeByUser() {
 		logger.debug("SysDeptController.getDeptTreeByUser()");
 
-		// TODO userId从session中获取
+		Subject subject = SecurityUtils.getSubject();
+		SysUserInfo user = (SysUserInfo) subject.getPrincipals().getPrimaryPrincipal();
 
-		if (StringUtils.isEmpty(userId)) {
-			logger.error("userId is null.");
-			return getResponse(HttpCode.BAD_REQUEST, false);
+		if (StringUtils.isEmpty(user)) {
+			return getResponse(HttpCode.UNAUTHORIZED, false);
 		}
 
-		List<Tree> trees = sysDeptService.getDeptTree(userId, false);
+		List<Tree> trees = null;
+		if (user.getIsBuiltin()) {
+			trees = sysDeptService.getDeptTree(false);
+		} else {
+			trees = sysDeptService.getDeptTree(user.getId(), false);
+		}
 		return getResponse(trees);
 	}
 
 	@ApiOperation(value = "获取直接子部门", notes = "")
-	@GetMapping(value = { "/tree/{deptId}" })
+	@GetMapping(value = { "/tree/{deptId}"})
 	@RequiresPermissions(SystemContants.Permission.PERMISSION_DEPT_TREE)
 	public Object getChildrenDept(@PathVariable("deptId") String deptId, HttpServletRequest request,
 			HttpServletResponse response) {
 		logger.debug("SysDeptController.getChildrenDept()");
 
 		if (StringUtils.isEmpty(deptId)) {
-			logger.error("deptId is null.");
-			return getResponse(HttpCode.BAD_REQUEST, false);
+			deptId=null;
 		}
+		
+		Subject subject = SecurityUtils.getSubject();
+		SysUserInfo user = (SysUserInfo) subject.getPrincipals().getPrimaryPrincipal();
 
-		List<Tree> trees = sysDeptService.getChildrenDeptList(deptId);
+		List<Tree> trees = sysDeptService.getChildrenDeptList(deptId,user.getDepId());
 		return getResponse(trees);
 	}
+	
 
 	@ApiOperation(value = "获取部门详情", notes = "")
 	@GetMapping(value = { "/id/{deptId}" })

@@ -79,7 +79,7 @@ public class SysDeptServiceImpl implements SysDeptService {
 	}
 
 	@Override
-	public List<Tree> getChildrenDeptList(String deptId) {
+	public List<Tree> getChildrenDeptList(String deptId,String userdepid) {
 		/*
 		 * SysDepInfoCriteria sysDepInfoCriteria=new SysDepInfoCriteria();
 		 * Criteria criteria=sysDepInfoCriteria.createCriteria();
@@ -89,7 +89,16 @@ public class SysDeptServiceImpl implements SysDeptService {
 		 * DeptTreeBuilder.childrenBuild(list); return trees;
 		 */
 		// sysDeptCustomizeDao.getChildrenDeptList(deptId);
-		return sysDeptCustomizeDao.selectTreeByPrimaryKey(deptId);
+		
+		if(deptId==null)
+		{
+			return sysDeptCustomizeDao.selectTreeByUserDefault(userdepid);
+		}
+		else
+		{
+			return sysDeptCustomizeDao.selectTreeByPrimaryKey(deptId);
+		}
+		
 	}
 
 	@Deprecated
