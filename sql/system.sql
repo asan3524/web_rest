@@ -27,13 +27,8 @@ CREATE TABLE `sys_user_info` (
 -- root pwd bitlife_root_888T3
 -- admin pwd admin
 -- ----------------------------
-<<<<<<< HEAD
-INSERT INTO `sys_user_info` VALUES ('0', 'root', '49ef97dcb51daf753be8a0adda157b65', '内置账户', '', '', '', '', null, 1, 0, 1, '2018-02-01 19:22:55');
-INSERT INTO `sys_user_info` VALUES ('1', 'admin', '21232f297a57a5a743894a0e4a801fc3', '管理员', '', '', '', '', null, 0, 1, 1, '2018-02-01 19:22:55');
-=======
 INSERT INTO `sys_user_info` VALUES ('0', 'root', 's5+xTlu4HTuXWkcJS8vXzq==', '内置账户', null, '', '', '', '', null, 1, '内置账户用户不可见', 0, 1, '2018-02-01 19:22:55');
-INSERT INTO `sys_user_info` VALUES ('1', 'admin', 'ismLkxFxF14d9uEosEa6MM==', '管理员', null, '', '', '', '', null, 0, '内置管理员不可删除', 1, 1, '2018-02-01 19:22:55');
->>>>>>> web_rest
+INSERT INTO `sys_user_info` VALUES ('5226830917534711', 'admin', 'ismLkxFxF14d9uEosEa6MM==', '管理员', null, '', '', '', '', '1', '0', '内置管理员不可删除', '1', '1', '2018-02-01 19:22:55');
 
 -- ----------------------------
 -- Table structure for `sys_dep_info` 可选
@@ -54,9 +49,7 @@ CREATE TABLE `sys_dep_info` (
 -- ----------------------------
 -- Records of sys_dep_info
 -- ----------------------------
-INSERT INTO `sys_dep_info` VALUES ('1', '集团公司', null, null, '总公司', 0, 1, '2018-02-01 19:22:55');
-INSERT INTO `sys_dep_info` VALUES ('2', '集团公司2', '1', null, '总公司2', '0', '1', '2018-02-01 19:22:55');
-INSERT INTO `sys_dep_info` VALUES ('3', '集团公司3', '2', null, '总公司3', '0', '1', '2018-02-01 19:22:55');
+INSERT INTO `sys_dep_info` VALUES ('1', '集团公司', null, null, '总公司', '0', '1', '2018-02-01 19:22:55');
 
 -- ----------------------------
 -- Table structure for `sys_deptype_info` 可选
@@ -75,6 +68,8 @@ CREATE TABLE `sys_deptype_info` (
 -- Records of sys_deptype_info
 -- ----------------------------
 INSERT INTO `sys_deptype_info` VALUES ('1', 'SCHOOL', '学校', '学校');
+INSERT INTO `sys_deptype_info` VALUES ('2', 'DEPT', '直属部门', '直属部门');
+INSERT INTO `sys_deptype_info` VALUES ('3', 'CHILD', '子公司', '子公司');
 
 -- ----------------------------
 -- Table structure for `sys_menu_info`
@@ -95,15 +90,63 @@ CREATE TABLE `sys_menu_info` (
 -- ----------------------------
 -- Records of sys_menu_info
 -- ----------------------------
-INSERT INTO `sys_menu_info` VALUES ('1', '系统管理', null, '1', '/system', null, '', 1);
-INSERT INTO `sys_menu_info` VALUES ('2', '菜单管理', '1', '2', '/menu', null, '', 2);
-INSERT INTO `sys_menu_info` VALUES ('3', '菜单树', '2', '3', null, 'system:menu:tree', '', 3);
-INSERT INTO `sys_menu_info` VALUES ('4', '菜单状态树', '2', '3', null, 'system:menu:tree2status', '', 4);
-INSERT INTO `sys_menu_info` VALUES ('5', '用户菜单树', '2', '3', null, 'system:menu:tree2user', '', 5);
-INSERT INTO `sys_menu_info` VALUES ('6', '详情', '2', '3', null, 'system:menu:info', '', 6);
-INSERT INTO `sys_menu_info` VALUES ('7', '增加', '2', '3', null, 'system:menu:save', '', 7);
-INSERT INTO `sys_menu_info` VALUES ('8', '修改', '2', '3', null, 'system:menu:update', '', 8);
-INSERT INTO `sys_menu_info` VALUES ('9', '删除', '2', '3', null, 'system:menu:delete', '', 9);
+INSERT INTO `sys_menu_info` VALUES ('5219191946478591', '系统管理', '', '1', '/system', '', 'android-settings', '5');
+INSERT INTO `sys_menu_info` VALUES ('5219191946478592', '物资管理', null, '1', '/goods', '', 'briefcase', '0');
+INSERT INTO `sys_menu_info` VALUES ('5219194605470720', '用户管理', '5219191946478591', '2', '/system/user', '', 'android-person', '0');
+INSERT INTO `sys_menu_info` VALUES ('5219195567703040', '角色管理', '5219191946478591', '2', '/system/role', '', 'android-people', '0');
+INSERT INTO `sys_menu_info` VALUES ('5219197081027584', '部门管理', '5219191946478591', '2', '/system/dept', '', 'cube', '0');
+INSERT INTO `sys_menu_info` VALUES ('5219199034688512', '物资管理', '5219191946478592', '2', '/goods/manage', '', 'briefcase', '0');
+INSERT INTO `sys_menu_info` VALUES ('5219200373818368', '分类管理', '5219191946478592', '2', '/goods/category', '', 'folder', '0');
+INSERT INTO `sys_menu_info` VALUES ('5219201469776896', '品牌管理', '5219191946478592', '2', '/goods/brands', '', 'star', '0');
+INSERT INTO `sys_menu_info` VALUES ('5227617678525440', '菜单管理', '5219191946478591', '2', '/system/menu', '', 'navicon-round', '1');
+INSERT INTO `sys_menu_info` VALUES ('5227619801564160', '菜单树', '5227617678525440', '3', '', 'system:menu:tree', 'android-settings', '1');
+INSERT INTO `sys_menu_info` VALUES ('5227623190397952', '详情', '5227617678525440', '3', '', 'system:menu:info', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5227624319583232', '新增', '5227617678525440', '3', '', 'system:menu:save', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5227625014887424', '修改', '5227617678525440', '3', '', 'system:menu:update', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5227625606972416', '删除', '5227617678525440', '3', '', 'system:menu:delete', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5227627115774976', '状态树', '5227617678525440', '3', '', 'system:menu:tree2status', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5227647843730432', '用户菜单', null, '3', '', 'system:menu:tree2user', 'android-settings', '6');
+INSERT INTO `sys_menu_info` VALUES ('5230700403786752', '详情', '5219194605470720', '3', '', 'system:user:info', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5230700889375744', '新增', '5219194605470720', '3', '', 'system:user:save', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5230701290685440', '修改', '5219194605470720', '3', '', 'system:user:update', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5230701685507072', '删除', '5219194605470720', '3', '', 'system:user:delete', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5230702176142336', '批量删除', '5219194605470720', '3', '', 'system:user:deletes', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5230703144698880', '列表', '5219194605470720', '3', '', 'system:user:list', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5230704077505536', '修改密码', '5219194605470720', '3', '', 'system:user:changepwd', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5230704464299008', '重置密码', '5219194605470720', '3', '', 'system:user:pwd', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5230705194337280', '详情', '5219195567703040', '3', '', 'system:role:info', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5230705603642368', '新增', '5219195567703040', '3', '', 'system:role:save', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5230705872208896', '修改', '5219195567703040', '3', '', 'system:role:update', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5230706540381184', '删除', '5219195567703040', '3', '', 'system:role:delete', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5230707520865280', '批量删除', '5219195567703040', '3', '', 'system:role:deletes', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5230707978863616', '列表', '5219195567703040', '3', '', 'system:role:list', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5230708402750464', '功能权限', '5219195567703040', '3', '', 'system:role:role2menu', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5230709271462912', '详情', '5219197081027584', '3', '', 'system:dept:info', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5230711477109760', '新增', '5219197081027584', '3', '', 'system:dept:save', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5230712077583360', '修改', '5219197081027584', '3', '', 'system:dept:update', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5230713089983488', '删除', '5219197081027584', '3', '', 'system:dept:delete', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5230713872548864', '列表', '5219197081027584', '3', '', 'system:dept:list', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5230714925286400', '用户部门树', '5219197081027584', '3', '', 'system:dept:tree2user', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5230715329446912', '部门树', '5219197081027584', '3', '', 'system:dept:tree', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5230910162568192', '详情', '5219199034688512', '3', '', 'goods:goodsinfo:info', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5230911395431424', '列表', '5219199034688512', '3', '', 'goods:goodsinfo:list', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5230912259195904', '新增', '5219199034688512', '3', '', 'goods:goodsinfo:save', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5230913193575424', '更新', '5219199034688512', '3', '', 'goods:goodsinfo:update', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5230914520548352', '批量删除', '5219199034688512', '3', '', 'goods:goodsinfo:deletes', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5230915341747200', '删除', '5219199034688512', '3', '', 'goods:goodsinfo:delete', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5230917841486848', '新增', '5219200373818368', '3', '', 'goods:goodstype:save', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5230918327403520', '更新', '5219200373818368', '3', '', 'goods:goodstype:update', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5230919166821376', '删除', '5219200373818368', '3', '', 'goods:goodstype:delete', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5230919554860032', '批量删除', '5219200373818368', '3', '', 'goods:goodstype:deletes', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5230920055424000', '详情', '5219200373818368', '3', '', 'goods:goodstype:info', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5230920517911552', '类型树', '5219200373818368', '3', '', 'goods:goodstype:tree', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5230921096889344', '新增', '5219201469776896', '3', '', 'goods:goodsbrand:save', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5230921473262592', '更新', '5219201469776896', '3', '', 'goods:goodsbrand:update', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5230921924183040', '删除', '5219201469776896', '3', '', 'goods:goodsbrand:delete', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5230922338796544', '批量删除', '5219201469776896', '3', '', 'goods:goodsbrand:deletes', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5230922999792640', '详情', '5219201469776896', '3', '', 'goods:goodsbrand:info', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5230923472569344', '品牌树', '5219201469776896', '3', '', 'goods:goodsbrand:tree', 'android-settings', '0');
+INSERT INTO `sys_menu_info` VALUES ('5232968841233408', '常量获取', '5219199034688512', '3', '', 'goods:constant:list', 'android-settings', '0');
 
 -- ----------------------------
 -- Table structure for `sys_role_info`
@@ -136,9 +179,63 @@ CREATE TABLE `sys_role_to_menu` (
 -- ----------------------------
 -- Records of sys_role_to_menu
 -- ----------------------------
-INSERT INTO `sys_role_to_menu` VALUES ('1', '1', '1');
-INSERT INTO `sys_role_to_menu` VALUES ('2', '1', '2');
-INSERT INTO `sys_role_to_menu` VALUES ('3', '1', '3');
+INSERT INTO `sys_role_to_menu` VALUES ('40f075742be611e8ad3500163e024576', '5225158686966781', '5219191946478592');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0aa882be611e8ad3500163e024576', '5225158686966781', '5219200373818368');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0ab532be611e8ad3500163e024576', '5225158686966781', '5230918327403520');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0ab9a2be611e8ad3500163e024576', '5225158686966781', '5230919166821376');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0abd42be611e8ad3500163e024576', '5225158686966781', '5230919554860032');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0ac162be611e8ad3500163e024576', '5225158686966781', '5230920055424000');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0ac512be611e8ad3500163e024576', '5225158686966781', '5230917841486848');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0ac8c2be611e8ad3500163e024576', '5225158686966781', '5230920517911552');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0acc22be611e8ad3500163e024576', '5225158686966781', '5219201469776896');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0acfc2be611e8ad3500163e024576', '5225158686966781', '5230922999792640');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0ad802be611e8ad3500163e024576', '5225158686966781', '5230921096889344');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0adb82be611e8ad3500163e024576', '5225158686966781', '5230923472569344');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0ae022be611e8ad3500163e024576', '5225158686966781', '5230921473262592');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0ae422be611e8ad3500163e024576', '5225158686966781', '5230921924183040');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0ae762be611e8ad3500163e024576', '5225158686966781', '5230922338796544');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0aead2be611e8ad3500163e024576', '5225158686966781', '5219199034688512');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0aee02be611e8ad3500163e024576', '5225158686966781', '5230913193575424');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0af152be611e8ad3500163e024576', '5225158686966781', '5230914520548352');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0af4a2be611e8ad3500163e024576', '5225158686966781', '5232968841233408');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0af7d2be611e8ad3500163e024576', '5225158686966781', '5230910162568192');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0afae2be611e8ad3500163e024576', '5225158686966781', '5230915341747200');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0afe62be611e8ad3500163e024576', '5225158686966781', '5230911395431424');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0b0952be611e8ad3500163e024576', '5225158686966781', '5230912259195904');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0b0d62be611e8ad3500163e024576', '5225158686966781', '5219191946478591');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0b1082be611e8ad3500163e024576', '5225158686966781', '5219195567703040');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0b13d2be611e8ad3500163e024576', '5225158686966781', '5230707520865280');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0b16f2be611e8ad3500163e024576', '5225158686966781', '5230706540381184');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0b1a62be611e8ad3500163e024576', '5225158686966781', '5230705872208896');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0b1d82be611e8ad3500163e024576', '5225158686966781', '5230707978863616');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0b2102be611e8ad3500163e024576', '5225158686966781', '5230705194337280');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0b2432be611e8ad3500163e024576', '5225158686966781', '5230705603642368');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0b2752be611e8ad3500163e024576', '5225158686966781', '5230708402750464');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0b2a92be611e8ad3500163e024576', '5225158686966781', '5219197081027584');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0b2dc2be611e8ad3500163e024576', '5225158686966781', '5230715329446912');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0b30c2be611e8ad3500163e024576', '5225158686966781', '5230713872548864');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0b3402be611e8ad3500163e024576', '5225158686966781', '5230714925286400');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0b3712be611e8ad3500163e024576', '5225158686966781', '5230709271462912');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0b3a62be611e8ad3500163e024576', '5225158686966781', '5230712077583360');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0b3d72be611e8ad3500163e024576', '5225158686966781', '5230711477109760');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0b40e2be611e8ad3500163e024576', '5225158686966781', '5230713089983488');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0b43f2be611e8ad3500163e024576', '5225158686966781', '5219194605470720');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0b4722be611e8ad3500163e024576', '5225158686966781', '5230704077505536');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0b4a22be611e8ad3500163e024576', '5225158686966781', '5230704464299008');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0b4d72be611e8ad3500163e024576', '5225158686966781', '5230702176142336');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0b5082be611e8ad3500163e024576', '5225158686966781', '5230700889375744');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0b53e2be611e8ad3500163e024576', '5225158686966781', '5230701290685440');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0b56e2be611e8ad3500163e024576', '5225158686966781', '5230701685507072');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0b5a12be611e8ad3500163e024576', '5225158686966781', '5230700403786752');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0b5d02be611e8ad3500163e024576', '5225158686966781', '5230703144698880');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0b6022be611e8ad3500163e024576', '5225158686966781', '5227617678525440');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0b6362be611e8ad3500163e024576', '5225158686966781', '5227625606972416');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0b6662be611e8ad3500163e024576', '5225158686966781', '5227627115774976');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0b6972be611e8ad3500163e024576', '5225158686966781', '5227623190397952');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0b6d02be611e8ad3500163e024576', '5225158686966781', '5227624319583232');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0b7002be611e8ad3500163e024576', '5225158686966781', '5227625014887424');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0b7302be611e8ad3500163e024576', '5225158686966781', '5227619801564160');
+INSERT INTO `sys_role_to_menu` VALUES ('40f0b7642be611e8ad3500163e024576', '5225158686966781', '5227647843730432');
 
 -- ----------------------------
 -- Table structure for `sys_role_to_user`
