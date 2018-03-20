@@ -270,7 +270,7 @@ public class SysDeptController extends BaseController {
 
 	@ApiOperation(value = "查看部门类型列表", notes = "查看部门类型列表")
 	@GetMapping(value = { "/type/list" })
-	@RequiresPermissions(SystemContants.Permission.PERMISSION_DEPTTYPE_INFO)
+	@RequiresPermissions(SystemContants.Permission.PERMISSION_DEPTTYPE_LIST)
 	public Object listDeptType() {
 		logger.debug("SysDeptController.listDeptType()");
 		return getResponse(sysDeptService.ListType());
