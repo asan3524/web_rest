@@ -101,7 +101,7 @@ public class SysDeptController extends BaseController {
 			HttpServletResponse response) {
 		logger.debug("SysDeptController.getChildrenDept()");
 
-		if (StringUtils.isEmpty(deptId)) {
+		if (StringUtils.isEmpty(deptId)||deptId.equalsIgnoreCase("null")) {
 			deptId=null;
 		}
 		
