@@ -1,5 +1,7 @@
 package com.ddshteam.web.config;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.shiro.SecurityUtils;
@@ -9,6 +11,7 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -84,6 +87,7 @@ public class HttpLogAspect {
 	 * 获取返回内容
 	 * @param object
 	 */
+	@SuppressWarnings("rawtypes")
 	@AfterReturning(returning = "object", pointcut = "log()")
 	public void doAfterReturn(Object object) {
 		setUser();
@@ -99,7 +103,13 @@ public class HttpLogAspect {
 			sysOpLogs.setExcuteTime((int) (System.currentTimeMillis() - startTime.get()));
 			sysOpLogs.setIp(IpUtil.getIpAddr(request));
 			sysOpLogs.setUri(request.getRequestURI());
-			sysOpLogs.setResp(null != object ? object.toString() : "");
+
+			if (null != object && object instanceof ResponseEntity) {
+				Object obj = ((ResponseEntity) object).getBody();
+				if (obj instanceof Map) {
+					sysOpLogs.setResp(((Map) obj).get("httpCode").toString());
+				}
+			}
 			sysOpLogAsyncService.write(sysOpLogs);
 		}
 	}
