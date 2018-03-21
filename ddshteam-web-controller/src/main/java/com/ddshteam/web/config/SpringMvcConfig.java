@@ -33,11 +33,6 @@ import com.ddshteam.web.core.listener.ServerListener;
 @Component
 public class SpringMvcConfig extends WebMvcConfigurerAdapter {
 
-	private static final String ACTIVE = "dev";
-
-	@Value("${spring.profiles.active}")
-	private String env;
-
 	@Value("${spring.upload.maxFileSize}")
 	private Long maxFileSize;
 
@@ -65,9 +60,7 @@ public class SpringMvcConfig extends WebMvcConfigurerAdapter {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 
-		if (!ACTIVE.equals(env)) {
-			registry.addInterceptor(new MaliciousRequestInterceptor()).addPathPatterns("/**");
-		}
+		registry.addInterceptor(new MaliciousRequestInterceptor()).addPathPatterns("/**");
 
 		super.addInterceptors(registry);
 	}
@@ -154,27 +147,28 @@ public class SpringMvcConfig extends WebMvcConfigurerAdapter {
 		// factory.setLocation("/upload");
 		return factory.createMultipartConfig();
 	}
-	
-    /**
-     * spring 跨域处理
-     * @Title: corsConfigurer
-     * @return WebMvcConfigurer
-     * @see 
-     * @throws
-     * @author arpgate
-     */
-    @Bean  
-    public WebMvcConfigurer corsConfigurer() {  
-        return new WebMvcConfigurerAdapter() {  
-            
-            @Override  
-            public void addCorsMappings(CorsRegistry registry) {  
-                registry.addMapping("/**")  
-                .allowCredentials(true)  
-                .allowedMethods("GET","POST","OPTIONS","HEAD","PUT","DELETE")
-                .allowedHeaders("x-requested-with","Access-Control-Allow-Origin","EX-SysAuthToken","EX-JSESSIONID","Content-Type");
-            }  
-        };  
-    }  
+
+	/**
+	 * spring 跨域处理
+	 * @Title: corsConfigurer
+	 * @return WebMvcConfigurer
+	 * @see 
+	 * @throws
+	 * @author arpgate
+	 */
+	@Bean
+	public WebMvcConfigurer corsConfigurer() {
+		return new WebMvcConfigurerAdapter() {
+
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+				registry.addMapping("/**")
+						.allowCredentials(true)
+						.allowedMethods("GET", "POST", "OPTIONS", "HEAD", "PUT", "DELETE")
+						.allowedHeaders("x-requested-with", "Access-Control-Allow-Origin", "EX-SysAuthToken",
+								"EX-JSESSIONID", "Content-Type");
+			}
+		};
+	}
 
 }

@@ -80,7 +80,7 @@ public class LoginController extends BaseController {
 	@PostMapping(value = { "/logout" })
 	public Object logout() {
 		logger.debug("LoginController.logout()");
-		SecurityUtils.getSubject().logout();
+		// SecurityUtils.getSubject().logout();
 		return getResponse(HttpCode.OK, true, "成功登出");
 	}
 }

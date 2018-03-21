@@ -48,7 +48,7 @@ public class ShiroConfig {
 		Map<String, String> map = new LinkedHashMap<String, String>();
 
 		// login
-		map.put("/logout", "anon");
+		// map.put("/logout", "anon");
 		map.put("/login", "anon");
 
 		// swagger

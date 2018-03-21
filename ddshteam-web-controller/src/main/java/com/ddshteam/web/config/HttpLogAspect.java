@@ -28,7 +28,6 @@ import com.ddshteam.web.system.service.api.model.SysUserInfo;
 public class HttpLogAspect {
 
 	private ThreadLocal<Long> startTime = new ThreadLocal<Long>();
-	private ThreadLocal<SysUserInfo> user = new ThreadLocal<SysUserInfo>();
 
 	@Pointcut("execution(public * com.ddshteam.web.controller..*Controller.*(..))")
 	public void log() {
@@ -43,7 +42,6 @@ public class HttpLogAspect {
 	@Before("log()")
 	public void doBefore() {
 		startTime.set(System.currentTimeMillis());
-		setUser();
 		// ServletRequestAttributes attributes = (ServletRequestAttributes)
 		// RequestContextHolder.getRequestAttributes();
 		//
@@ -90,16 +88,17 @@ public class HttpLogAspect {
 	@SuppressWarnings("rawtypes")
 	@AfterReturning(returning = "object", pointcut = "log()")
 	public void doAfterReturn(Object object) {
-		setUser();
 
-		if (null != user.get()) {
+		SysUserInfo user = getUser();
+
+		if (null != user) {
 			ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder
 					.getRequestAttributes();
 			HttpServletRequest request = attributes.getRequest();
 			SysOpLogs sysOpLogs = new SysOpLogs();
 			sysOpLogs.setId(IdUtil.generateId().toString());
-			sysOpLogs.setAccount(user.get().getAccount());
-			sysOpLogs.setName(user.get().getName());
+			sysOpLogs.setAccount(user.getAccount());
+			sysOpLogs.setName(user.getName());
 			sysOpLogs.setExcuteTime((int) (System.currentTimeMillis() - startTime.get()));
 			sysOpLogs.setIp(IpUtil.getIpAddr(request));
 			sysOpLogs.setUri(request.getRequestURI());
@@ -110,26 +109,30 @@ public class HttpLogAspect {
 					sysOpLogs.setResp(((Map) obj).get("httpCode").toString());
 				}
 			}
+			
 			sysOpLogAsyncService.write(sysOpLogs);
+			
+			if ("/logout".equals(sysOpLogs.getUri())) {
+				SecurityUtils.getSubject().logout();
+			}
 		}
 	}
 
-	private void setUser() {
-		if (null == user.get()) {
-			Subject subject = null;
-			try {
-				subject = SecurityUtils.getSubject();
-			} catch (Exception e) {
-			}
-			if (null != subject) {
-				Object pc = subject.getPrincipals();
-				if (null != pc) {
-					Object u = ((PrincipalCollection) pc).getPrimaryPrincipal();
-					if (null != u) {
-						user.set((SysUserInfo) u);
-					}
+	private SysUserInfo getUser() {
+		Subject subject = null;
+		try {
+			subject = SecurityUtils.getSubject();
+		} catch (Exception e) {
+		}
+		if (null != subject) {
+			Object pc = subject.getPrincipals();
+			if (null != pc) {
+				Object u = ((PrincipalCollection) pc).getPrimaryPrincipal();
+				if (null != u) {
+					return (SysUserInfo) u;
 				}
 			}
 		}
+		return null;
 	}
 }
