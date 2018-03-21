@@ -31,10 +31,10 @@ public class SysOpLogServiceImpl implements SysOpLogService {
 		if (null != reqData) {
 			Criteria criteria = sysOpLogsCriteria.createCriteria();
 			if (!StringUtils.isNullOrEmpty(reqData.getName())) {
-				criteria.andNameLike(reqData.getName());
+				criteria.andNameLike("%" + reqData.getName() + "%");
 			}
 			if (!StringUtils.isNullOrEmpty(reqData.getIp())) {
-				criteria.andIpLike(reqData.getIp());
+				criteria.andIpLike("%" + reqData.getIp() + "%");
 			}
 			if (null != reqData.getCreateTime_s()) {
 				if (null != reqData.getCreateTime_e()) {
