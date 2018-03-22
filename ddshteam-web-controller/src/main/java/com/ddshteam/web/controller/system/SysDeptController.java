@@ -126,6 +126,7 @@ public class SysDeptController extends BaseController {
 		}
 
 		DeptInfoResp dept = sysDeptService.getSysDeptById(deptId);
+		dept.setPath("");
 		return getResponse(dept);
 	}
 

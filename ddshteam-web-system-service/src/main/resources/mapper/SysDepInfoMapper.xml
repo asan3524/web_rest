@@ -9,6 +9,7 @@
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="order_num" jdbcType="INTEGER" property="orderNum" />
     <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="path" jdbcType="VARCHAR" property="path" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -70,7 +71,12 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, name, parent_id, type_id, remark, order_num, status, create_time
+    <if test="fields == null">
+      id, name, parent_id, type_id, remark, order_num, status, path, create_time
+    </if>
+    <if test="fields != null">
+      ${fields}
+    </if>
   </sql>
   <select id="selectByExample" parameterType="com.ddshteam.web.system.service.api.model.SysDepInfoCriteria" resultMap="BaseResultMap">
     select
@@ -86,10 +92,13 @@
     <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
+    <if test="startRow != null">
+      limit #{startRow} , #{pageSize}
+    </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
-    <include refid="Base_Column_List" />
+    id,name,parent_id,type_id,remark,order_num,status,path,create_time
     from sys_dep_info
     where id = #{id,jdbcType=VARCHAR}
   </select>
@@ -106,10 +115,12 @@
   <insert id="insert" parameterType="com.ddshteam.web.system.service.api.model.SysDepInfo">
     insert into sys_dep_info (id, name, parent_id, 
       type_id, remark, order_num, 
-      status, create_time)
+      status, path, create_time
+      )
     values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, 
       #{typeId,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{orderNum,jdbcType=INTEGER}, 
-      #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP})
+      #{status,jdbcType=INTEGER}, #{path,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.ddshteam.web.system.service.api.model.SysDepInfo">
     insert into sys_dep_info
@@ -134,6 +145,9 @@
       </if>
       <if test="status != null">
         status,
+      </if>
+      <if test="path != null">
+        path,
       </if>
       <if test="createTime != null">
         create_time,
@@ -160,6 +174,9 @@
       </if>
       <if test="status != null">
         #{status,jdbcType=INTEGER},
+      </if>
+      <if test="path != null">
+        #{path,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
@@ -196,6 +213,9 @@
       <if test="record.status != null">
         status = #{record.status,jdbcType=INTEGER},
       </if>
+      <if test="record.path != null">
+        path = #{record.path,jdbcType=VARCHAR},
+      </if>
       <if test="record.createTime != null">
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
@@ -213,6 +233,7 @@
       remark = #{record.remark,jdbcType=VARCHAR},
       order_num = #{record.orderNum,jdbcType=INTEGER},
       status = #{record.status,jdbcType=INTEGER},
+      path = #{record.path,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -239,6 +260,9 @@
       <if test="status != null">
         status = #{status,jdbcType=INTEGER},
       </if>
+      <if test="path != null">
+        path = #{path,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -253,7 +277,105 @@
       remark = #{remark,jdbcType=VARCHAR},
       order_num = #{orderNum,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER},
+      path = #{path,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <insert id="insertBatchSelective" parameterType="java.util.List">
+    insert into sys_dep_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="list[0].id!=null">
+        id,
+      </if>
+      <if test="list[0].name!=null">
+        name,
+      </if>
+      <if test="list[0].parentId!=null">
+        parent_id,
+      </if>
+      <if test="list[0].typeId!=null">
+        type_id,
+      </if>
+      <if test="list[0].remark!=null">
+        remark,
+      </if>
+      <if test="list[0].orderNum!=null">
+        order_num,
+      </if>
+      <if test="list[0].status!=null">
+        status,
+      </if>
+      <if test="list[0].path!=null">
+        path,
+      </if>
+      <if test="list[0].createTime!=null">
+        create_time,
+      </if>
+    </trim>
+     values 
+    <foreach collection="list" index="index" item="item" separator=",">
+      <trim prefix=" (" suffix=")" suffixOverrides=",">
+        <if test="item.id!=null">
+          #{item.id,jdbcType=VARCHAR},
+        </if>
+        <if test="item.name!=null">
+          #{item.name,jdbcType=VARCHAR},
+        </if>
+        <if test="item.parentId!=null">
+          #{item.parentId,jdbcType=VARCHAR},
+        </if>
+        <if test="item.typeId!=null">
+          #{item.typeId,jdbcType=VARCHAR},
+        </if>
+        <if test="item.remark!=null">
+          #{item.remark,jdbcType=VARCHAR},
+        </if>
+        <if test="item.orderNum!=null">
+          #{item.orderNum,jdbcType=INTEGER},
+        </if>
+        <if test="item.status!=null">
+          #{item.status,jdbcType=INTEGER},
+        </if>
+        <if test="item.path!=null">
+          #{item.path,jdbcType=VARCHAR},
+        </if>
+        <if test="item.createTime!=null">
+          #{item.createTime,jdbcType=TIMESTAMP},
+        </if>
+      </trim>
+    </foreach>
+  </insert>
+  <update id="updateBatchByPrimaryKeySelective" parameterType="java.util.List">
+    <foreach collection="list" index="index" item="item" separator=";">
+      update sys_dep_info
+      <set>
+        <if test="item.name!=null">
+          name=#{item.name,jdbcType=VARCHAR},
+        </if>
+        <if test="item.parentId!=null">
+          parent_id=#{item.parentId,jdbcType=VARCHAR},
+        </if>
+        <if test="item.typeId!=null">
+          type_id=#{item.typeId,jdbcType=VARCHAR},
+        </if>
+        <if test="item.remark!=null">
+          remark=#{item.remark,jdbcType=VARCHAR},
+        </if>
+        <if test="item.orderNum!=null">
+          order_num=#{item.orderNum,jdbcType=INTEGER},
+        </if>
+        <if test="item.status!=null">
+          status=#{item.status,jdbcType=INTEGER},
+        </if>
+        <if test="item.path!=null">
+          path=#{item.path,jdbcType=VARCHAR},
+        </if>
+        <if test="item.createTime!=null">
+          create_time=#{item.createTime,jdbcType=TIMESTAMP},
+        </if>
+      </set>
+      where 
+      id = #{item.id,jdbcType=VARCHAR}
+    </foreach>
   </update>
 </mapper>

@@ -96,10 +96,9 @@
 				AND user.name LIKE CONCAT('%',#{name},'%')
 			</if>
 			<if test="depIds != null">
-				AND user.dep_id in
-                  <foreach close=")" collection="depIds" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
+              <foreach collection="depIds" item="depid" separator=",">
+				and dept.path like CONCAT('%',#{depid},'%')
+			</foreach>
 			</if>
 			AND user.status=1
 			AND user.is_builtin=0

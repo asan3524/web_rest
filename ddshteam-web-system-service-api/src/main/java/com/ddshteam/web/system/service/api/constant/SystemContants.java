@@ -119,6 +119,14 @@ public class SystemContants {
 		public static final String DEFAULT_PWD = "123456";
 
 	}
+	
+	@ConstantDescription(desc = "符号")
+	public static final class Symbol
+	{
+		@ConstantDescription(desc = "有效")
+		public static final String RIGHT_DIAGONAL = "\\";
+		
+	}
 
 	@ConstantDescription(desc = SystemContants.PERMISSION)
 	public static final class Permission {

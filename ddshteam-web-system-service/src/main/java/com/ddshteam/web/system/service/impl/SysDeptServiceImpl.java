@@ -120,15 +120,37 @@ public class SysDeptServiceImpl implements SysDeptService {
 
 	@Override
 	public boolean saveDept(SysDepInfo sysDept) {
+		StringBuilder basepath = new StringBuilder();
+		if (sysDept.getParentId() != null || !sysDept.getParentId().trim().equals("")) {
+			basepath.append(sysDepInfoDao.selectByPrimaryKey(sysDept.getParentId()).getPath());
+		}
+		
 		sysDept.setCreateTime(new Date());
 		sysDept.setStatus(SystemContants.SysDeptStatus.EFFECT);
+		basepath.append(SystemContants.Symbol.RIGHT_DIAGONAL).append(sysDept.getId());
+		sysDept.setPath(basepath.toString());
+		
 		int result = sysDepInfoDao.insert(sysDept);
-		// sysDeptDao.saveDept(sysDept);
+
 		return result > 0;
 	}
 
 	@Override
 	public boolean saveDept(List<SysDepInfo> sysDepts) {
+		
+		for(SysDepInfo sysDept:sysDepts)
+		{
+			StringBuilder basepath = new StringBuilder();
+			if (sysDept.getParentId() != null || !sysDept.getParentId().trim().equals("")) {
+				basepath.append(sysDepInfoDao.selectByPrimaryKey(sysDept.getParentId()).getPath());
+			}
+			sysDept.setCreateTime(new Date());
+			sysDept.setStatus(SystemContants.SysDeptStatus.EFFECT);
+			basepath.append(SystemContants.Symbol.RIGHT_DIAGONAL).append(sysDept.getId());
+			sysDept.setPath(basepath.toString());
+		}
+		
+		
 		int result = sysDeptCustomizeDao.saveDeptList(sysDepts);
 		return result > 0;
 	}
