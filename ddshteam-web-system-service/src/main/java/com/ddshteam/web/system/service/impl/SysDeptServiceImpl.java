@@ -121,7 +121,7 @@ public class SysDeptServiceImpl implements SysDeptService {
 	@Override
 	public boolean saveDept(SysDepInfo sysDept) {
 		StringBuilder basepath = new StringBuilder();
-		if (sysDept.getParentId() != null || !sysDept.getParentId().trim().equals("")) {
+		if (sysDept.getParentId() != null && !sysDept.getParentId().trim().equals("")) {
 			basepath.append(sysDepInfoDao.selectByPrimaryKey(sysDept.getParentId()).getPath());
 		}
 		
