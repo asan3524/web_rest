@@ -162,7 +162,7 @@ public class SysUserServiceImpl implements SysUserService {
 		criteria.andUserIdEqualTo(userId);
 		int result = sysRoleToUserDao.deleteByExample(sysRoleToUserCriteria);
 
-		result = sysUserInfoInfoCustomizeDao.setUserRole(userId, roleIds);
+		sysUserInfoInfoCustomizeDao.setUserRole(userId, roleIds);
 
 		return result > 0;
 	}
