@@ -59,9 +59,9 @@
 		)
 	</select>
 	<select id="getMenuTreeByUserRole" resultMap="treeMap">
-		select
+		select distinct
 		smi.id,smi.name,smi.parent_id,smi.url,smi.icon,smi.type=3 as
-		isLeaf,srm1.menu_id is not null as checked from sys_menu_info smi
+		isLeaf,srm1.menu_id is not null as checked,smi.order_num  from sys_menu_info smi
 		inner
 		join
 		sys_role_to_menu srm
