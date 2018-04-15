@@ -5,37 +5,37 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 import com.ddshteam.web.core.Constants;
 import com.ddshteam.web.core.support.HttpCode;
 
-
 /**
  * 恶意请求拦截器
  * 
  */
+@Configuration
 @Component
 public class MaliciousRequestInterceptor extends BaseInterceptor {
 	private Boolean allRequest = false; // 拦截所有请求,否则拦截相同请求
-	
+
 	@Value("${whayer.minRequestIntervalTime}")
 	private Long minRequestIntervalTime = 100L; // 允许的最小请求间隔
-	
-	@Value("${whayer.maxMaliciousTimes}")
-	private Integer maxMaliciousTimes = 0; // 允许的最大恶意请求次数
 
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-			throws Exception {
+	@Value("${whayer.maxMaliciousTimes}")
+	private Integer maxMaliciousTimes = 5; // 允许的最大恶意请求次数
+
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		response.setHeader("Access-Control-Allow-Methods", "POST,GET,PUT,OPTIONS,DELETE");
 		response.setHeader("Access-Control-Allow-Headers",
 				"x-requested-with,Access-Control-Allow-Origin,EX-SysAuthToken,EX-JSESSIONID");
 
 		response.setHeader("Pragma", "No-cache");
-		response.setHeader("Cache-Control","no-cache"); 
-		response.setDateHeader("Expires", 0); //-1
-		
+		response.setHeader("Cache-Control", "no-cache");
+		response.setDateHeader("Expires", 0); // -1
+
 		String url = request.getServletPath();
 		if (url.endsWith("/unauthorized") || url.endsWith("/forbidden")) {
 			return super.preHandle(request, response, handler);
