@@ -156,15 +156,15 @@ public class SysUserServiceImpl implements SysUserService {
 
 	@Override
 	public boolean setUserRole(String userId, String... roleIds) {
-		SysRoleToUserCriteria sysRoleToUserCriteria = new SysRoleToUserCriteria();
-		com.ddshteam.web.system.service.api.model.SysRoleToUserCriteria.Criteria criteria = sysRoleToUserCriteria
-				.createCriteria();
-		criteria.andUserIdEqualTo(userId);
-		int result = sysRoleToUserDao.deleteByExample(sysRoleToUserCriteria);
+//		SysRoleToUserCriteria sysRoleToUserCriteria = new SysRoleToUserCriteria();
+//		com.ddshteam.web.system.service.api.model.SysRoleToUserCriteria.Criteria criteria = sysRoleToUserCriteria
+//				.createCriteria();
+//		criteria.andUserIdEqualTo(userId);
+//		int result = sysRoleToUserDao.deleteByExample(sysRoleToUserCriteria);
 
-		sysUserInfoInfoCustomizeDao.setUserRole(userId, roleIds);
+		int result = sysUserInfoInfoCustomizeDao.setUserRole(userId, roleIds);
 
-		return result > 0;
+		return result >= 0;
 	}
 
 	@Override
