@@ -91,7 +91,7 @@ public class SysUserController extends BaseController {
 	@ApiOperation(value = "根据用户id获取用户", notes = "")
 	@GetMapping(value = { "/id/{id}" })
 	@RequiresPermissions(SystemContants.Permission.PERMISSION_USER_INFO)
-	public Object getUserById(@PathVariable String id) {
+	public Object getUserById(@PathVariable("id") String id) {
 		logger.debug("SysUserController.getUserById()");
 
 		if (StringUtils.isEmpty(id)) {
@@ -185,7 +185,7 @@ public class SysUserController extends BaseController {
 	@ApiOperation(value = "更新用户(不更新角色)", notes = "更新用户时不更新角色")
 	@PutMapping(value = { "/update/{id}" })
 	@RequiresPermissions(SystemContants.Permission.PERMISSION_USER_UPDATE)
-	public Object updateUser(@Valid @RequestBody UserReqBase userReqBase, @PathVariable String id, BindingResult errors) {
+	public Object updateUser(@Valid @RequestBody UserReqBase userReqBase, @PathVariable("id") String id, BindingResult errors) {
 		logger.debug("UserController.updateUser()");
 
 		if (errors.hasErrors()) {
@@ -226,7 +226,7 @@ public class SysUserController extends BaseController {
 	@ApiOperation(value = "更新用户(需更新角色时)", notes = "更新时更新角色")
 	@PutMapping(value = { "/update/v2/{id}" })
 	@RequiresPermissions(SystemContants.Permission.PERMISSION_USER_UPDATE)
-	public Object updateUser$Role(@Valid @RequestBody UserReq userReq, @PathVariable String id, BindingResult errors) {
+	public Object updateUser$Role(@Valid @RequestBody UserReq userReq, @PathVariable("id") String id, BindingResult errors) {
 		logger.debug("UserController.updateUser$Role()");
 
 		if (errors.hasErrors()) {
@@ -318,7 +318,7 @@ public class SysUserController extends BaseController {
 	@ApiOperation(value = "删除用户", notes = "内置/admin/自己不能删除(暂不调用)")
 	@DeleteMapping(value = { "/delete/{id}" })
 	@RequiresPermissions(SystemContants.Permission.PERMISSION_USER_DELETE)
-	public Object deleteUser(@PathVariable String id) {
+	public Object deleteUser(@PathVariable("id") String id) {
 		logger.debug("UserController.deleteUser()");
 
 		if (StringUtils.isEmpty(id)) {
@@ -376,7 +376,7 @@ public class SysUserController extends BaseController {
 
 	@ApiOperation(value = "更新用户角色")
 	@PutMapping(value = { "/update/role/{id}" })
-	public Object setUserRole(@PathVariable String id, @RequestParam(value = "roleIds[]") String[] roleIds) {
+	public Object setUserRole(@PathVariable("id") String id, @RequestParam(value = "roleIds[]") String[] roleIds) {
 		logger.debug("UserController.setUserRole()");
 
 		// TODO PUT是否能接收此类型参数(POST可以)
@@ -397,7 +397,7 @@ public class SysUserController extends BaseController {
 
 	@ApiOperation(value = "根据账号(用户名)获取判断用户是否存在", notes = "根据账号(用户名)获取判断用户是否存在，用于添加用户或者更新用户")
 	@GetMapping(value = { "/account/exist/{account}" })
-	public Object userNameExist(@PathVariable String account) {
+	public Object userNameExist(@PathVariable("account") String account) {
 		logger.debug("UserController.userNameExist()");
 
 		if (StringUtils.isEmpty(account)) {

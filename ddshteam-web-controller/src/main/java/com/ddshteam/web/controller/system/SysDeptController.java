@@ -160,7 +160,7 @@ public class SysDeptController extends BaseController {
 	@ApiOperation(value = "更新部门", notes = "")
 	@PutMapping(value = { "/update/{deptId}" })
 	@RequiresPermissions(SystemContants.Permission.PERMISSION_DEPT_UPDATE)
-	public Object updateDept(@Valid @RequestBody DeptReq deptReq, @PathVariable String deptId, BindingResult errors) {
+	public Object updateDept(@Valid @RequestBody DeptReq deptReq, @PathVariable("deptId") String deptId, BindingResult errors) {
 		logger.debug("SysDeptController.updateDept()");
 
 		if (errors.hasErrors()) {
@@ -188,7 +188,7 @@ public class SysDeptController extends BaseController {
 	@ApiOperation(value = "删除部门", notes = "")
 	@DeleteMapping(value = { "/delete/{deptId}" })
 	@RequiresPermissions(SystemContants.Permission.PERMISSION_DEPT_DELETE)
-	public Object deleteDept(@PathVariable String deptId) {
+	public Object deleteDept(@PathVariable("deptId") String deptId) {
 		logger.debug("SysDeptController.deleteDept()");
 
 		if (StringUtils.isEmpty(deptId)) {
@@ -257,7 +257,7 @@ public class SysDeptController extends BaseController {
 	@ApiOperation(value = "根据部门类型id获取部门详情", notes = "根据部门类型id获取部门详情")
 	@GetMapping(value = { "/type/{depttypeid}" })
 	@RequiresPermissions(SystemContants.Permission.PERMISSION_DEPTTYPE_INFO)
-	public Object getDeptTypeByid(@PathVariable String depttypeid) {
+	public Object getDeptTypeByid(@PathVariable("depttypeid") String depttypeid) {
 		logger.debug("SysDeptController.getDeptTypeByid()");
 
 		if (StringUtils.isEmpty(depttypeid)) {
@@ -280,7 +280,7 @@ public class SysDeptController extends BaseController {
 	@ApiOperation(value = "删除部门类型", notes = "根据id删除部门类型")
 	@DeleteMapping(value = { "/type/delete/{depttypeid}" })
 	@RequiresPermissions(SystemContants.Permission.PERMISSION_DEPTTYPE_DELETE)
-	public Object deleteTypeinfoByid(@PathVariable String depttypeid) {
+	public Object deleteTypeinfoByid(@PathVariable("depttypeid")  String depttypeid) {
 		logger.debug("SysDeptController.deleteTypeinfoByid()");
 		boolean result = sysDeptService.deleteTypeByid(depttypeid);
 		return getResponse(result);

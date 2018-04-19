@@ -60,7 +60,7 @@ public class SysRoleController extends BaseController {
 	@ApiOperation(value = "获取角色详情", notes = "")
 	@GetMapping(value = { "/id/{roleId}" })
 	@RequiresPermissions(SystemContants.Permission.PERMISSION_ROLE_INFO)
-	public Object getRoleById(@PathVariable String roleId, HttpServletRequest request, HttpServletResponse response) {
+	public Object getRoleById(@PathVariable("roleId") String roleId, HttpServletRequest request, HttpServletResponse response) {
 		logger.debug("SysRoleController.getRoleById()");
 
 		if (StringUtils.isEmpty(roleId)) {

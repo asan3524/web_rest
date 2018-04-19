@@ -93,7 +93,7 @@ public class SysMenuController extends BaseController {
 	@ApiOperation(value = "用户带勾选状态的菜单树(包含功能点)", notes = "用于更新角色时查看已勾选的状态树,返回指定role的勾选状态")
 	@GetMapping(value = { "/tree2status/{roleId}" })
 	@RequiresPermissions(SystemContants.Permission.PERMISSION_MENU_TREE2STATUS)
-	public Object getMenuWithStatusTree(@PathVariable String roleId, HttpServletRequest request,
+	public Object getMenuWithStatusTree(@PathVariable("roleId") String roleId, HttpServletRequest request,
 			HttpServletResponse response) {
 		logger.debug("SysMenuController.getMenuWithStatusTree()");
 
@@ -142,7 +142,7 @@ public class SysMenuController extends BaseController {
 	@ApiOperation(value = "获取菜单详情", notes = "")
 	@GetMapping(value = { "/id/{menuId}" })
 	@RequiresPermissions(SystemContants.Permission.PERMISSION_MENU_INFO)
-	public Object getMenuById(@PathVariable String menuId, HttpServletRequest request, HttpServletResponse response) {
+	public Object getMenuById(@PathVariable("menuId") String menuId, HttpServletRequest request, HttpServletResponse response) {
 		logger.debug("SysMenuController.getMenuById()");
 
 		if (StringUtils.isEmpty(menuId)) {
@@ -187,7 +187,7 @@ public class SysMenuController extends BaseController {
 	@ApiOperation(value = "更新菜单", notes = "")
 	@PutMapping(value = { "/update/{id}" })
 	@RequiresPermissions(SystemContants.Permission.PERMISSION_MENU_UPDATE)
-	public Object updateMenu(@Valid @RequestBody MenuReq menuReq, @PathVariable String id, BindingResult errors) {
+	public Object updateMenu(@Valid @RequestBody MenuReq menuReq, @PathVariable("id") String id, BindingResult errors) {
 		logger.debug("SysMenuController.updateMenu()");
 
 		if (errors.hasErrors()) {
@@ -216,7 +216,7 @@ public class SysMenuController extends BaseController {
 	@ApiOperation(value = "删除菜单", notes = "")
 	@DeleteMapping(value = { "/delete/{id}" })
 	@RequiresPermissions(SystemContants.Permission.PERMISSION_MENU_DELETE)
-	public Object deleteMenu(@PathVariable String id) {
+	public Object deleteMenu(@PathVariable("id") String id) {
 		logger.debug("SysMenuController.deleteMenu()");
 
 		if (StringUtils.isEmpty(id)) {
