@@ -60,7 +60,8 @@ public abstract class BaseController {
 		map.put("msg", StringUtils.isBlank(msg) ? code.msg() : msg);
 		map.put("timestamp", System.currentTimeMillis());
 		logger.info("RESPONSE : " + JSON.toJSONString(map));
-		return ResponseEntity.ok(map);
+		return ResponseEntity.status(code.value()).body(map);
+//		return ResponseEntity.ok(map);
 	}
 
 	@Deprecated
@@ -92,7 +93,8 @@ public abstract class BaseController {
 		modelMap.put("msg", code.msg());
 		modelMap.put("timestamp", System.currentTimeMillis());
 		logger.info("RESPONSE : " + JSON.toJSONString(modelMap));
-		return ResponseEntity.ok(modelMap);
+		return ResponseEntity.status(code.value()).body(modelMap);
+//		return ResponseEntity.ok(modelMap);
 	}
 	
 	
