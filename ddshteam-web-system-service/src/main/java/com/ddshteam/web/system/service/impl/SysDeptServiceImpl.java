@@ -101,7 +101,6 @@ public class SysDeptServiceImpl implements SysDeptService {
 		
 	}
 
-	@Deprecated
 	@Override
 	public List<DeptInfoResp> getSysDeptDetailList() {
 		SysDepInfoCriteria sysDepInfoCriteria = new SysDepInfoCriteria();

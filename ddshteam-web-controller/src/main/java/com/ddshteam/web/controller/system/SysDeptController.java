@@ -48,18 +48,16 @@ public class SysDeptController extends BaseController {
 	@Reference(version = "1.0.0")
 	private SysDeptService sysDeptService;
 
-	/*
-	 * @ApiOperation(value = "部门列表", notes = "")
-	 * 
-	 * @GetMapping(value = { "/list" })
-	 * 
-	 * @RequiresPermissions(SystemContants.Permission.PERMISSION_DEPT_LIST)
-	 * public Object getDeptList(HttpServletRequest request, HttpServletResponse
-	 * response) { logger.debug("SysDeptController.getDeptList()");
-	 * 
-	 * @SuppressWarnings("deprecation") List<DeptInfoResp> list =
-	 * sysDeptService.getSysDeptDetailList(); return getResponse(list); }
-	 */
+	@ApiOperation(value = "部门列表", notes = "")
+	@GetMapping(value = { "/list" })
+	@RequiresPermissions(SystemContants.Permission.PERMISSION_DEPT_LIST)
+	public Object getDeptList(HttpServletRequest request, HttpServletResponse response) {
+		logger.debug("SysDeptController.getDeptList()");
+
+		@SuppressWarnings("deprecation")
+		List<DeptInfoResp> list = sysDeptService.getSysDeptDetailList();
+		return getResponse(list);
+	}
 
 	/*
 	 * @ApiOperation(value = "部门树(全部)", notes = "")
@@ -95,23 +93,22 @@ public class SysDeptController extends BaseController {
 	}
 
 	@ApiOperation(value = "获取直接子部门", notes = "")
-	@GetMapping(value = { "/tree/{deptId}"})
+	@GetMapping(value = { "/tree/{deptId}" })
 	@RequiresPermissions(SystemContants.Permission.PERMISSION_DEPT_TREE)
 	public Object getChildrenDept(@PathVariable("deptId") String deptId, HttpServletRequest request,
 			HttpServletResponse response) {
 		logger.debug("SysDeptController.getChildrenDept()");
 
-		if (StringUtils.isEmpty(deptId)||deptId.equalsIgnoreCase("null")) {
-			deptId=null;
+		if (StringUtils.isEmpty(deptId) || deptId.equalsIgnoreCase("null")) {
+			deptId = null;
 		}
-		
+
 		Subject subject = SecurityUtils.getSubject();
 		SysUserInfo user = (SysUserInfo) subject.getPrincipals().getPrimaryPrincipal();
 
-		List<Tree> trees = sysDeptService.getChildrenDeptList(deptId,user.getDepId());
+		List<Tree> trees = sysDeptService.getChildrenDeptList(deptId, user.getDepId());
 		return getResponse(trees);
 	}
-	
 
 	@ApiOperation(value = "获取部门详情", notes = "")
 	@GetMapping(value = { "/id/{deptId}" })
@@ -160,7 +157,8 @@ public class SysDeptController extends BaseController {
 	@ApiOperation(value = "更新部门", notes = "")
 	@PutMapping(value = { "/update/{deptId}" })
 	@RequiresPermissions(SystemContants.Permission.PERMISSION_DEPT_UPDATE)
-	public Object updateDept(@Valid @RequestBody DeptReq deptReq, @PathVariable("deptId") String deptId, BindingResult errors) {
+	public Object updateDept(@Valid @RequestBody DeptReq deptReq, @PathVariable("deptId") String deptId,
+			BindingResult errors) {
 		logger.debug("SysDeptController.updateDept()");
 
 		if (errors.hasErrors()) {
@@ -280,7 +278,7 @@ public class SysDeptController extends BaseController {
 	@ApiOperation(value = "删除部门类型", notes = "根据id删除部门类型")
 	@DeleteMapping(value = { "/type/delete/{depttypeid}" })
 	@RequiresPermissions(SystemContants.Permission.PERMISSION_DEPTTYPE_DELETE)
-	public Object deleteTypeinfoByid(@PathVariable("depttypeid")  String depttypeid) {
+	public Object deleteTypeinfoByid(@PathVariable("depttypeid") String depttypeid) {
 		logger.debug("SysDeptController.deleteTypeinfoByid()");
 		boolean result = sysDeptService.deleteTypeByid(depttypeid);
 		return getResponse(result);

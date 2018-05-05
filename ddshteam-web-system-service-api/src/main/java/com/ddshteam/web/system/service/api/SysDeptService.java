@@ -42,7 +42,6 @@ public interface SysDeptService {
 	 * <p>用于展示部门树</p>
 	 * @return
 	 */
-	@Deprecated
 	public List<DeptInfoResp> getSysDeptDetailList();
 
 	/**
