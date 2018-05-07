@@ -26,7 +26,6 @@ public class UserReqBase {
 	@NotNull
 	private int status;
 	
-	@NotNull
 	private Integer sex;
 	
 	private String remark;
