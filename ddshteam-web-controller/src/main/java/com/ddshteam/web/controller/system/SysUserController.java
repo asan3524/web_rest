@@ -205,7 +205,7 @@ public class SysUserController extends BaseController {
 
 		SysUserInfo user = new SysUserInfo();
 		user.setId(id);
-		// user.setName(userReqBase.getName());
+		user.setName(userReqBase.getName());
 		user.setEmail(userReqBase.getEmail());
 		user.setFax(userReqBase.getFax());
 		user.setMobile(userReqBase.getMobile());
