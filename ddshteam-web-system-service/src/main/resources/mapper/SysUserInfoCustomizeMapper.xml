@@ -89,16 +89,18 @@
 		left join sys_role_to_user r2u
 		on user.id=r2u.user_id
 		left join sys_role_info role
-		on role.id=r2u.role_id
+		on role.id=r2u.role_id 
 		<where>
 			1=1
 			<if test="name != null and name != ''">
-				AND user.name LIKE CONCAT('%',#{name},'%')
+				AND user.name LIKE CONCAT('%',#{name},'%') 
 			</if>
 			<if test="depIds != null">
+			    (1!=1 
               <foreach collection="depIds" item="depid" separator=" ">
-				and dept.path like CONCAT('%',#{depid},'%')
+				or dept.path like CONCAT('%',#{depid},'%')
 			</foreach>
+			  ) 
 			</if>
 			AND user.status=1
 			AND user.is_builtin=0
