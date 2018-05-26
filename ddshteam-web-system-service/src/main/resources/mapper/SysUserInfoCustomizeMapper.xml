@@ -96,7 +96,7 @@
 				AND user.name LIKE CONCAT('%',#{name},'%') 
 			</if>
 			<if test="depIds != null">
-			    (1!=1 
+			   and (1!=1 
               <foreach collection="depIds" item="depid" separator=" ">
 				or dept.path like CONCAT('%',#{depid},'%')
 			</foreach>
