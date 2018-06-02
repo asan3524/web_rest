@@ -132,4 +132,16 @@ public interface SysUserService {
 	 * @author arpgate
 	 */
 	public List<SysUserInfo> getUsersByUserid(List<String> userids);
+	
+	
+	/**
+	 * 根据用户id获取用户全部信息，用于密码修改
+	 * @Title: getUserinfoByUserid
+	 * @param userid
+	 * @return SysUserInfo
+	 * @see 
+	 * @throws
+	 * @author arpgate
+	 */
+	public SysUserInfo getUserinfoByUserid(String userid);
 }

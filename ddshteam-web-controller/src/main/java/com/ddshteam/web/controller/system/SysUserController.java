@@ -301,7 +301,7 @@ public class SysUserController extends BaseController {
 
 		// TODO 此处的userId应由session提供
 		String userId = changePswReq.getUserId();
-		SysUserInfo u = sysUserService.getUserById(userId);
+		SysUserInfo u = sysUserService.getUserinfoByUserid(userId);
 		if (!u.getPassword().equals(SecurityUtil.encryptMd5(changePswReq.getOldPassword()))) {
 			logger.error("password is not correct.");
 			return getResponse(HttpCode.BAD_REQUEST, false, "旧密码不正确");

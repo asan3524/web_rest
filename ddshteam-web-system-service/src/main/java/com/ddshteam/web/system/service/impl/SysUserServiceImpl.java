@@ -194,5 +194,11 @@ public class SysUserServiceImpl implements SysUserService {
 		criteria.andIdIn(userids);
 		return sysUserInfoInfoDao.selectByExample(sysUserInfoCriteria);
 	}
+	
+	@Override
+	public SysUserInfo getUserinfoByUserid(String userid) {
+		SysUserInfo SysUserInfo = sysUserInfoInfoDao.selectByPrimaryKey(userid);
+		return SysUserInfo;
+	}
 
 }
