@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.ddshteam.web.system.service.api.SysRoleService;
+import com.ddshteam.web.system.service.api.data.RoleListReq;
 import com.ddshteam.web.system.service.api.data.Tree;
 import com.ddshteam.web.system.service.api.model.SysRoleInfo;
 import com.ddshteam.web.system.service.api.model.SysRoleInfoCriteria;
@@ -35,12 +36,16 @@ public class SysRoleServiceImpl implements SysRoleService {
 	private SysRoleToUserMapper sysRoleToUserDao;
 
 	@Override
-	public PageInfo<SysRoleInfo> getRoleList(int pageNum, int pageSize) {
+	public PageInfo<SysRoleInfo> getRoleList(int pageNum, int pageSize,RoleListReq req) {
 		PageHelper.startPage(pageNum, pageSize);
 		SysRoleInfoCriteria sysRoleInfoCriteria = new SysRoleInfoCriteria();
 		sysRoleInfoCriteria.setOrderByClause(" create_time desc");
 		Criteria criteria = sysRoleInfoCriteria.createCriteria();
 		criteria.andIdIsNotNull();
+		if(req.getName()!=null&&!req.getName().trim().equals(""))
+		{
+			criteria.andNameLike(req.getName());
+		}
 		List<SysRoleInfo> list = sysRoleInfoDao.selectByExample(sysRoleInfoCriteria);
 		PageInfo<SysRoleInfo> pageInfo = new PageInfo<SysRoleInfo>(list, pageSize);
 		return pageInfo;

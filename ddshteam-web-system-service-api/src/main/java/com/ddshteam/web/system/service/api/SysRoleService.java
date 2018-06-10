@@ -2,6 +2,7 @@ package com.ddshteam.web.system.service.api;
 
 import java.util.List;
 
+import com.ddshteam.web.system.service.api.data.RoleListReq;
 import com.ddshteam.web.system.service.api.data.Tree;
 import com.ddshteam.web.system.service.api.model.SysRoleInfo;
 import com.github.pagehelper.PageInfo;
@@ -14,7 +15,7 @@ public interface SysRoleService {
 	 * @param pageSize 分页大小
 	 * @return
 	 */
-	public PageInfo<SysRoleInfo> getRoleList(int pageNum, int pageSize);
+	public PageInfo<SysRoleInfo> getRoleList(int pageNum, int pageSize,RoleListReq req);
 
 	/**
 	 * 根据id获取角色详情

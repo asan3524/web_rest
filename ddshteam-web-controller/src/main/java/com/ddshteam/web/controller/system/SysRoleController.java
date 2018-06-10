@@ -33,6 +33,7 @@ import com.ddshteam.web.dto.system.RoleReq;
 import com.ddshteam.web.dto.system.SetRole2MenuReq;
 import com.ddshteam.web.system.service.api.SysRoleService;
 import com.ddshteam.web.system.service.api.constant.SystemContants;
+import com.ddshteam.web.system.service.api.data.RoleListReq;
 import com.ddshteam.web.system.service.api.model.SysRoleInfo;
 import com.github.pagehelper.PageInfo;
 
@@ -49,11 +50,15 @@ public class SysRoleController extends BaseController {
 	@ApiOperation(value = "角色列表", notes = "")
 	@GetMapping(value = { "/list" })
 	@RequiresPermissions(SystemContants.Permission.PERMISSION_ROLE_LIST)
-	public Object getRoleList(HttpServletRequest request, HttpServletResponse response,
-			@PageableDefault(page = 1, size = 10, sort = "createTime,asc") Pageable pageable) {
+	public Object getRoleList(@RequestBody RoleListReq req,
+			@PageableDefault(page = 1, size = 10, sort = "createTime,asc") Pageable pageable, BindingResult errors) {
 		logger.debug("SysRoleController.getRoleList()");
-
-		PageInfo<SysRoleInfo> pi = sysRoleService.getRoleList(pageable.getPageNumber(), pageable.getPageSize());
+		if (errors.hasErrors()) {
+			String msg = errors.getAllErrors().get(0).getDefaultMessage();
+			logger.error(msg);
+			return getResponse(HttpCode.BAD_REQUEST, false, msg);
+		}
+		PageInfo<SysRoleInfo> pi = sysRoleService.getRoleList(pageable.getPageNumber(), pageable.getPageSize(),req);
 		return getResponse(pi);
 	}
 
