@@ -48,7 +48,7 @@ public class SysRoleController extends BaseController {
 	private SysRoleService sysRoleService;
 
 	@ApiOperation(value = "角色列表", notes = "")
-	@GetMapping(value = { "/list" })
+	@PostMapping(value = { "/list" })
 	@RequiresPermissions(SystemContants.Permission.PERMISSION_ROLE_LIST)
 	public Object getRoleList(@RequestBody RoleListReq req,
 			@PageableDefault(page = 1, size = 10, sort = "createTime,asc") Pageable pageable, BindingResult errors) {
