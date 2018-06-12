@@ -44,7 +44,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 		criteria.andIdIsNotNull();
 		if(req.getName()!=null&&!req.getName().trim().equals(""))
 		{
-			criteria.andNameLike(req.getName());
+			criteria.andNameLike("%"+req.getName()+"%");
 		}
 		List<SysRoleInfo> list = sysRoleInfoDao.selectByExample(sysRoleInfoCriteria);
 		PageInfo<SysRoleInfo> pageInfo = new PageInfo<SysRoleInfo>(list, pageSize);
