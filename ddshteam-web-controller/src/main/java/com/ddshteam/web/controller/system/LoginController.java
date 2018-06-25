@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -11,6 +12,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,11 +22,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import springfox.documentation.annotations.ApiIgnore;
 
+import com.alibaba.dubbo.config.annotation.Reference;
+import com.ddshteam.web.controller.util.JwtTokenUtil;
 import com.ddshteam.web.core.base.BaseController;
 import com.ddshteam.web.core.support.HttpCode;
 import com.ddshteam.web.core.util.IpUtil;
 import com.ddshteam.web.core.util.SecurityUtil;
 import com.ddshteam.web.dto.system.LoginReqObj;
+import com.ddshteam.web.system.service.api.SysUserService;
 import com.ddshteam.web.system.service.api.model.SysUserInfo;
 
 @Api(value = "/", description = "登陆接口")
@@ -33,10 +38,12 @@ import com.ddshteam.web.system.service.api.model.SysUserInfo;
 public class LoginController extends BaseController {
 
 	private final static Logger logger = LoggerFactory.getLogger(LoginController.class);
-
+	@Reference(version = "1.0.0")
+	private SysUserService sysUserService;
+	
 	@ApiOperation(value = "登陆")
 	@PostMapping(value = { "/login" })
-	public Object login(@RequestBody LoginReqObj loginReqObj, BindingResult errors, HttpServletRequest request) {
+	public Object login(@RequestBody LoginReqObj loginReqObj, BindingResult errors, HttpServletRequest request,HttpServletResponse response) {
 		logger.debug("LoginController.login()");
 
 		if (errors.hasErrors()) {
@@ -55,7 +62,6 @@ public class LoginController extends BaseController {
 			token.setRememberMe(true);
 			try {
 				subject.login(token);
-
 				subject.getSession(true);
 
 			} catch (AuthenticationException e) {
@@ -65,6 +71,7 @@ public class LoginController extends BaseController {
 		}
 		SysUserInfo curUser = (SysUserInfo) subject.getPrincipals().getPrimaryPrincipal();
 		curUser.setPassword(null);
+		response.addHeader(JwtTokenUtil.HTTP_HEADER_KEY, JwtTokenUtil.getToken(curUser.getAccount()));
 		return getResponse(HttpCode.OK, curUser, "登陆成功");
 	}
 
@@ -82,5 +89,42 @@ public class LoginController extends BaseController {
 		logger.debug("LoginController.logout()");
 		// SecurityUtils.getSubject().logout();
 		return getResponse(HttpCode.OK, true, "成功登出");
+	}
+	
+	@ApiOperation(value = "重新登陆")
+	@PostMapping(value = { "/relogin" })
+	public Object relogin(String token, HttpServletRequest request,HttpServletResponse response) {
+		logger.debug("LoginController.relogin()");
+		
+		if(StringUtils.isEmpty(token)) {
+			logger.error("token is null.");
+			return getResponse(HttpCode.BAD_REQUEST, false);
+		}
+		String account=JwtTokenUtil.verifyToken(token);
+		
+		SysUserInfo sysinfo=sysUserService.getUserByAccount(account);
+		if(sysinfo==null)
+		{
+			return getResponse(HttpCode.LOGIN_FAIL, false);	
+		}
+		Subject subject = SecurityUtils.getSubject();
+		subject.logout();
+		if (!subject.isAuthenticated()) {
+			String clientIp = IpUtil.getIpAddr(request);
+			UsernamePasswordToken sessiontoken = new UsernamePasswordToken(sysinfo.getAccount(),
+					sysinfo.getPassword(), clientIp);
+			sessiontoken.setRememberMe(true);
+			try {
+				subject.login(sessiontoken);
+				subject.getSession(true);
+
+			} catch (AuthenticationException e) {
+				return getResponse(HttpCode.LOGIN_FAIL, false, e.getMessage());
+			}
+		}
+		SysUserInfo curUser = (SysUserInfo) subject.getPrincipals().getPrimaryPrincipal();
+		curUser.setPassword(null);
+		response.addHeader(JwtTokenUtil.HTTP_HEADER_KEY, JwtTokenUtil.getToken(curUser.getId()));
+		return getResponse(HttpCode.OK, curUser, "登陆成功");
 	}
 }
