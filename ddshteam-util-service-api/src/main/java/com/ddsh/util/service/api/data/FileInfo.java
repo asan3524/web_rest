@@ -5,6 +5,8 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 public class FileInfo implements Serializable {
 	
+	String id;
+
 	String userid;
 	
 	String username;
@@ -127,5 +129,12 @@ public class FileInfo implements Serializable {
 	}
 	
 	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 }

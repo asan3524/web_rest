@@ -25,15 +25,19 @@ public class FileServiceImpl implements IFileService {
 	AttAttachmentInfoMapper attAttachmentInfoMapper;
 	
 	@Override
-	public boolean addFileInfo(FileInfo fileInfo) {
+	public FileInfo addFileInfo(FileInfo fileInfo) {
 		
 		if(fileInfo==null)
 		{
-			return false;
+			return null;
 		}
 		
-		int vlaue=attAttachmentInfoMapper.insert(convertFileInfoToAtt(fileInfo));
-		return vlaue>0;
+		AttAttachmentInfo att=convertFileInfoToAtt(fileInfo);
+		int vlaue=attAttachmentInfoMapper.insert(att);
+		if(vlaue>0) {
+			return convertAttToFileinfo(att);
+		}
+		return null;
 	}
 
 	@Override
@@ -48,32 +52,38 @@ public class FileServiceImpl implements IFileService {
 	}
 
 	@Override
-	public boolean addFileInfo(List<FileInfo> fileInfos) {
+	public List<FileInfo> addFileInfo(List<FileInfo> fileInfos) {
 		if(fileInfos==null||fileInfos.size()==0)
 		{
-		  return false;
+		  return null;
 		}
 		List<AttAttachmentInfo> records=new ArrayList<AttAttachmentInfo>();
 		
 		for(FileInfo fileInfo:fileInfos)
 		{
-			records.add(convertFileInfoToAtt(fileInfo));
+			AttAttachmentInfo att=convertFileInfoToAtt(fileInfo);
+			records.add(att);
+			fileInfo=convertAttToFileinfo(att);
 		}
 		
 		if(records==null||records.size()==0)
 		{
-		  return false;
+		  return null;
 		}
 		
 		int vlaue=attAttachmentInfoMapper.insertBatchSelective(records);
-		return vlaue>0;
+		if( vlaue>0)
+		{
+			return fileInfos;
+		}
+		
+		return null;
 	}
 	
 	
 	private AttAttachmentInfo convertFileInfoToAtt(FileInfo fileInfo)
 	{
 		AttAttachmentInfo attAttachmentInfo=new AttAttachmentInfo();
-		
 		attAttachmentInfo.setId(UUID.randomUUID().toString());
 		attAttachmentInfo.setFileName(fileInfo.getFilename());
 		attAttachmentInfo.setFileSize(fileInfo.getFileSize().intValue());
@@ -95,6 +105,7 @@ public class FileServiceImpl implements IFileService {
 	private  FileInfo convertAttToFileinfo(AttAttachmentInfo attAttachmentInfo)
 	{
 		FileInfo fileInfo=new FileInfo();
+		fileInfo.setId(attAttachmentInfo.getId());
 		fileInfo.setBussnessObjId(attAttachmentInfo.getObjId());
 		fileInfo.setFilename(attAttachmentInfo.getFileName());
 		fileInfo.setFileSize(attAttachmentInfo.getFileSize().longValue());
@@ -177,6 +188,12 @@ public class FileServiceImpl implements IFileService {
 		}
 		
  		return pageInfos;
+	}
+
+	@Override
+	public boolean delFile(String id) {
+		int result=attAttachmentInfoMapper.deleteByPrimaryKey(id);
+		return result>0;
 	}
 
 }

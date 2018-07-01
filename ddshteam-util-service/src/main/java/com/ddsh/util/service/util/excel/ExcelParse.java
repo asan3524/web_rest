@@ -51,18 +51,18 @@ public class ExcelParse {
 	 * @throws
 	 * @author arpgate
 	 */
-	public <T extends IExcelParseData> List<T> parse(String excelType, String path, int startSheet, int startHeader, String excelversion,int startLeft,int header) {
+	public <T extends IExcelParseData> List<T> parse(String excelType, String path, int startSheet, int startHeader,int startLeft,int header) {
 		List<T> parseDatas=null;
-		switch (excelversion) {
-		case UtilContants.ExcelVersion.XLS:
-			parseDatas=parseXls(excelType, path, startSheet, startHeader,startLeft, header);
-			break;
-		case UtilContants.ExcelVersion.XLSX:
-			parseDatas=parseXlsx(excelType, path, startSheet, startHeader,startLeft, header);
-			break;
-
+		if (path.endsWith(UtilContants.ExcelVersion.XLS))
+		{
+			return parseXls(excelType, path, startSheet, startHeader,startLeft, header);
 		}
-		return parseDatas;
+		
+		if (path.endsWith(UtilContants.ExcelVersion.XLSX))
+		{
+			return parseXlsx(excelType, path, startSheet, startHeader,startLeft, header);
+		}
+		return null;
 	}
 
 	public <T extends IExcelParseData> List<T> parseXls(String excelType, String path, int startSheet, int startHeader, int startleft,int header) {

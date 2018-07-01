@@ -227,5 +227,66 @@ public class UtilContants {
 	}
 
 	@ConstantDescription(desc = UtilContants.PERMISSION)
-	public static final class Permission { }
+	public static final class Permission {
+		
+		/**
+		 * 文件上传
+		 * @Fields PERMISSION_FILE_UPLOAD
+		 */
+		@ConstantDescription(desc="文件上传")
+		public static final String PERMISSION_FILE_UPLOAD = "util:file:upload";
+		/**
+		 * 文件下载
+		 * @Fields PERMISSION_FILE_DOWNLOAD
+		 */
+		@ConstantDescription(desc="文件下载")
+		public static final String PERMISSION_FILE_DOWNLOAD = "util:file:download";
+		/**
+		 *文件信息
+		 * @Fields PERMISSION_FILE_INFO
+		 */
+		@ConstantDescription(desc="文件信息")
+		public static final String PERMISSION_FILE_INFO = "util:file:info";
+		/**
+		 * 文件列表
+		 * @Fields PERMISSION_FILE_LIST
+		 */
+		@ConstantDescription(desc="文件列表")
+		public static final String PERMISSION_FILE_LIST = "util:file:list";
+		/**
+		 * 文件删除
+		 * @Fields PERMISSION_FILE_DEL
+		 */
+		@ConstantDescription(desc=" 文件删除")
+		public static final String PERMISSION_FILE_DEL = "util:file:del";
+		
+		
+		/**
+		 * excel文件导入
+		 * @Fields PERMISSION_EXCEL_IMPORT_FILE
+		 */
+		@ConstantDescription(desc="excel文件导入")
+		public static final String PERMISSION_EXCEL_IMPORT_FILE = "util:import:file";
+		/**
+		 * excel文件导出
+		 * @Fields PERMISSION_EXCEL_EXPORT_FILE
+		 */
+		@ConstantDescription(desc="excel文件导出")
+		public static final String PERMISSION_EXCEL_EXPORT_FILE = "util:export:file";
+		/**
+		 * excel数据导入
+		 * @Fields PERMISSION_EXCEL_IMPORT_DATA
+		 */
+		@ConstantDescription(desc="excel数据导入")
+		public static final String PERMISSION_EXCEL_IMPORT_DATA = "util:import:data";
+		/**
+		 * excel 数据导出
+		 * @Fields PERMISSION_EXCEL_EXPORT_DATA
+		 */
+		@ConstantDescription(desc="数据导出")
+		public static final String PERMISSION_EXCEL_EXPORT_DATA= "util:export:data";
+
+
+
+	}
 }

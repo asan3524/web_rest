@@ -24,8 +24,8 @@ public interface IFileService {
 	 * @throws
 	 * @author arpgate
 	 */
-	public boolean addFileInfo(FileInfo fileInfo);
-	public boolean addFileInfo(List<FileInfo> fileInfos);
+	public FileInfo addFileInfo(FileInfo fileInfo);
+	public List<FileInfo> addFileInfo(List<FileInfo> fileInfos);
 	 
 	/**
 	 * 获取文件信息
@@ -39,4 +39,7 @@ public interface IFileService {
 	public FileInfo getFileInfoByid(String id);
 	
 	public PageInfo<FileInfo> getFileInfo(FileInfo fileInfo,int pageNum, int pageSize);
+	
+	public boolean delFile(String id);
+
 }
