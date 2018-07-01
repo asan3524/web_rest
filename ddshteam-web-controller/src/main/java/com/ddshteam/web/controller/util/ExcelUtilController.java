@@ -10,14 +10,21 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.ddsh.stock.service.api.constant.StockContants;
+import com.ddsh.util.service.api.IExcelService;
+import com.ddsh.util.service.api.IFileService;
 import com.ddsh.util.service.api.constant.UtilContants;
+import com.ddsh.util.service.api.data.ExcelImportReqData;
+import com.ddsh.util.service.api.data.ExcelImportRespData;
+import com.ddsh.util.service.api.data.FileInfo;
 import com.ddshteam.web.core.base.BaseController;
 import com.ddshteam.web.core.support.HttpCode;
 
@@ -43,9 +50,43 @@ public class ExcelUtilController extends BaseController {
 
 	private final static Logger logger = LoggerFactory.getLogger(ExcelUtilController.class);
 
+	
+	@Reference(version = "1.0.0")
+	IExcelService excelService;
+	
+	@Reference(version = "1.0.0")
+	IFileService fileService;
+	
+	@ApiOperation(value = "获取常量类型", notes = "获取常量类型详情")
+	@PostMapping(value = { "/import" })
+	@RequiresPermissions(UtilContants.Permission.PERMISSION_EXCEL_EXPORT_FILE)
+	public Object importExcel(@RequestParam ExcelImportReqData reqdata, BindingResult errors) {
+		logger.debug("ExcelUtilController.importExcel()");
+
+		if (errors.hasErrors()) {
+			String msg = errors.getAllErrors().get(0).getDefaultMessage();
+			logger.error(msg);
+			return getResponse(HttpCode.BAD_REQUEST, false, msg);
+		}
+		if(StringUtils.isEmpty(reqdata.getFileid())) {
+			logger.error("fileid is null.");
+			return getResponse(HttpCode.BAD_REQUEST, false);
+		}
+		
+		FileInfo fileinfo=fileService.getFileInfoByid(reqdata.getFileid());
+		if(fileinfo==null)
+		{
+			logger.error("fileinfo query is null.");
+			return getResponse(HttpCode.NOT_FOUND, false);
+		}
+		ExcelImportRespData respdata=excelService.importExcel(fileinfo, reqdata);
+ 		return getResponse(respdata);
+	}
+	
+	
 	@ApiOperation(value = "获取常量类型", notes = "获取常量类型详情")
 	@PostMapping(value = { "/export" })
-	@RequiresPermissions(StockContants.Permission.STOCK_CONSTANT_LIST)
+	@RequiresPermissions(UtilContants.Permission.PERMISSION_EXCEL_EXPORT_FILE)
 	public Object exportExcel(HttpServletResponse response, HttpServletRequest request) {
 		logger.debug("ExcelUtilController.exportExcel()");
 		response.setStatus(HttpCode.OK.value());

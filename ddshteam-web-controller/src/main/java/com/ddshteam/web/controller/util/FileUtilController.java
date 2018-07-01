@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.ddsh.stock.service.api.constant.StockContants;
 import com.ddsh.util.service.api.IFileService;
 import com.ddsh.util.service.api.constant.UtilContants;
 import com.ddsh.util.service.api.data.FileInfo;
@@ -52,7 +51,7 @@ public class FileUtilController  extends BaseController{
 	
 	@ApiOperation(value = "文件上传", notes = "文件上传")
 	@PostMapping(value = { "/upload" })
-	@RequiresPermissions(StockContants.Permission.STOCK_CONSTANT_LIST)
+	@RequiresPermissions(UtilContants.Permission.PERMISSION_FILE_UPLOAD)
 	public Object fileUpload(@RequestParam MultipartFile[] upload, @RequestParam List<FileUploadReqData> reqdata,BindingResult errors) {
 		logger.debug("FileUtilController.fileUpload()");
 		if (upload==null||errors.hasErrors()||upload.length<1) {
@@ -104,14 +103,14 @@ public class FileUtilController  extends BaseController{
 			}
 		}
 		
-		Boolean result=fileService.addFileInfo(fileInfos);
+		List<FileInfo> result=fileService.addFileInfo(fileInfos);
 		return getResponse(result);
 	}
 	
 	
 	@ApiOperation(value = "文件下载", notes = "文件下载")
 	@PostMapping(value = { "/download" })
-	@RequiresPermissions(StockContants.Permission.STOCK_CONSTANT_LIST)
+	@RequiresPermissions(UtilContants.Permission.PERMISSION_FILE_DOWNLOAD)
 	public Object filedownload(@RequestParam FileUploadReqData reqdata,HttpServletResponse respone, BindingResult errors) {
 		logger.debug("FileUtilController.filedownload()");
 		if (errors.hasErrors()) {
@@ -139,7 +138,7 @@ public class FileUtilController  extends BaseController{
 	
 	@ApiOperation(value = "获取文件列表", notes = "获取文件列表")
 	@PostMapping(value = { "/fileinolist" })
-	@RequiresPermissions(StockContants.Permission.STOCK_CONSTANT_LIST)
+	@RequiresPermissions(UtilContants.Permission.PERMISSION_FILE_LIST)
 	public Object fileList(@RequestParam FileInfo FileInfo,@PageableDefault(page = 1, size = 10) Pageable pageable, BindingResult errors) {
 		logger.debug("FileUtilController.fileList()");
 		if (errors.hasErrors()) {
@@ -151,9 +150,9 @@ public class FileUtilController  extends BaseController{
 		return getResponse(fileInfos);
 	}
 	
-	@ApiOperation(value = "获取文件列表", notes = "获取文件列表")
+	@ApiOperation(value = "获取文件信息", notes = "获取文件信息")
 	@GetMapping(value = { "/fileinfo/{objid}" })
-	@RequiresPermissions(StockContants.Permission.STOCK_CONSTANT_LIST)
+	@RequiresPermissions(UtilContants.Permission.PERMISSION_FILE_INFO)
 	public Object fileinfo(@PathVariable("objid") String objid) {
 		logger.debug("FileUtilController.fileinfo()");
 		if(StringUtils.isEmpty(objid)) {
@@ -163,6 +162,31 @@ public class FileUtilController  extends BaseController{
 		
 		FileInfo fileInfo=fileService.getFileInfoByid(objid);
 		
+ 		return getResponse(fileInfo);
+	}
+	
+	@ApiOperation(value = "获取文件信息", notes = "获取文件信息")
+	@GetMapping(value = { "/del/{objid}" })
+	@RequiresPermissions(UtilContants.Permission.PERMISSION_FILE_DEL)
+	public Object fileDel(@PathVariable("objid") String objid) {
+		logger.debug("FileUtilController.fileDel()");
+		if(StringUtils.isEmpty(objid)) {
+			logger.error("objid is null.");
+			return getResponse(HttpCode.BAD_REQUEST, false);
+		}
+		
+		FileInfo fileInfo=fileService.getFileInfoByid(objid);
+		if(fileInfo.getPath()!=null)
+		{
+			File file=new File(fileInfo.getPath());
+			if(file.exists())
+			{
+				if(file.delete())
+				{
+					fileService.delFile(fileInfo.getId());
+				}
+			}
+		}
  		return getResponse(fileInfo);
 	}
 	
