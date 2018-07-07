@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.alibaba.fastjson.JSON;
 import com.ddsh.util.service.api.IFileService;
 import com.ddsh.util.service.api.constant.UtilContants;
 import com.ddsh.util.service.api.data.FileInfo;
@@ -52,14 +53,20 @@ public class FileUtilController  extends BaseController{
 	@ApiOperation(value = "文件上传", notes = "文件上传")
 	@PostMapping(value = { "/upload" })
 	@RequiresPermissions(UtilContants.Permission.PERMISSION_FILE_UPLOAD)
-	public Object fileUpload(@RequestParam MultipartFile[] upload, @RequestParam List<FileUploadReqData> reqdata,BindingResult errors) {
+	public Object fileUpload(@RequestParam MultipartFile[] upload,@RequestParam String reqdata,BindingResult errors) {
 		logger.debug("FileUtilController.fileUpload()");
+		
+		if(StringUtils.isEmpty(reqdata)) {
+			logger.error("reqdata is null.");
+			return getResponse(HttpCode.BAD_REQUEST, false);
+		}
 		if (upload==null||errors.hasErrors()||upload.length<1) {
 			String msg = errors.getAllErrors().get(0).getDefaultMessage();
 			logger.error(msg);
 			return getResponse(HttpCode.BAD_REQUEST, false, msg);
 		}
-		
+		List<FileUploadReqData> reqdatas=(List<FileUploadReqData>) JSON.parse(reqdata);
+
 		Subject subject = SecurityUtils.getSubject();
 		SysUserInfo user = (SysUserInfo) subject.getPrincipals().getPrimaryPrincipal();
 
@@ -73,7 +80,7 @@ public class FileUtilController  extends BaseController{
 		{
 			if(multipartFile.getSize()>0)
 			{
-				FileUploadReqData fileData=reqdata.get(i);
+				FileUploadReqData fileData=reqdatas.get(i);
 				i++;
 				String fileName=multipartFile.getOriginalFilename();
 				fileData.setFileName(fileName);
