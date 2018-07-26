@@ -9,7 +9,7 @@ import java.util.Map;
 import com.ddsh.util.service.api.annotation.ConstantDescription;
 
 /**
- * 物资常量
+ * 常量
  * @ClassName: GoodsContants
  * @author arpgate
  * @date 2018年3月2日 下午11:54:32
@@ -98,9 +98,12 @@ public class UtilContants {
 		@ConstantDescription(desc = "模型文件名称")
 		public static final String LABLE_MODEL_NAME = "P30-60.xml";
 		
-		@ConstantDescription(desc = "上传文件根路径")
-		public static final String UPLOAD_ROOT_PATH = "/root/data/";
+		//@ConstantDescription(desc = "上传文件根路径")
+		//public static final String UPLOAD_ROOT_PATH = "D:\\project_file\\temp\\";
 
+		@ConstantDescription(desc = "上传文件根路径")
+		public static final String UPLOAD_ROOT_PATH = "/root/data/upload/";
+		
 	}
 	
 	@ConstantDescription(desc = "询价附件信息")
@@ -134,6 +137,8 @@ public class UtilContants {
 	@ConstantDescription(desc = "Excel文件类型")
 	public static final class ExcelType
 	{
+		public static final Map<String, Class> EXCEL_CACHE_TYPE=new HashMap<String, Class>();
+		
 		@ConstantDescription(desc = "常规班组班级设置申请表")
 		public static final String COMMON_CLASS_SET_APP = "1001";
 		
@@ -148,6 +153,17 @@ public class UtilContants {
 		
 		@ConstantDescription(desc = "教师信息表")
 		public static final String TEACHER_INFO_APP = "5001";
+		
+		static {
+			//EXCEL_CACHE_TYPE.put(COMMON_CLASS_SET_APP, CurriRegularCourseInfoConventor.class);
+		//	EXCEL_CACHE_TYPE.put(CHOOSE_CLASS_SET_APP, CurriRegularCourseInfo.class);
+		//	EXCEL_CACHE_TYPE.put(PERSONAL_MANY_SET_APP, CurriRegularCourseInfo.class);
+		//	EXCEL_CACHE_TYPE.put(TAIN_SET_APP, CurriRegularCourseInfo.class);
+			//EXCEL_CACHE_TYPE.put(TEACHER_INFO_APP, CurriTeacherInfoConventor.class);
+
+		}
+		
+		
 	}
 	
 	

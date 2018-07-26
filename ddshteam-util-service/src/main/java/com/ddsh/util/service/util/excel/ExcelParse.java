@@ -5,8 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -47,28 +45,29 @@ public class ExcelParse {
 	 * @param startLeft 数据起始例
 	 * @param header 头行号
 	 * @return List<T>
+	 * @throws IllegalAccessException 
+	 * @throws InstantiationException 
 	 * @see 
 	 * @throws
 	 * @author arpgate
 	 */
-	public <T extends IExcelParseData> List<T> parse(String excelType, String path, int startSheet, int startHeader,int startLeft,int header) {
-		List<T> parseDatas=null;
-		if (path.endsWith(UtilContants.ExcelVersion.XLS))
+	public <T extends IExcelParseData> T parse(String excelType, String path, int startSheet, int startHeader,int startLeft,int header) throws InstantiationException, IllegalAccessException {
+		if (path.endsWith(UtilContants.ExcelVersion.XLS)||path.endsWith(UtilContants.ExcelVersion.XLS.toLowerCase()))
 		{
 			return parseXls(excelType, path, startSheet, startHeader,startLeft, header);
 		}
 		
-		if (path.endsWith(UtilContants.ExcelVersion.XLSX))
+		if (path.endsWith(UtilContants.ExcelVersion.XLSX)||path.endsWith(UtilContants.ExcelVersion.XLSX.toLowerCase()))
 		{
 			return parseXlsx(excelType, path, startSheet, startHeader,startLeft, header);
 		}
 		return null;
 	}
 
-	public <T extends IExcelParseData> List<T> parseXls(String excelType, String path, int startSheet, int startHeader, int startleft,int header) {
+	public <T extends IExcelParseData> T parseXls(String excelType, String path, int startSheet, int startHeader, int startleft,int header) throws InstantiationException, IllegalAccessException {
 		FileInputStream inputStream = null;
 		HSSFWorkbook workBook = null;
-		List<T> parseDatas=new LinkedList<T>();
+		 T parseDatas=(T) UtilContants.ExcelType.EXCEL_CACHE_TYPE.get(excelType).newInstance();
 		try {
 			inputStream = new FileInputStream(new File(path));
 			workBook = new HSSFWorkbook(inputStream);
@@ -77,9 +76,6 @@ public class ExcelParse {
 
 			for (String type : sheets.keySet()) {
 				HSSFSheet sheet = sheets.get(type);
-				T parseData=IExcelParseData.getParseObject();
-				parseData.setShhetName(sheet.getSheetName());
-				parseDatas.add(parseData);
 
 				int heaerstartcell=startleft;
 				HSSFRow headerRow=sheet.getRow(header);
@@ -87,7 +83,7 @@ public class ExcelParse {
 				{
 					HSSFCell cell = headerRow.getCell(heaerstartcell);
 					heaerstartcell++;
-					parseData.getHeader().add(cell.getStringCellValue());
+					parseDatas.getHeader().add(cell.getStringCellValue());
 				}
 				
 				HSSFRow row = null;
@@ -95,13 +91,12 @@ public class ExcelParse {
 				while ((row = sheet.getRow(startindex)) != null) {
 					int startcell = startleft;
 					
-					LinkedList<Object> value=new LinkedList<Object>();
-					parseData.getValue().put(startindex, value);
+					parseDatas.startrow();
 					
 					while (row.getCell(startcell) != null) {
 						HSSFCell cell = row.getCell(startcell);
 						CellType ctype = cell.getCellTypeEnum();
-						value.add(parseCellToBean(ctype,cell));
+						parseDatas.setValue(startcell, parseCellToBean(ctype,cell));
 						startcell++;
 					}
 					startindex++;
@@ -112,7 +107,10 @@ public class ExcelParse {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
-
+			if(parseDatas!=null)
+			{
+				parseDatas.endrow();
+			}
 			if (inputStream != null) {
 				try {
 					inputStream.close();
@@ -133,10 +131,10 @@ public class ExcelParse {
       return parseDatas;
 	}
 
-	public <T extends IExcelParseData> List<T> parseXlsx(String excelType, String path, int startSheet, int startHeader, int startleft,int header) {
+	public <T extends IExcelParseData> T parseXlsx(String excelType, String path, int startSheet, int startHeader, int startleft,int header) throws InstantiationException, IllegalAccessException {
 		FileInputStream inputStream = null;
 		XSSFWorkbook workBook = null;
-		List<T> parseDatas=new LinkedList<T>();
+		 T parseDatas=(T) UtilContants.ExcelType.EXCEL_CACHE_TYPE.get(excelType).newInstance();
 		try {
 			inputStream = new FileInputStream(new File(path));
 			workBook = new XSSFWorkbook(inputStream);
@@ -144,11 +142,7 @@ public class ExcelParse {
 			Map<String, XSSFSheet> sheets = getSheetByWorkBook(workBook, startSheet, excelType);
 
 			for (String type : sheets.keySet()) {
-				XSSFSheet sheet = workBook.getSheet(type);
-				
-				T parseData=IExcelParseData.getParseObject();
-				parseData.setShhetName(sheet.getSheetName());
-				parseDatas.add(parseData);
+				XSSFSheet sheet = sheets.get(type);
 				
 				int heaerstartcell=startleft;
 				XSSFRow headerRow=sheet.getRow(header);
@@ -156,7 +150,7 @@ public class ExcelParse {
 				{
 					XSSFCell cell = headerRow.getCell(heaerstartcell);
 					heaerstartcell++;
-					parseData.getHeader().add(cell.getStringCellValue());
+					parseDatas.getHeader().add(cell.getStringCellValue());
 				}
 				
 				XSSFRow row = null;
@@ -164,14 +158,13 @@ public class ExcelParse {
 				while ((row = sheet.getRow(startindex)) != null) {
 					int startcell = startleft;
 					
-					LinkedList<Object> value=new LinkedList<Object>();
-					parseData.getValue().put(startindex, value);
+					parseDatas.startrow();
 					
 					while (row.getCell(startcell) != null) {
 						XSSFCell cell = row.getCell(startcell);
-						startcell++;
 						CellType ctype = cell.getCellTypeEnum();
-						value.add(parseCellToBean(ctype,cell));
+						parseDatas.setValue(startcell, parseCellToBean(ctype,cell));
+						startcell++;
 					}
 					startindex++;
 				}
@@ -181,7 +174,12 @@ public class ExcelParse {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
-
+			
+			if(parseDatas!=null)
+			{
+				parseDatas.endrow();
+			}
+			
 			if (inputStream != null) {
 				try {
 					inputStream.close();
@@ -207,9 +205,11 @@ public class ExcelParse {
 		Map<String, T> workbooks = new HashMap<String, T>();
 
 		T sheet = null;
-		while ((sheet = (T) workbook.getSheetAt(startSheet)) != null) {
-			workbooks.put(excelType, sheet);
-			startSheet++;
+		for (int i=startSheet;i<workbook.getNumberOfSheets();i++) {
+			if((sheet = (T) workbook.getSheetAt(i) )!= null)
+			{
+				workbooks.put(excelType, sheet);
+			}
 		}
 
 		return workbooks;
