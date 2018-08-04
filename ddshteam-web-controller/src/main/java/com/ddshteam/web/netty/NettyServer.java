@@ -36,6 +36,9 @@ public class NettyServer {
 	@Value("${netty.send.delay}")
 	private Integer delay = 5000;
 
+	@Value("${netty.server.enable}")
+	private Integer enable = 0;
+
 	private Channel channel;
 	private ChannelFuture future;
 	private final EventLoopGroup boss = new NioEventLoopGroup();
@@ -66,6 +69,9 @@ public class NettyServer {
 	@PostConstruct
 	public void init() {
 
+		if (enable != 1) {
+			return;
+		}
 		new Thread(new Runnable() {
 			@SuppressWarnings("static-access")
 			public void run() {
