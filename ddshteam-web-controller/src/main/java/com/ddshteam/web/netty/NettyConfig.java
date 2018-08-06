@@ -1,6 +1,6 @@
 package com.ddshteam.web.netty;
 
-import java.util.List;
+import java.util.LinkedList;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -18,7 +18,7 @@ import io.netty.util.concurrent.GlobalEventExecutor;
  * 
  */
 public class NettyConfig {
-	public static ConcurrentHashMap<String, List<ChannelId>> accountKey = new ConcurrentHashMap<String, List<ChannelId>>();
+	public static ConcurrentHashMap<String, LinkedList<ChannelId>> accountKey = new ConcurrentHashMap<String, LinkedList<ChannelId>>();
 
 	public static ChannelGroup group = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 

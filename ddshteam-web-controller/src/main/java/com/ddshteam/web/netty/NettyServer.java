@@ -1,6 +1,6 @@
 package com.ddshteam.web.netty;
 
-import java.util.List;
+import java.util.LinkedList;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -46,6 +46,8 @@ public class NettyServer {
 
 	public void start() {
 		ServerBootstrap bootstrap = new ServerBootstrap();
+		// 在linux系统环境下，应该考虑是使用epoll模式
+		// EpollEventLoopGroup+EpollServerSocketChannel
 		bootstrap.group(boss, work).channel(NioServerSocketChannel.class)
 				.childHandler(new WebSocketChannelInitializer(url)).option(ChannelOption.SO_BACKLOG, 1024)
 				.childOption(ChannelOption.SO_KEEPALIVE, true);
@@ -76,22 +78,25 @@ public class NettyServer {
 			@SuppressWarnings("static-access")
 			public void run() {
 				while (true) {
-					if (!NettyConfig.group.isEmpty() && !NettyConfig.msgLink.isEmpty()) {
-						Message msg = NettyConfig.msgLink.poll();
+					try {
+						if (!NettyConfig.group.isEmpty() && !NettyConfig.msgLink.isEmpty()) {
+							Message msg = NettyConfig.msgLink.poll();
 
-						if (NettyConfig.accountKey.containsKey(msg.getAccount())) {
-							TextWebSocketFrame textWebSocketFrame = new TextWebSocketFrame(msg.toString());
-							List<ChannelId> ids = NettyConfig.accountKey.get(msg.getAccount());
-							for (ChannelId channelId : ids) {
-								NettyConfig.group.find(channelId).writeAndFlush(textWebSocketFrame);
+							if (NettyConfig.accountKey.containsKey(msg.getAccount())) {
+								TextWebSocketFrame textWebSocketFrame = new TextWebSocketFrame(msg.toString());
+								LinkedList<ChannelId> ids = NettyConfig.accountKey.get(msg.getAccount());
+								for (ChannelId channelId : ids) {
+									Channel channel = NettyConfig.group.find(channelId);
+									if (null != channel) {
+										channel.writeAndFlush(textWebSocketFrame.copy());
+									}
+								}
 							}
 						}
-					}
-					try {
 						Thread.currentThread().sleep(delay);
-					} catch (InterruptedException e) {
+					} catch (Exception e) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						logger.error("Netty服务器发送进程异常" + e.getMessage());
 					}
 				}
 			}

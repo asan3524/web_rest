@@ -1,6 +1,7 @@
 package com.ddshteam.web.netty;
 
-import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -48,6 +49,11 @@ public class MessageChannelHandler extends SimpleChannelInboundHandler<Object> {
 	@Override
 	public void channelInactive(ChannelHandlerContext context) throws Exception {
 		NettyConfig.group.remove(context.channel());
+		Iterator<LinkedList<ChannelId>> iterator = NettyConfig.accountKey.values().iterator();
+		while (iterator.hasNext()) {
+			LinkedList<ChannelId> channels = iterator.next();
+			channels.remove(context.channel().id());
+		}
 		NettyConfig.accountKey.values().remove(context.channel().id());
 	}
 
@@ -106,16 +112,14 @@ public class MessageChannelHandler extends SimpleChannelInboundHandler<Object> {
 						new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.BAD_REQUEST));
 			} else {
 				String account = JwtTokenUtil.verifyToken(token.get(0));
-				// 测试代码
-				// String account = token.get(0);
 				if (null == account) {
 					sendHttpResponse(context, fullHttpRequest,
 							new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.BAD_REQUEST));
 				} else {
-					if (NettyConfig.accountKey.contains(account)) {
+					if (NettyConfig.accountKey.containsKey(account)) {
 						NettyConfig.accountKey.get(account).add(context.channel().id());
 					} else {
-						List<ChannelId> channels = new ArrayList<ChannelId>();
+						LinkedList<ChannelId> channels = new LinkedList<ChannelId>();
 						channels.add(context.channel().id());
 						NettyConfig.accountKey.put(account, channels);
 					}
@@ -152,10 +156,11 @@ public class MessageChannelHandler extends SimpleChannelInboundHandler<Object> {
 		if (!(webSocketFrame instanceof TextWebSocketFrame)) {
 			throw new RuntimeException(this.getClass().getName());
 		}
-		// String request = ((TextWebSocketFrame) webSocketFrame).text();
-		// TextWebSocketFrame textWebSocketFrame = new
-		// TextWebSocketFrame(context.channel().id() + ":" + request);
-		NettyConfig.group.writeAndFlush(webSocketFrame.retain());
+		// 接收到客户端的数据，直接向所有客户端推送此消息，用于测试环境
+		// 当前业务场景下不需要接收客户端消息，正式环境下应该注释掉
+		String request = ((TextWebSocketFrame) webSocketFrame).text();
+		TextWebSocketFrame textWebSocketFrame = new TextWebSocketFrame(context.channel().id() + ":" + request);
+		NettyConfig.group.writeAndFlush(textWebSocketFrame);
 	}
 
 	private void sendHttpResponse(ChannelHandlerContext context, FullHttpRequest fullHttpRequest,
@@ -165,7 +170,7 @@ public class MessageChannelHandler extends SimpleChannelInboundHandler<Object> {
 			defaultFullHttpResponse.content().writeBytes(buf);
 			buf.release();
 		}
-		// 服务端向客户端发送数据
+		// 服务端向客户端发送数据，如果不是长连接，则在注册事件：在刷完response后关闭当前连接
 		ChannelFuture future = context.channel().writeAndFlush(defaultFullHttpResponse);
 		if (!HttpUtil.isKeepAlive(fullHttpRequest)) {
 			future.addListener(ChannelFutureListener.CLOSE);
