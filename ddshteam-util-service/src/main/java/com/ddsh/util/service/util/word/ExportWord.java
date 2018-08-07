@@ -1,14 +1,15 @@
 package com.ddsh.util.service.util.word;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.Map.Entry;
 
 import org.apache.poi.POIXMLDocument;
@@ -25,17 +26,17 @@ import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.apache.xmlbeans.XmlCursor;
 
+import com.ddsh.util.service.api.constant.UtilContants;
+import com.ddsh.util.service.api.data.word.IWordExportMapper;
+
 public class ExportWord {
- 
-	public static XWPFDocument generateWord(Map<String, Object> param,String template) {
-		XWPFDocument doc = null;
+
+	public static XWPFDocument generateWordText(Entry<String, Object> param, XWPFDocument doc) {
 		try {
-			OPCPackage pack = POIXMLDocument.openPackage(template);
-			doc = new XWPFDocument(pack);
-			if (param != null && param.size() > 0) {
+			if (param != null) {
 				List<XWPFParagraph> paragraphList = doc.getParagraphs();
 				processParagraphs(paragraphList, param, doc);
-				processTables(doc.getTables(),param,doc);
+				processTables(doc.getTables(), param, doc);
 			}
 		} catch (Exception e) {
 
@@ -56,90 +57,81 @@ public class ExportWord {
 	* @param doc
 	*            需要替换的DOC
 	*/
-	public static void processParagraphs(List<XWPFParagraph> paragraphList,	Map<String, Object> param, XWPFDocument doc) {
+	public static void processParagraphs(List<XWPFParagraph> paragraphList, Entry<String, Object> param,
+			XWPFDocument doc) {
 		if (paragraphList != null && paragraphList.size() > 0) {
 			for (XWPFParagraph paragraph : paragraphList) {
 				List<XWPFRun> runs = paragraph.getRuns();
-				StringBuilder sb=null;
-				
-				for (int runindex=0;runindex<runs.size();runindex++) {
-					XWPFRun run=runs.get(runindex);
+				StringBuilder sb = null;
+
+				for (int runindex = 0; runindex < runs.size(); runindex++) {
+					XWPFRun run = runs.get(runindex);
 					String text = run.getText(0);
-					
-					if(text!=null)
-					{
-						if(sb==null)
-						{
-							sb=new StringBuilder();
+
+					if (text != null) {
+						if (sb == null) {
+							sb = new StringBuilder();
 						}
 						sb.append(text);
 					}
-					
-					if (sb != null&&runindex==runs.size()-1) {
-						text=sb.toString();
+
+					if (sb != null && runindex == runs.size() - 1) {
+						text = sb.toString();
 						boolean isSetText = false;
 						run.setText(text, 0);
-						for (Entry<String, Object> entry : param.entrySet()) {
-							String key = entry.getKey();
-							if (text.indexOf(key) != -1) {
-								isSetText = true;
-								Object value = entry.getValue();
-								if (value instanceof String) {// 文本替换
-									text = text.replace(key, value.toString());
-								}
+						String key = param.getKey();
+						if (text.indexOf(key) != -1) {
+							isSetText = true;
+							Object value = param.getValue();
+							if (value instanceof String) {// 文本替换
+								text = text.replace(key, value.toString());
 							}
 						}
 						if (isSetText) {
 							run.setText(text, 0);
 						}
-					}
-					else
-					{
+					} else {
 						run.setText("", 0);
 					}
 				}
 			}
 		}
 	}
-	
-	
-	public static void processTables(List<XWPFTable> xWPFTableList,	Map<String, Object> param, XWPFDocument doc) {
+
+	public static void processTables(List<XWPFTable> xWPFTableList,Entry<String, Object> param, XWPFDocument doc) {
 		if (xWPFTableList != null && xWPFTableList.size() > 0) {
 			for (XWPFTable xwpftable : xWPFTableList) {
-				
-				List<XWPFTableRow> rows=xwpftable.getRows();
-				if(rows!=null&&rows.size()>0)
-				{
-					for (XWPFTableRow row:xwpftable.getRows()) { 
-						
-						List<XWPFTableCell> cells=row.getTableCells();
-						
-						if(cells!=null&&cells.size()>0)
-						{
-							for(XWPFTableCell cell:cells)
-							{
-								String text=cell.getText();
-								boolean isSetText=false;
-								for (Entry<String, Object> entry : param.entrySet()) {
-									String key = entry.getKey();
-									if (text.indexOf(key) != -1) {
-										isSetText = true;
-										Object value = entry.getValue();
-										if (value instanceof String) {// 文本替换
-											text = text.replace(key, value.toString());
-										}
+
+				List<XWPFTableRow> rows = xwpftable.getRows();
+				if (rows != null && rows.size() > 0) {
+					for (XWPFTableRow row : xwpftable.getRows()) {
+
+						List<XWPFTableCell> cells = row.getTableCells();
+
+						if (cells != null && cells.size() > 0) {
+							for (XWPFTableCell cell : cells) {
+								String text = cell.getText();
+								boolean isSetText = false;
+
+								String key = param.getKey();
+								if (text.indexOf(key) != -1) {
+									isSetText = true;
+									Object value = param.getValue();
+									if (value instanceof String) {// 文本替换
+										text = text.replace(key, value.toString());
 									}
 								}
+							
 								if (isSetText) {
 									cell.removeParagraph(0);
 									cell.setText(text);
 								}
 							}
-							
+
 						}
 					}
 				}
-			
+
 			}
 		}
 	}
@@ -207,8 +199,7 @@ public class ExportWord {
 
 	}
 
-	public static void insertImage(String key, XWPFDocument doc) {
-
+	public static void insertImage(String key, List<String> param,XWPFDocument doc) {
 		List<XWPFParagraph> paragraphList = doc.getParagraphs();
 		try {
 			if (paragraphList != null && paragraphList.size() > 0) {
@@ -219,9 +210,14 @@ public class ExportWord {
 						if (text != null) {
 							if (text.indexOf(key) >= 0) {
 								run.addBreak();
-								run.addPicture(
-										new FileInputStream("E:\\pic\\四姑娘(1)\\100CANON\\IMG_9387.JPG"), Document.PICTURE_TYPE_JPEG, "E:\\\\pic\\\\四姑娘(1)\\\\100CANON\\\\IMG_9387.JPG",
-										Units.toEMU(200), Units.toEMU(200)); // 200x200
+								
+								for(String path:param)
+								{
+									String ext[]=path.split("\\.");
+									run.addPicture(new FileInputStream(path),
+											UtilContants.WordImageType.cache.get(ext[ext.length-1]), path,
+											Units.toEMU(200), Units.toEMU(200)); 
+								}
 																				// pixels
 								run.addBreak(BreakType.PAGE);
 							}
@@ -244,6 +240,83 @@ public class ExportWord {
 
 	}
 
+	public static  Boolean addRows(XWPFTable table, List<List<String>> values) {
+		table.addNewRowBetween(0, values.size() - 1);
+
+		for (int row_index = 0; row_index < values.size(); row_index++) {
+			XWPFTableRow row = table.getRow(row_index + 1);
+			List<String> value = values.get(row_index);
+			for (int col_index = 0; col_index < value.size(); col_index++) {
+				row.getCell(col_index).setText(value.get(col_index));
+			}
+		}
+
+		return true;
+	}
+
+	public static void generalMedia(IWordExportMapper mapper) throws IOException {
+		XWPFDocument doc = null;
+		if (mapper.getValue() == null || mapper.getValue().size() < 1) {
+			return;
+		}
+		File file = new File(mapper.getModelpath());
+		if (file.exists()) {
+			return;
+		}
+		FileChannel input = new FileInputStream(mapper.getModelpath()).getChannel();
+		String modelpath = file.getParent() + File.separator + System.currentTimeMillis() + file.getName();
+		FileChannel output = new FileOutputStream(modelpath).getChannel();
+		output.transferFrom(input, 0, input.size());
+
+		OPCPackage ocpModel = POIXMLDocument.openPackage(modelpath);
+		FileOutputStream fileExp = new FileOutputStream(mapper.getExportpath());
+		doc = new XWPFDocument(ocpModel);
+
+		for (Entry<String, Object> entry : mapper.getValue().entrySet()) {
+			if (!mapper.getTypeMapper().containsKey(entry.getKey())) {
+				continue;
+			}
+			switch (mapper.getTypeMapper().get(entry.getKey())) {
+			case UtilContants.WordMediaType.MEDIA_IMAGE:
+				List<String> images = (List<String>) entry.getValue();
+				if(images!=null&&images.size()>0)
+				{
+					insertImage(entry.getKey(), images, doc);
+				}
+				break;
+			case UtilContants.WordMediaType.MEDIA_TABLE:
+				String rows_key = (String) mapper.getFlowMapper().get(entry.getKey());
+				List<List<String>> rows = (List<List<String>>) mapper.getValue().get(rows_key);
+				XWPFTable table=getTableByKey(doc,rows_key);
+				if(table!=null&&rows!=null&&rows.size()>0)
+				{
+					addRows(table, rows);
+				}
+				
+				break;
+
+			case UtilContants.WordMediaType.MEDIA_TEXT:
+				generateWordText(entry, doc);
+				break;
+			default:
+				break;
+			}
+
+		}
+		doc.write(fileExp);
+	}
+
+	public static XWPFTable getTableByKey(XWPFDocument document, String key) {
+		XWPFTable xtable = null;
+		for (XWPFTable table : document.getTables()) {
+			if (table.getText().contains(key)) {
+				xtable = table;
+				break;
+			}
+		}
+		return xtable;
+	}
+
 	/**
 	
 	* 测试用方法
@@ -253,7 +326,7 @@ public class ExportWord {
 	public static void main(String[] args) throws Exception {
 
 		Map<String, Object> param = new HashMap<String, Object>();
-					
+
 		param.put("${name}", "哈哈哈哈");
 		param.put("${age}", "信息管理与信息系统");
 		param.put("${sex}", "男");
@@ -266,7 +339,7 @@ public class ExportWord {
 		param.put("${remark}", "2016-09-21");
 		param.put("${personInfo}", "2016-09-21");
 		param.put("${test}", new Date().toString());
-		
+
 		Map<String, Object> twocode = new HashMap<String, Object>();
 		twocode.put("width", 300);
 
@@ -274,27 +347,50 @@ public class ExportWord {
 
 		twocode.put("type", "png");
 
-		XWPFDocument doc = ExportWord.generateWord(param, "C:\\Users\\arpgate\\Desktop\\template.docx");
-		FileOutputStream fopts = new FileOutputStream("D:\\project_file\\tt\\"+UUID.randomUUID().toString()+".docx");
-		doc.write(fopts);
+		// XWPFDocument doc = ExportWord.generateWordText(param,
+		// "D:\\project_file\\资料\\采购库存\\model\\example\\inquiry_model_compomnet_exp.docx");
+		// FileOutputStream fopts = new
+		// FileOutputStream("D:\\project_file\\tt\\"+UUID.randomUUID().toString()+".docx");
+		// doc.write(fopts);
+		OPCPackage pack = POIXMLDocument
+				.openPackage("D:\\project_file\\资料\\采购库存\\model\\example\\inquiry_model_compomnet_exp.docx");
+		XWPFDocument doc = new XWPFDocument(pack);
+		for (XWPFTable table : doc.getTables()) {
+			if (table.getText().contains("INQUIRY_INQUIRY_DETAILS")) {
+				System.out.println(table.getText());
+			}
+		}
 
-/*		ExportWord.insertTab("${table}", doc); // /----------创建表
+		File file = new File("D:\\project_file\\资料\\采购库存\\model\\example\\123.txt");
+		System.out.println(file.getParent());
+		System.out.println(file.getName());
+		System.out.println(File.separator);
 
-		ExportWord.insertImage("${image}", doc); // /----------创建图
+		FileChannel input = new FileInputStream("D:\\project_file\\资料\\采购库存\\model\\example\\123.txt").getChannel();
+		FileChannel output = new FileOutputStream("D:\\project_file\\资料\\采购库存\\model\\example\\123456789.txt")
+				.getChannel();
+		output.transferFrom(input, 0, input.size());
 
-		// ------替换多余的标志位----//
-
-		param = new HashMap<String, Object>();
-
-		param.put("${test}", "下一个段落");
-
-		param.put("${table}", "");
-
-		param.put("${image}", "");
-
-		ExportWord.processParagraphs(doc.getParagraphs(), param, doc);
-		FileOutputStream fopts = new FileOutputStream("D:\\project_file\\tt\\template-2.docx");
-		doc.write(fopts);*/
+		/*
+		 * ExportWord.insertTab("${table}", doc); // /----------创建表
+		 * 
+		 * ExportWord.insertImage("${image}", doc); // /----------创建图
+		 * 
+		 * // ------替换多余的标志位----//
+		 * 
+		 * param = new HashMap<String, Object>();
+		 * 
+		 * param.put("${test}", "下一个段落");
+		 * 
+		 * param.put("${table}", "");
+		 * 
+		 * param.put("${image}", "");
+		 * 
+		 * ExportWord.processParagraphs(doc.getParagraphs(), param, doc);
+		 * FileOutputStream fopts = new
+		 * FileOutputStream("D:\\project_file\\tt\\template-2.docx");
+		 * doc.write(fopts);
+		 */
 
 	}
 }
