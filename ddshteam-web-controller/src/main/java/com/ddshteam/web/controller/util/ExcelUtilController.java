@@ -57,9 +57,9 @@ public class ExcelUtilController extends BaseController {
 	@Reference(version = "1.0.0")
 	IFileService fileService;
 	
-	@ApiOperation(value = "获取常量类型", notes = "获取常量类型详情")
+	@ApiOperation(value = "excel文件导入", notes = "excel文件导入")
 	@PostMapping(value = { "/import" })
-	@RequiresPermissions(UtilContants.Permission.PERMISSION_EXCEL_EXPORT_FILE)
+	@RequiresPermissions(UtilContants.Permission.PERMISSION_EXCEL_IMPORT_FILE)
 	public Object importExcel(@RequestParam ExcelImportReqData reqdata, BindingResult errors) {
 		logger.debug("ExcelUtilController.importExcel()");
 
@@ -84,7 +84,7 @@ public class ExcelUtilController extends BaseController {
 	}
 	
 	
-	@ApiOperation(value = "获取常量类型", notes = "获取常量类型详情")
+	@ApiOperation(value = "excel文件导出", notes = "excel文件导出")
 	@PostMapping(value = { "/export" })
 	@RequiresPermissions(UtilContants.Permission.PERMISSION_EXCEL_EXPORT_FILE)
 	public Object exportExcel(HttpServletResponse response, HttpServletRequest request) {

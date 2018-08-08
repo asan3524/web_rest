@@ -63,7 +63,7 @@ public class FileServiceImpl implements IFileService {
 		{
 			AttAttachmentInfo att=convertFileInfoToAtt(fileInfo);
 			records.add(att);
-			fileInfo=convertAttToFileinfo(att);
+            convertAttToFileinfo(att,fileInfo);
 		}
 		
 		if(records==null||records.size()==0)
@@ -101,7 +101,21 @@ public class FileServiceImpl implements IFileService {
 		
 		return attAttachmentInfo;
 	}
-	
+    private  FileInfo convertAttToFileinfo(AttAttachmentInfo attAttachmentInfo,FileInfo fileInfo)
+    {
+        fileInfo.setId(attAttachmentInfo.getId());
+        fileInfo.setBussnessObjId(attAttachmentInfo.getObjId());
+        fileInfo.setFilename(attAttachmentInfo.getFileName());
+        fileInfo.setFileSize(attAttachmentInfo.getFileSize().longValue());
+        fileInfo.setFileType(attAttachmentInfo.getFileType());
+        fileInfo.setStatus(attAttachmentInfo.getStatus());
+        fileInfo.setUserid(attAttachmentInfo.getUploadUserid());
+        fileInfo.setUsername(attAttachmentInfo.getUploadUsername());
+        fileInfo.setName(attAttachmentInfo.getName());
+        fileInfo.setRemark(attAttachmentInfo.getRemark());
+        return fileInfo;
+    }
+
 	private  FileInfo convertAttToFileinfo(AttAttachmentInfo attAttachmentInfo)
 	{
 		FileInfo fileInfo=new FileInfo();

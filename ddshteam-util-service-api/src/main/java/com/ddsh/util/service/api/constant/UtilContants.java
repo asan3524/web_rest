@@ -166,6 +166,25 @@ public class UtilContants {
 		
 	}
 	
+	@ConstantDescription(desc = "word导出模板类型")
+	public static final class WordModelType
+	{
+		public static final Map<String, Class> WORD_CACHE_TYPE=new HashMap<String, Class>();
+		public static final Map<String, String> WORD_MODEL=new HashMap<String, String>();
+		
+		@ConstantDescription(desc = "询价导出模板")
+		public static final String INQUIRY_MODEL_COMPOMNET = "inquiry_model_compomnet";
+		
+		@ConstantDescription(desc = "采购导出模板")
+		public static final String PURCHASE_MODEL_COMPOMNET = "purchase_model_compomnet";
+		
+		static {
+			//WORD_CACHE_TYPE.put(INQUIRY_MODEL_COMPOMNET, CurriRegularCourseInfoConventor.class);
+			//WORD_CACHE_TYPE.put(purchase_model_compomnet, CurriTeacherInfoConventor.class);
+		}
+		
+		
+	}
 	
 	@ConstantDescription(desc = "Excel文件版本类型")
 	public static final class ExcelVersion
@@ -222,13 +241,57 @@ public class UtilContants {
 		@ConstantDescription(desc = "压缩包")
 		public static final int MEDIA_COMP = 6;
 	}
+	@ConstantDescription(desc = "word图片类型")
+	public static final class WordImageType
+	{
+		public static final Map<String, Integer> cache=new HashMap<String, Integer>();
+		static
+		{
+			cache.put("emf",2);
+			cache.put("EMF",2);
+			cache.put("WMF",3);
+			cache.put("wmf",3);
+			cache.put("PICT",4);
+			cache.put("pict",4);
+			cache.put("jpeg",5);
+			cache.put("JPEG",5);
+			cache.put("jpg",5);
+			cache.put("JPG",5);
+			cache.put("PNG",6);
+			cache.put("png",6);
+			cache.put("DIB",7);
+			cache.put("dib",7);
+			cache.put("GIF",8);
+			cache.put("gif",8);
+			cache.put("TIFF",9);
+			cache.put("tiff",9);
+			cache.put("EPS",10);
+			cache.put("eps",10);
+			cache.put("BMP",11);
+			cache.put("bmp",11);
+			cache.put("WPG",12);
+			cache.put("wpg",12);
+		}
+	}
+	
+	
+	@ConstantDescription(desc = "word资源类型")
+	public static final class WordMediaType
+	{
+		@ConstantDescription(desc = "图片")
+		public static final int MEDIA_IMAGE = 1;
+		@ConstantDescription(desc = "文字")
+		public static final int MEDIA_TEXT = 2;
+		@ConstantDescription(desc = "表格")
+		public static final int MEDIA_TABLE = 3;
+	}
+	
 	
 	@ConstantDescription(desc = "符号")
 	public static final class Symbol
 	{
 		@ConstantDescription(desc = "有效")
 		public static final String RIGHT_DIAGONAL = "\\";
-		
 	}
 	
 	@ConstantDescription(desc="状态")
@@ -239,8 +302,8 @@ public class UtilContants {
 		
 		@ConstantDescription(desc="无效删除状态")
 		public static final int LOSE_EFFECT=0;
-
 	}
+	
 
 	@ConstantDescription(desc = UtilContants.PERMISSION)
 	public static final class Permission {
