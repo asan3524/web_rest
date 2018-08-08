@@ -41,7 +41,12 @@ public class NettyServer {
 
 	private Channel channel;
 	private ChannelFuture future;
-	private final EventLoopGroup boss = new NioEventLoopGroup();
+	//优化处理，bossGroup仅负责接收客户端连接，不做逻辑，取值越小越好
+	private final EventLoopGroup boss = new NioEventLoopGroup(1);
+	//优化处理，默认值为CPU线程数*2
+	//并发较少时1<=N<=CPU线程数；并发大时需要根据并发连接数动态调节
+	//如果是客户端的workGroup，评估客户端连接数，创建一个大的池所有客户端连接大量服务提供者共用
+	//或者创建workGroup数组，不同客户端通过hash散列值打散使用
 	private final EventLoopGroup work = new NioEventLoopGroup();
 
 	public void start() {
