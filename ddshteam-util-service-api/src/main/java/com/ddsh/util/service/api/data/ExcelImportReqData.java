@@ -1,8 +1,10 @@
 package com.ddsh.util.service.api.data;
 
+import java.io.Serializable;
+
 import com.ddsh.util.service.api.constant.UtilContants;
 
-public class ExcelImportReqData {
+public class ExcelImportReqData implements Serializable{
 	
 	/**
 	 * 文件id

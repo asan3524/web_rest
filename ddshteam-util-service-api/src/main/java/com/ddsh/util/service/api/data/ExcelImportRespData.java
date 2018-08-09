@@ -1,9 +1,10 @@
 package com.ddsh.util.service.api.data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExcelImportRespData {
+public class ExcelImportRespData  implements Serializable {
 	
 	Boolean status;
 	
