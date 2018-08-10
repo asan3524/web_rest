@@ -41,5 +41,16 @@ public interface IFileService {
 	public PageInfo<FileInfo> getFileInfo(FileInfo fileInfo,int pageNum, int pageSize);
 	
 	public boolean delFile(String id);
+	
+	
+	/**
+	 * 获取基础地址
+	 * @Title: getBasePath
+	 * @return String
+	 * @see 
+	 * @throws
+	 * @author arpgate
+	 */
+	public String getBasePath();
 
 }

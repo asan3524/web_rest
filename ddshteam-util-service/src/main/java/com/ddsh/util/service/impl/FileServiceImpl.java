@@ -10,10 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.ddsh.util.service.api.IFileService;
+import com.ddsh.util.service.api.constant.UtilContants;
 import com.ddsh.util.service.api.data.FileInfo;
 import com.ddsh.util.service.api.model.AttAttachmentInfo;
 import com.ddsh.util.service.api.model.AttAttachmentInfoCriteria;
 import com.ddsh.util.service.dao.AttAttachmentInfoMapper;
+import com.ddsh.util.service.util.OSUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
@@ -208,6 +210,18 @@ public class FileServiceImpl implements IFileService {
 	public boolean delFile(String id) {
 		int result=attAttachmentInfoMapper.deleteByPrimaryKey(id);
 		return result>0;
+	}
+
+	@Override
+	public String getBasePath() {
+		if(OSUtil.getSystemType()==UtilContants.OSType.LINUX)
+		{
+			return UtilContants.Sysset.BASE_L_ROOT;
+		}
+		else
+		{
+			return UtilContants.Sysset.BASE_W_ROOT;
+		}
 	}
 
 }
