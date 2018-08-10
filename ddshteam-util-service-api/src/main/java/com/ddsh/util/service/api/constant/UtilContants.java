@@ -98,8 +98,11 @@ public class UtilContants {
 		@ConstantDescription(desc = "模型文件名称")
 		public static final String LABLE_MODEL_NAME = "P30-60.xml";
 		
-		//@ConstantDescription(desc = "上传文件根路径")
-		//public static final String UPLOAD_ROOT_PATH = "D:\\project_file\\temp\\";
+		@ConstantDescription(desc = "上传文件根路径")
+		public static final String BASE_W_ROOT= "D:\\";
+		
+		@ConstantDescription(desc = "上传文件根路径")
+		public static final String BASE_L_ROOT= "/root/data/";
 
 		@ConstantDescription(desc = "上传文件根路径")
 		public static final String UPLOAD_ROOT_PATH = "/root/data/upload/";
@@ -132,6 +135,15 @@ public class UtilContants {
 		public static final String PURCHASE_GOODS_IMAGE="PURCHASE_GOODS_IMAGE";
 	}
 	
+	@ConstantDescription(desc = "操作系统类型")
+	public static final class OSType
+	{
+		@ConstantDescription(desc = "windows")
+		public static final int WINDOWS=1;
+		
+		@ConstantDescription(desc = "linux")
+		public static final int LINUX=2;
+	}
 	
 	
 	@ConstantDescription(desc = "Excel文件类型")
