@@ -51,18 +51,12 @@ public class FileUtilController extends BaseController {
 	@ApiOperation(value = "文件上传", notes = "文件上传")
 	@PostMapping(value = { "/uploads" })
 	@RequiresPermissions(UtilContants.Permission.PERMISSION_FILE_UPLOAD)
-	public Object fileUploads(@RequestParam MultipartFile[] upload, @RequestParam String reqdata,
-			BindingResult errors) {
+	public Object fileUploads(@RequestParam MultipartFile[] upload, @RequestParam String reqdata) {
 		logger.debug("FileUtilController.fileUpload()");
 
 		if (StringUtils.isEmpty(reqdata)) {
 			logger.error("reqdata is null.");
 			return getResponse(HttpCode.BAD_REQUEST, false);
-		}
-		if (upload == null || errors.hasErrors() || upload.length < 1) {
-			String msg = errors.getAllErrors().get(0).getDefaultMessage();
-			logger.error(msg);
-			return getResponse(HttpCode.BAD_REQUEST, false, msg);
 		}
 		List<FileUploadReqData> reqdatas = (List<FileUploadReqData>) JSON.parse(reqdata);
 
@@ -94,6 +88,7 @@ public class FileUtilController extends BaseController {
 
 				FileInfo fileInfo = new FileInfo();
 				fileInfo.setBussnessObjId(fileData.getBussnessObjId());
+				fileInfo.setBussnessobjSubId(fileData.getBussnessObjSubId());
 				fileInfo.setFilename(fileName);
 				fileInfo.setPath(file.getPath());
 				fileInfo.setFileSize(multipartFile.getSize() / 1024 / 1024);
@@ -114,18 +109,14 @@ public class FileUtilController extends BaseController {
 	@ApiOperation(value = "文件上传", notes = "文件上传")
 	@PostMapping(value = { "/upload" })
 	@RequiresPermissions(UtilContants.Permission.PERMISSION_FILE_UPLOAD)
-	public Object fileUpload(@RequestParam MultipartFile upload, @RequestParam String reqdata, BindingResult errors) {
+	public Object fileUpload(@RequestParam MultipartFile upload, @RequestParam String reqdata) {
 		logger.debug("FileUtilController.fileUpload()");
 
 		if (StringUtils.isEmpty(reqdata)) {
 			logger.error("reqdata is null.");
 			return getResponse(HttpCode.BAD_REQUEST, false);
 		}
-		if (upload == null || errors.hasErrors()) {
-			String msg = errors.getAllErrors().get(0).getDefaultMessage();
-			logger.error(msg);
-			return getResponse(HttpCode.BAD_REQUEST, false, msg);
-		}
+		
 		FileUploadReqData fileData = (FileUploadReqData) JSON.parse(reqdata);
 
 		Subject subject = SecurityUtils.getSubject();
@@ -152,6 +143,7 @@ public class FileUtilController extends BaseController {
 
 		FileInfo fileInfo = new FileInfo();
 		fileInfo.setBussnessObjId(fileData.getBussnessObjId());
+		fileInfo.setBussnessobjSubId(fileData.getBussnessObjSubId());
 		fileInfo.setFilename(fileName);
 		fileInfo.setPath(file.getPath());
 		fileInfo.setFileSize(upload.getSize() / 1024 / 1024);
@@ -170,14 +162,8 @@ public class FileUtilController extends BaseController {
 	@ApiOperation(value = "文件下载", notes = "文件下载")
 	@PostMapping(value = { "/download" })
 	@RequiresPermissions(UtilContants.Permission.PERMISSION_FILE_DOWNLOAD)
-	public Object filedownload(@RequestParam FileUploadReqData reqdata, HttpServletResponse respone,
-			BindingResult errors) {
+	public Object filedownload(@RequestParam FileUploadReqData reqdata, HttpServletResponse respone) {
 		logger.debug("FileUtilController.filedownload()");
-		if (errors.hasErrors()) {
-			String msg = errors.getAllErrors().get(0).getDefaultMessage();
-			logger.error(msg);
-			return getResponse(HttpCode.BAD_REQUEST, false, msg);
-		}
 		File file = new File(getRealPath(reqdata));
 		if (!file.exists()) {
 			logger.error("文件不存在!");

@@ -7,6 +7,8 @@ public class FileUploadReqData implements Serializable {
 
 	String bussnessObjId;
 	
+	String bussnessObjSubId;
+	
 	String type;
 	
 	String fileName;
@@ -61,6 +63,12 @@ public class FileUploadReqData implements Serializable {
 	}
 	public void setAttSubType(String attSubType) {
 		this.attSubType = attSubType;
+	}
+	public String getBussnessObjSubId() {
+		return bussnessObjSubId;
+	}
+	public void setBussnessObjSubId(String bussnessObjSubId) {
+		this.bussnessObjSubId = bussnessObjSubId;
 	}
  
 }

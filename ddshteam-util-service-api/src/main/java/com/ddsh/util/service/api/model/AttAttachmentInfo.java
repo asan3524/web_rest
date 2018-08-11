@@ -29,6 +29,12 @@ public class AttAttachmentInfo implements Serializable {
     private String objId;
 
     /**
+     * 附件关联业务附属性ID
+     * 表字段 : att_attachment_info.obj_sub_id
+     */
+    private String objSubId;
+
+    /**
      * 附件相对路径
      * 表字段 : att_attachment_info.path
      */
@@ -166,6 +172,24 @@ public class AttAttachmentInfo implements Serializable {
      */
     public void setObjId(String objId) {
         this.objId = objId == null ? null : objId.trim();
+    }
+
+    /**
+     * 获取 附件关联业务附属性ID 字段:att_attachment_info.obj_sub_id
+     *
+     * @return att_attachment_info.obj_sub_id, 附件关联业务附属性ID
+     */
+    public String getObjSubId() {
+        return objSubId;
+    }
+
+    /**
+     * 设置 附件关联业务附属性ID 字段:att_attachment_info.obj_sub_id
+     *
+     * @param objSubId the value for att_attachment_info.obj_sub_id, 附件关联业务附属性ID
+     */
+    public void setObjSubId(String objSubId) {
+        this.objSubId = objSubId == null ? null : objSubId.trim();
     }
 
     /**
@@ -361,6 +385,7 @@ public class AttAttachmentInfo implements Serializable {
         sb.append(", tableName=").append(tableName);
         sb.append(", type=").append(type);
         sb.append(", objId=").append(objId);
+        sb.append(", objSubId=").append(objSubId);
         sb.append(", path=").append(path);
         sb.append(", updateTime=").append(updateTime);
         sb.append(", uploadUserid=").append(uploadUserid);

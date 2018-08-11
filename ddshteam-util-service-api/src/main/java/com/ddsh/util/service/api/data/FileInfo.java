@@ -26,6 +26,8 @@ public class FileInfo implements Serializable {
 	Integer status;
 	
 	String bussnessObjId;
+	
+	String bussnessobjSubId;
 
 	String name;
 	
@@ -135,6 +137,14 @@ public class FileInfo implements Serializable {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getBussnessobjSubId() {
+		return bussnessobjSubId;
+	}
+
+	public void setBussnessobjSubId(String bussnessobjSubId) {
+		this.bussnessobjSubId = bussnessobjSubId;
 	}
 
 }

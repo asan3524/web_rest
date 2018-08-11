@@ -545,6 +545,76 @@ public class AttAttachmentInfoCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andObjSubIdIsNull() {
+            addCriterion("obj_sub_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andObjSubIdIsNotNull() {
+            addCriterion("obj_sub_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andObjSubIdEqualTo(String value) {
+            addCriterion("obj_sub_id =", value, "objSubId");
+            return (Criteria) this;
+        }
+
+        public Criteria andObjSubIdNotEqualTo(String value) {
+            addCriterion("obj_sub_id <>", value, "objSubId");
+            return (Criteria) this;
+        }
+
+        public Criteria andObjSubIdGreaterThan(String value) {
+            addCriterion("obj_sub_id >", value, "objSubId");
+            return (Criteria) this;
+        }
+
+        public Criteria andObjSubIdGreaterThanOrEqualTo(String value) {
+            addCriterion("obj_sub_id >=", value, "objSubId");
+            return (Criteria) this;
+        }
+
+        public Criteria andObjSubIdLessThan(String value) {
+            addCriterion("obj_sub_id <", value, "objSubId");
+            return (Criteria) this;
+        }
+
+        public Criteria andObjSubIdLessThanOrEqualTo(String value) {
+            addCriterion("obj_sub_id <=", value, "objSubId");
+            return (Criteria) this;
+        }
+
+        public Criteria andObjSubIdLike(String value) {
+            addCriterion("obj_sub_id like", value, "objSubId");
+            return (Criteria) this;
+        }
+
+        public Criteria andObjSubIdNotLike(String value) {
+            addCriterion("obj_sub_id not like", value, "objSubId");
+            return (Criteria) this;
+        }
+
+        public Criteria andObjSubIdIn(List<String> values) {
+            addCriterion("obj_sub_id in", values, "objSubId");
+            return (Criteria) this;
+        }
+
+        public Criteria andObjSubIdNotIn(List<String> values) {
+            addCriterion("obj_sub_id not in", values, "objSubId");
+            return (Criteria) this;
+        }
+
+        public Criteria andObjSubIdBetween(String value1, String value2) {
+            addCriterion("obj_sub_id between", value1, value2, "objSubId");
+            return (Criteria) this;
+        }
+
+        public Criteria andObjSubIdNotBetween(String value1, String value2) {
+            addCriterion("obj_sub_id not between", value1, value2, "objSubId");
+            return (Criteria) this;
+        }
+
         public Criteria andPathIsNull() {
             addCriterion("path is null");
             return (Criteria) this;

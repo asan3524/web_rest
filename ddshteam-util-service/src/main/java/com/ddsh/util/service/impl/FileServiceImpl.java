@@ -91,6 +91,7 @@ public class FileServiceImpl implements IFileService {
 		attAttachmentInfo.setFileSize(fileInfo.getFileSize().intValue());
 		attAttachmentInfo.setFileType(fileInfo.getFileType());
 		attAttachmentInfo.setObjId(fileInfo.getBussnessObjId());
+		attAttachmentInfo.setObjSubId(fileInfo.getBussnessobjSubId());
 		attAttachmentInfo.setPath(fileInfo.getPath());
 		attAttachmentInfo.setStatus(fileInfo.getStatus());
 		attAttachmentInfo.setTableName(fileInfo.getTableName());
@@ -107,6 +108,7 @@ public class FileServiceImpl implements IFileService {
     {
         fileInfo.setId(attAttachmentInfo.getId());
         fileInfo.setBussnessObjId(attAttachmentInfo.getObjId());
+        fileInfo.setBussnessobjSubId(attAttachmentInfo.getObjSubId());
         fileInfo.setFilename(attAttachmentInfo.getFileName());
         fileInfo.setFileSize(attAttachmentInfo.getFileSize().longValue());
         fileInfo.setFileType(attAttachmentInfo.getFileType());
@@ -123,6 +125,7 @@ public class FileServiceImpl implements IFileService {
 		FileInfo fileInfo=new FileInfo();
 		fileInfo.setId(attAttachmentInfo.getId());
 		fileInfo.setBussnessObjId(attAttachmentInfo.getObjId());
+        fileInfo.setBussnessobjSubId(attAttachmentInfo.getObjSubId());
 		fileInfo.setFilename(attAttachmentInfo.getFileName());
 		fileInfo.setFileSize(attAttachmentInfo.getFileSize().longValue());
 		fileInfo.setFileType(attAttachmentInfo.getFileType());
@@ -156,6 +159,10 @@ public class FileServiceImpl implements IFileService {
 		if(fileInfo.getBussnessObjId()!=null&&!fileInfo.getBussnessObjId().trim().equals(""))
 		{
 			criteria.andObjIdEqualTo(fileInfo.getBussnessObjId());
+		}
+		if(fileInfo.getBussnessobjSubId()!=null&&!fileInfo.getBussnessobjSubId().trim().equals(""))
+		{
+			criteria.andObjSubIdEqualTo(fileInfo.getBussnessobjSubId());
 		}
 		
 		if(fileInfo.getFilename()!=null&&!fileInfo.getFilename().trim().equals(""))
