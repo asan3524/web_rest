@@ -1,0 +1,1054 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ddsh.util.service.dao.InqInquiryOrderMapper">
+  <resultMap id="BaseResultMap" type="com.ddsh.util.service.api.model.InqInquiryOrder">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="use_dep_name" jdbcType="VARCHAR" property="useDepName" />
+    <result column="use_dep_id" jdbcType="VARCHAR" property="useDepId" />
+    <result column="initiateuser_id" jdbcType="VARCHAR" property="initiateuserId" />
+    <result column="initiatedept_id" jdbcType="VARCHAR" property="initiatedeptId" />
+    <result column="initiateuser_name" jdbcType="VARCHAR" property="initiateuserName" />
+    <result column="communicateuser_id" jdbcType="VARCHAR" property="communicateuserId" />
+    <result column="communicateuser_name" jdbcType="VARCHAR" property="communicateuserName" />
+    <result column="inquiryuser_id" jdbcType="VARCHAR" property="inquiryuserId" />
+    <result column="inquiryuser_name" jdbcType="VARCHAR" property="inquiryuserName" />
+    <result column="evaluateuser_id" jdbcType="VARCHAR" property="evaluateuserId" />
+    <result column="evaluateuser_name" jdbcType="VARCHAR" property="evaluateuserName" />
+    <result column="audituser_id" jdbcType="VARCHAR" property="audituserId" />
+    <result column="audituser_name" jdbcType="VARCHAR" property="audituserName" />
+    <result column="decisionuser_id" jdbcType="VARCHAR" property="decisionuserId" />
+    <result column="decisionuser_name" jdbcType="VARCHAR" property="decisionuserName" />
+    <result column="initiate_time" jdbcType="TIMESTAMP" property="initiateTime" />
+    <result column="communicate_time" jdbcType="TIMESTAMP" property="communicateTime" />
+    <result column="inquiry_time" jdbcType="TIMESTAMP" property="inquiryTime" />
+    <result column="evaluate_time" jdbcType="TIMESTAMP" property="evaluateTime" />
+    <result column="audit_time" jdbcType="TIMESTAMP" property="auditTime" />
+    <result column="decision_time" jdbcType="TIMESTAMP" property="decisionTime" />
+    <result column="inquiry_price" jdbcType="DECIMAL" property="inquiryPrice" />
+    <result column="initiate_remark" jdbcType="VARCHAR" property="initiateRemark" />
+    <result column="communicate_remark" jdbcType="VARCHAR" property="communicateRemark" />
+    <result column="evaluate_remark" jdbcType="VARCHAR" property="evaluateRemark" />
+    <result column="audit_remark" jdbcType="VARCHAR" property="auditRemark" />
+    <result column="step" jdbcType="INTEGER" property="step" />
+    <result column="evaluate_result" jdbcType="INTEGER" property="evaluateResult" />
+    <result column="audit_result" jdbcType="INTEGER" property="auditResult" />
+    <result column="decision_result" jdbcType="INTEGER" property="decisionResult" />
+    <result column="life_status" jdbcType="INTEGER" property="lifeStatus" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <collection column="id" property="inqInquiryOrderGoodss" select="getInqInquiryOrderGoodss" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    <if test="fields == null">
+      id, code, name, use_dep_name, use_dep_id, initiateuser_id, initiatedept_id, initiateuser_name, 
+      communicateuser_id, communicateuser_name, inquiryuser_id, inquiryuser_name, evaluateuser_id, 
+      evaluateuser_name, audituser_id, audituser_name, decisionuser_id, decisionuser_name, 
+      initiate_time, communicate_time, inquiry_time, evaluate_time, audit_time, decision_time, 
+      inquiry_price, initiate_remark, communicate_remark, evaluate_remark, audit_remark, 
+      step, evaluate_result, audit_result, decision_result, life_status, status, update_time
+    </if>
+    <if test="fields != null">
+      ${fields}
+    </if>
+  </sql>
+  <select id="selectByExample" parameterType="com.ddsh.util.service.api.model.InqInquiryOrderCriteria" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from inq_inquiry_order
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="startRow != null">
+      limit #{startRow} , #{pageSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    id,code,name,use_dep_name,use_dep_id,initiateuser_id,initiatedept_id,initiateuser_name,communicateuser_id,communicateuser_name,inquiryuser_id,inquiryuser_name,evaluateuser_id,evaluateuser_name,audituser_id,audituser_name,decisionuser_id,decisionuser_name,initiate_time,communicate_time,inquiry_time,evaluate_time,audit_time,decision_time,inquiry_price,initiate_remark,communicate_remark,evaluate_remark,audit_remark,step,evaluate_result,audit_result,decision_result,life_status,status,update_time
+    from inq_inquiry_order
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from inq_inquiry_order
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ddsh.util.service.api.model.InqInquiryOrderCriteria">
+    delete from inq_inquiry_order
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ddsh.util.service.api.model.InqInquiryOrder">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into inq_inquiry_order (code, name, use_dep_name, 
+      use_dep_id, initiateuser_id, initiatedept_id, 
+      initiateuser_name, communicateuser_id, communicateuser_name, 
+      inquiryuser_id, inquiryuser_name, evaluateuser_id, 
+      evaluateuser_name, audituser_id, audituser_name, 
+      decisionuser_id, decisionuser_name, initiate_time, 
+      communicate_time, inquiry_time, evaluate_time, 
+      audit_time, decision_time, inquiry_price, 
+      initiate_remark, communicate_remark, evaluate_remark, 
+      audit_remark, step, evaluate_result, 
+      audit_result, decision_result, life_status, 
+      status, update_time)
+    values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{useDepName,jdbcType=VARCHAR}, 
+      #{useDepId,jdbcType=VARCHAR}, #{initiateuserId,jdbcType=VARCHAR}, #{initiatedeptId,jdbcType=VARCHAR}, 
+      #{initiateuserName,jdbcType=VARCHAR}, #{communicateuserId,jdbcType=VARCHAR}, #{communicateuserName,jdbcType=VARCHAR}, 
+      #{inquiryuserId,jdbcType=VARCHAR}, #{inquiryuserName,jdbcType=VARCHAR}, #{evaluateuserId,jdbcType=VARCHAR}, 
+      #{evaluateuserName,jdbcType=VARCHAR}, #{audituserId,jdbcType=VARCHAR}, #{audituserName,jdbcType=VARCHAR}, 
+      #{decisionuserId,jdbcType=VARCHAR}, #{decisionuserName,jdbcType=VARCHAR}, #{initiateTime,jdbcType=TIMESTAMP}, 
+      #{communicateTime,jdbcType=TIMESTAMP}, #{inquiryTime,jdbcType=TIMESTAMP}, #{evaluateTime,jdbcType=TIMESTAMP}, 
+      #{auditTime,jdbcType=TIMESTAMP}, #{decisionTime,jdbcType=TIMESTAMP}, #{inquiryPrice,jdbcType=DECIMAL}, 
+      #{initiateRemark,jdbcType=VARCHAR}, #{communicateRemark,jdbcType=VARCHAR}, #{evaluateRemark,jdbcType=VARCHAR}, 
+      #{auditRemark,jdbcType=VARCHAR}, #{step,jdbcType=INTEGER}, #{evaluateResult,jdbcType=INTEGER}, 
+      #{auditResult,jdbcType=INTEGER}, #{decisionResult,jdbcType=INTEGER}, #{lifeStatus,jdbcType=INTEGER}, 
+      #{status,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ddsh.util.service.api.model.InqInquiryOrder">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into inq_inquiry_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="code != null">
+        code,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="useDepName != null">
+        use_dep_name,
+      </if>
+      <if test="useDepId != null">
+        use_dep_id,
+      </if>
+      <if test="initiateuserId != null">
+        initiateuser_id,
+      </if>
+      <if test="initiatedeptId != null">
+        initiatedept_id,
+      </if>
+      <if test="initiateuserName != null">
+        initiateuser_name,
+      </if>
+      <if test="communicateuserId != null">
+        communicateuser_id,
+      </if>
+      <if test="communicateuserName != null">
+        communicateuser_name,
+      </if>
+      <if test="inquiryuserId != null">
+        inquiryuser_id,
+      </if>
+      <if test="inquiryuserName != null">
+        inquiryuser_name,
+      </if>
+      <if test="evaluateuserId != null">
+        evaluateuser_id,
+      </if>
+      <if test="evaluateuserName != null">
+        evaluateuser_name,
+      </if>
+      <if test="audituserId != null">
+        audituser_id,
+      </if>
+      <if test="audituserName != null">
+        audituser_name,
+      </if>
+      <if test="decisionuserId != null">
+        decisionuser_id,
+      </if>
+      <if test="decisionuserName != null">
+        decisionuser_name,
+      </if>
+      <if test="initiateTime != null">
+        initiate_time,
+      </if>
+      <if test="communicateTime != null">
+        communicate_time,
+      </if>
+      <if test="inquiryTime != null">
+        inquiry_time,
+      </if>
+      <if test="evaluateTime != null">
+        evaluate_time,
+      </if>
+      <if test="auditTime != null">
+        audit_time,
+      </if>
+      <if test="decisionTime != null">
+        decision_time,
+      </if>
+      <if test="inquiryPrice != null">
+        inquiry_price,
+      </if>
+      <if test="initiateRemark != null">
+        initiate_remark,
+      </if>
+      <if test="communicateRemark != null">
+        communicate_remark,
+      </if>
+      <if test="evaluateRemark != null">
+        evaluate_remark,
+      </if>
+      <if test="auditRemark != null">
+        audit_remark,
+      </if>
+      <if test="step != null">
+        step,
+      </if>
+      <if test="evaluateResult != null">
+        evaluate_result,
+      </if>
+      <if test="auditResult != null">
+        audit_result,
+      </if>
+      <if test="decisionResult != null">
+        decision_result,
+      </if>
+      <if test="lifeStatus != null">
+        life_status,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="useDepName != null">
+        #{useDepName,jdbcType=VARCHAR},
+      </if>
+      <if test="useDepId != null">
+        #{useDepId,jdbcType=VARCHAR},
+      </if>
+      <if test="initiateuserId != null">
+        #{initiateuserId,jdbcType=VARCHAR},
+      </if>
+      <if test="initiatedeptId != null">
+        #{initiatedeptId,jdbcType=VARCHAR},
+      </if>
+      <if test="initiateuserName != null">
+        #{initiateuserName,jdbcType=VARCHAR},
+      </if>
+      <if test="communicateuserId != null">
+        #{communicateuserId,jdbcType=VARCHAR},
+      </if>
+      <if test="communicateuserName != null">
+        #{communicateuserName,jdbcType=VARCHAR},
+      </if>
+      <if test="inquiryuserId != null">
+        #{inquiryuserId,jdbcType=VARCHAR},
+      </if>
+      <if test="inquiryuserName != null">
+        #{inquiryuserName,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluateuserId != null">
+        #{evaluateuserId,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluateuserName != null">
+        #{evaluateuserName,jdbcType=VARCHAR},
+      </if>
+      <if test="audituserId != null">
+        #{audituserId,jdbcType=VARCHAR},
+      </if>
+      <if test="audituserName != null">
+        #{audituserName,jdbcType=VARCHAR},
+      </if>
+      <if test="decisionuserId != null">
+        #{decisionuserId,jdbcType=VARCHAR},
+      </if>
+      <if test="decisionuserName != null">
+        #{decisionuserName,jdbcType=VARCHAR},
+      </if>
+      <if test="initiateTime != null">
+        #{initiateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="communicateTime != null">
+        #{communicateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="inquiryTime != null">
+        #{inquiryTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="evaluateTime != null">
+        #{evaluateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="auditTime != null">
+        #{auditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="decisionTime != null">
+        #{decisionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="inquiryPrice != null">
+        #{inquiryPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="initiateRemark != null">
+        #{initiateRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="communicateRemark != null">
+        #{communicateRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluateRemark != null">
+        #{evaluateRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="auditRemark != null">
+        #{auditRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="step != null">
+        #{step,jdbcType=INTEGER},
+      </if>
+      <if test="evaluateResult != null">
+        #{evaluateResult,jdbcType=INTEGER},
+      </if>
+      <if test="auditResult != null">
+        #{auditResult,jdbcType=INTEGER},
+      </if>
+      <if test="decisionResult != null">
+        #{decisionResult,jdbcType=INTEGER},
+      </if>
+      <if test="lifeStatus != null">
+        #{lifeStatus,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ddsh.util.service.api.model.InqInquiryOrderCriteria" resultType="java.lang.Long">
+    select count(*) from inq_inquiry_order
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update inq_inquiry_order
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.code != null">
+        code = #{record.code,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.useDepName != null">
+        use_dep_name = #{record.useDepName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.useDepId != null">
+        use_dep_id = #{record.useDepId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.initiateuserId != null">
+        initiateuser_id = #{record.initiateuserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.initiatedeptId != null">
+        initiatedept_id = #{record.initiatedeptId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.initiateuserName != null">
+        initiateuser_name = #{record.initiateuserName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.communicateuserId != null">
+        communicateuser_id = #{record.communicateuserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.communicateuserName != null">
+        communicateuser_name = #{record.communicateuserName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.inquiryuserId != null">
+        inquiryuser_id = #{record.inquiryuserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.inquiryuserName != null">
+        inquiryuser_name = #{record.inquiryuserName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.evaluateuserId != null">
+        evaluateuser_id = #{record.evaluateuserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.evaluateuserName != null">
+        evaluateuser_name = #{record.evaluateuserName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.audituserId != null">
+        audituser_id = #{record.audituserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.audituserName != null">
+        audituser_name = #{record.audituserName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.decisionuserId != null">
+        decisionuser_id = #{record.decisionuserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.decisionuserName != null">
+        decisionuser_name = #{record.decisionuserName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.initiateTime != null">
+        initiate_time = #{record.initiateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.communicateTime != null">
+        communicate_time = #{record.communicateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.inquiryTime != null">
+        inquiry_time = #{record.inquiryTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.evaluateTime != null">
+        evaluate_time = #{record.evaluateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.auditTime != null">
+        audit_time = #{record.auditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.decisionTime != null">
+        decision_time = #{record.decisionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.inquiryPrice != null">
+        inquiry_price = #{record.inquiryPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.initiateRemark != null">
+        initiate_remark = #{record.initiateRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.communicateRemark != null">
+        communicate_remark = #{record.communicateRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.evaluateRemark != null">
+        evaluate_remark = #{record.evaluateRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.auditRemark != null">
+        audit_remark = #{record.auditRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.step != null">
+        step = #{record.step,jdbcType=INTEGER},
+      </if>
+      <if test="record.evaluateResult != null">
+        evaluate_result = #{record.evaluateResult,jdbcType=INTEGER},
+      </if>
+      <if test="record.auditResult != null">
+        audit_result = #{record.auditResult,jdbcType=INTEGER},
+      </if>
+      <if test="record.decisionResult != null">
+        decision_result = #{record.decisionResult,jdbcType=INTEGER},
+      </if>
+      <if test="record.lifeStatus != null">
+        life_status = #{record.lifeStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update inq_inquiry_order
+    set id = #{record.id,jdbcType=VARCHAR},
+      code = #{record.code,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      use_dep_name = #{record.useDepName,jdbcType=VARCHAR},
+      use_dep_id = #{record.useDepId,jdbcType=VARCHAR},
+      initiateuser_id = #{record.initiateuserId,jdbcType=VARCHAR},
+      initiatedept_id = #{record.initiatedeptId,jdbcType=VARCHAR},
+      initiateuser_name = #{record.initiateuserName,jdbcType=VARCHAR},
+      communicateuser_id = #{record.communicateuserId,jdbcType=VARCHAR},
+      communicateuser_name = #{record.communicateuserName,jdbcType=VARCHAR},
+      inquiryuser_id = #{record.inquiryuserId,jdbcType=VARCHAR},
+      inquiryuser_name = #{record.inquiryuserName,jdbcType=VARCHAR},
+      evaluateuser_id = #{record.evaluateuserId,jdbcType=VARCHAR},
+      evaluateuser_name = #{record.evaluateuserName,jdbcType=VARCHAR},
+      audituser_id = #{record.audituserId,jdbcType=VARCHAR},
+      audituser_name = #{record.audituserName,jdbcType=VARCHAR},
+      decisionuser_id = #{record.decisionuserId,jdbcType=VARCHAR},
+      decisionuser_name = #{record.decisionuserName,jdbcType=VARCHAR},
+      initiate_time = #{record.initiateTime,jdbcType=TIMESTAMP},
+      communicate_time = #{record.communicateTime,jdbcType=TIMESTAMP},
+      inquiry_time = #{record.inquiryTime,jdbcType=TIMESTAMP},
+      evaluate_time = #{record.evaluateTime,jdbcType=TIMESTAMP},
+      audit_time = #{record.auditTime,jdbcType=TIMESTAMP},
+      decision_time = #{record.decisionTime,jdbcType=TIMESTAMP},
+      inquiry_price = #{record.inquiryPrice,jdbcType=DECIMAL},
+      initiate_remark = #{record.initiateRemark,jdbcType=VARCHAR},
+      communicate_remark = #{record.communicateRemark,jdbcType=VARCHAR},
+      evaluate_remark = #{record.evaluateRemark,jdbcType=VARCHAR},
+      audit_remark = #{record.auditRemark,jdbcType=VARCHAR},
+      step = #{record.step,jdbcType=INTEGER},
+      evaluate_result = #{record.evaluateResult,jdbcType=INTEGER},
+      audit_result = #{record.auditResult,jdbcType=INTEGER},
+      decision_result = #{record.decisionResult,jdbcType=INTEGER},
+      life_status = #{record.lifeStatus,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=INTEGER},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ddsh.util.service.api.model.InqInquiryOrder">
+    update inq_inquiry_order
+    <set>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="useDepName != null">
+        use_dep_name = #{useDepName,jdbcType=VARCHAR},
+      </if>
+      <if test="useDepId != null">
+        use_dep_id = #{useDepId,jdbcType=VARCHAR},
+      </if>
+      <if test="initiateuserId != null">
+        initiateuser_id = #{initiateuserId,jdbcType=VARCHAR},
+      </if>
+      <if test="initiatedeptId != null">
+        initiatedept_id = #{initiatedeptId,jdbcType=VARCHAR},
+      </if>
+      <if test="initiateuserName != null">
+        initiateuser_name = #{initiateuserName,jdbcType=VARCHAR},
+      </if>
+      <if test="communicateuserId != null">
+        communicateuser_id = #{communicateuserId,jdbcType=VARCHAR},
+      </if>
+      <if test="communicateuserName != null">
+        communicateuser_name = #{communicateuserName,jdbcType=VARCHAR},
+      </if>
+      <if test="inquiryuserId != null">
+        inquiryuser_id = #{inquiryuserId,jdbcType=VARCHAR},
+      </if>
+      <if test="inquiryuserName != null">
+        inquiryuser_name = #{inquiryuserName,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluateuserId != null">
+        evaluateuser_id = #{evaluateuserId,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluateuserName != null">
+        evaluateuser_name = #{evaluateuserName,jdbcType=VARCHAR},
+      </if>
+      <if test="audituserId != null">
+        audituser_id = #{audituserId,jdbcType=VARCHAR},
+      </if>
+      <if test="audituserName != null">
+        audituser_name = #{audituserName,jdbcType=VARCHAR},
+      </if>
+      <if test="decisionuserId != null">
+        decisionuser_id = #{decisionuserId,jdbcType=VARCHAR},
+      </if>
+      <if test="decisionuserName != null">
+        decisionuser_name = #{decisionuserName,jdbcType=VARCHAR},
+      </if>
+      <if test="initiateTime != null">
+        initiate_time = #{initiateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="communicateTime != null">
+        communicate_time = #{communicateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="inquiryTime != null">
+        inquiry_time = #{inquiryTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="evaluateTime != null">
+        evaluate_time = #{evaluateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="auditTime != null">
+        audit_time = #{auditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="decisionTime != null">
+        decision_time = #{decisionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="inquiryPrice != null">
+        inquiry_price = #{inquiryPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="initiateRemark != null">
+        initiate_remark = #{initiateRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="communicateRemark != null">
+        communicate_remark = #{communicateRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluateRemark != null">
+        evaluate_remark = #{evaluateRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="auditRemark != null">
+        audit_remark = #{auditRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="step != null">
+        step = #{step,jdbcType=INTEGER},
+      </if>
+      <if test="evaluateResult != null">
+        evaluate_result = #{evaluateResult,jdbcType=INTEGER},
+      </if>
+      <if test="auditResult != null">
+        audit_result = #{auditResult,jdbcType=INTEGER},
+      </if>
+      <if test="decisionResult != null">
+        decision_result = #{decisionResult,jdbcType=INTEGER},
+      </if>
+      <if test="lifeStatus != null">
+        life_status = #{lifeStatus,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ddsh.util.service.api.model.InqInquiryOrder">
+    update inq_inquiry_order
+    set code = #{code,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      use_dep_name = #{useDepName,jdbcType=VARCHAR},
+      use_dep_id = #{useDepId,jdbcType=VARCHAR},
+      initiateuser_id = #{initiateuserId,jdbcType=VARCHAR},
+      initiatedept_id = #{initiatedeptId,jdbcType=VARCHAR},
+      initiateuser_name = #{initiateuserName,jdbcType=VARCHAR},
+      communicateuser_id = #{communicateuserId,jdbcType=VARCHAR},
+      communicateuser_name = #{communicateuserName,jdbcType=VARCHAR},
+      inquiryuser_id = #{inquiryuserId,jdbcType=VARCHAR},
+      inquiryuser_name = #{inquiryuserName,jdbcType=VARCHAR},
+      evaluateuser_id = #{evaluateuserId,jdbcType=VARCHAR},
+      evaluateuser_name = #{evaluateuserName,jdbcType=VARCHAR},
+      audituser_id = #{audituserId,jdbcType=VARCHAR},
+      audituser_name = #{audituserName,jdbcType=VARCHAR},
+      decisionuser_id = #{decisionuserId,jdbcType=VARCHAR},
+      decisionuser_name = #{decisionuserName,jdbcType=VARCHAR},
+      initiate_time = #{initiateTime,jdbcType=TIMESTAMP},
+      communicate_time = #{communicateTime,jdbcType=TIMESTAMP},
+      inquiry_time = #{inquiryTime,jdbcType=TIMESTAMP},
+      evaluate_time = #{evaluateTime,jdbcType=TIMESTAMP},
+      audit_time = #{auditTime,jdbcType=TIMESTAMP},
+      decision_time = #{decisionTime,jdbcType=TIMESTAMP},
+      inquiry_price = #{inquiryPrice,jdbcType=DECIMAL},
+      initiate_remark = #{initiateRemark,jdbcType=VARCHAR},
+      communicate_remark = #{communicateRemark,jdbcType=VARCHAR},
+      evaluate_remark = #{evaluateRemark,jdbcType=VARCHAR},
+      audit_remark = #{auditRemark,jdbcType=VARCHAR},
+      step = #{step,jdbcType=INTEGER},
+      evaluate_result = #{evaluateResult,jdbcType=INTEGER},
+      audit_result = #{auditResult,jdbcType=INTEGER},
+      decision_result = #{decisionResult,jdbcType=INTEGER},
+      life_status = #{lifeStatus,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="getInqInquiryOrderGoodss" resultMap="com.ddsh.util.service.dao.InqInquiryOrderGoodsMapper.BaseResultMap">
+    select id,inquiry_id,goods_id,name,code,type,brand,color,unit,norm,remark,isreplace,unit_price,quantity from inq_inquiry_order_goods where inquiry_id=#{id}  and 1=1
+  </select>
+  <insert id="insertBatchSelective" parameterType="java.util.List">
+    insert into inq_inquiry_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="list[0].id!=null">
+        id,
+      </if>
+      <if test="list[0].code!=null">
+        code,
+      </if>
+      <if test="list[0].name!=null">
+        name,
+      </if>
+      <if test="list[0].useDepName!=null">
+        use_dep_name,
+      </if>
+      <if test="list[0].useDepId!=null">
+        use_dep_id,
+      </if>
+      <if test="list[0].initiateuserId!=null">
+        initiateuser_id,
+      </if>
+      <if test="list[0].initiatedeptId!=null">
+        initiatedept_id,
+      </if>
+      <if test="list[0].initiateuserName!=null">
+        initiateuser_name,
+      </if>
+      <if test="list[0].communicateuserId!=null">
+        communicateuser_id,
+      </if>
+      <if test="list[0].communicateuserName!=null">
+        communicateuser_name,
+      </if>
+      <if test="list[0].inquiryuserId!=null">
+        inquiryuser_id,
+      </if>
+      <if test="list[0].inquiryuserName!=null">
+        inquiryuser_name,
+      </if>
+      <if test="list[0].evaluateuserId!=null">
+        evaluateuser_id,
+      </if>
+      <if test="list[0].evaluateuserName!=null">
+        evaluateuser_name,
+      </if>
+      <if test="list[0].audituserId!=null">
+        audituser_id,
+      </if>
+      <if test="list[0].audituserName!=null">
+        audituser_name,
+      </if>
+      <if test="list[0].decisionuserId!=null">
+        decisionuser_id,
+      </if>
+      <if test="list[0].decisionuserName!=null">
+        decisionuser_name,
+      </if>
+      <if test="list[0].initiateTime!=null">
+        initiate_time,
+      </if>
+      <if test="list[0].communicateTime!=null">
+        communicate_time,
+      </if>
+      <if test="list[0].inquiryTime!=null">
+        inquiry_time,
+      </if>
+      <if test="list[0].evaluateTime!=null">
+        evaluate_time,
+      </if>
+      <if test="list[0].auditTime!=null">
+        audit_time,
+      </if>
+      <if test="list[0].decisionTime!=null">
+        decision_time,
+      </if>
+      <if test="list[0].inquiryPrice!=null">
+        inquiry_price,
+      </if>
+      <if test="list[0].initiateRemark!=null">
+        initiate_remark,
+      </if>
+      <if test="list[0].communicateRemark!=null">
+        communicate_remark,
+      </if>
+      <if test="list[0].evaluateRemark!=null">
+        evaluate_remark,
+      </if>
+      <if test="list[0].auditRemark!=null">
+        audit_remark,
+      </if>
+      <if test="list[0].step!=null">
+        step,
+      </if>
+      <if test="list[0].evaluateResult!=null">
+        evaluate_result,
+      </if>
+      <if test="list[0].auditResult!=null">
+        audit_result,
+      </if>
+      <if test="list[0].decisionResult!=null">
+        decision_result,
+      </if>
+      <if test="list[0].lifeStatus!=null">
+        life_status,
+      </if>
+      <if test="list[0].status!=null">
+        status,
+      </if>
+      <if test="list[0].updateTime!=null">
+        update_time,
+      </if>
+    </trim>
+     values 
+    <foreach collection="list" index="index" item="item" separator=",">
+      <trim prefix=" (" suffix=")" suffixOverrides=",">
+        <if test="item.id!=null">
+          #{item.id,jdbcType=VARCHAR},
+        </if>
+        <if test="item.code!=null">
+          #{item.code,jdbcType=VARCHAR},
+        </if>
+        <if test="item.name!=null">
+          #{item.name,jdbcType=VARCHAR},
+        </if>
+        <if test="item.useDepName!=null">
+          #{item.useDepName,jdbcType=VARCHAR},
+        </if>
+        <if test="item.useDepId!=null">
+          #{item.useDepId,jdbcType=VARCHAR},
+        </if>
+        <if test="item.initiateuserId!=null">
+          #{item.initiateuserId,jdbcType=VARCHAR},
+        </if>
+        <if test="item.initiatedeptId!=null">
+          #{item.initiatedeptId,jdbcType=VARCHAR},
+        </if>
+        <if test="item.initiateuserName!=null">
+          #{item.initiateuserName,jdbcType=VARCHAR},
+        </if>
+        <if test="item.communicateuserId!=null">
+          #{item.communicateuserId,jdbcType=VARCHAR},
+        </if>
+        <if test="item.communicateuserName!=null">
+          #{item.communicateuserName,jdbcType=VARCHAR},
+        </if>
+        <if test="item.inquiryuserId!=null">
+          #{item.inquiryuserId,jdbcType=VARCHAR},
+        </if>
+        <if test="item.inquiryuserName!=null">
+          #{item.inquiryuserName,jdbcType=VARCHAR},
+        </if>
+        <if test="item.evaluateuserId!=null">
+          #{item.evaluateuserId,jdbcType=VARCHAR},
+        </if>
+        <if test="item.evaluateuserName!=null">
+          #{item.evaluateuserName,jdbcType=VARCHAR},
+        </if>
+        <if test="item.audituserId!=null">
+          #{item.audituserId,jdbcType=VARCHAR},
+        </if>
+        <if test="item.audituserName!=null">
+          #{item.audituserName,jdbcType=VARCHAR},
+        </if>
+        <if test="item.decisionuserId!=null">
+          #{item.decisionuserId,jdbcType=VARCHAR},
+        </if>
+        <if test="item.decisionuserName!=null">
+          #{item.decisionuserName,jdbcType=VARCHAR},
+        </if>
+        <if test="item.initiateTime!=null">
+          #{item.initiateTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.communicateTime!=null">
+          #{item.communicateTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.inquiryTime!=null">
+          #{item.inquiryTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.evaluateTime!=null">
+          #{item.evaluateTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.auditTime!=null">
+          #{item.auditTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.decisionTime!=null">
+          #{item.decisionTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.inquiryPrice!=null">
+          #{item.inquiryPrice,jdbcType=DECIMAL},
+        </if>
+        <if test="item.initiateRemark!=null">
+          #{item.initiateRemark,jdbcType=VARCHAR},
+        </if>
+        <if test="item.communicateRemark!=null">
+          #{item.communicateRemark,jdbcType=VARCHAR},
+        </if>
+        <if test="item.evaluateRemark!=null">
+          #{item.evaluateRemark,jdbcType=VARCHAR},
+        </if>
+        <if test="item.auditRemark!=null">
+          #{item.auditRemark,jdbcType=VARCHAR},
+        </if>
+        <if test="item.step!=null">
+          #{item.step,jdbcType=INTEGER},
+        </if>
+        <if test="item.evaluateResult!=null">
+          #{item.evaluateResult,jdbcType=INTEGER},
+        </if>
+        <if test="item.auditResult!=null">
+          #{item.auditResult,jdbcType=INTEGER},
+        </if>
+        <if test="item.decisionResult!=null">
+          #{item.decisionResult,jdbcType=INTEGER},
+        </if>
+        <if test="item.lifeStatus!=null">
+          #{item.lifeStatus,jdbcType=INTEGER},
+        </if>
+        <if test="item.status!=null">
+          #{item.status,jdbcType=INTEGER},
+        </if>
+        <if test="item.updateTime!=null">
+          #{item.updateTime,jdbcType=TIMESTAMP},
+        </if>
+      </trim>
+    </foreach>
+  </insert>
+  <update id="updateBatchByPrimaryKeySelective" parameterType="java.util.List">
+    <foreach collection="list" index="index" item="item" separator=";">
+      update inq_inquiry_order
+      <set>
+        <if test="item.code!=null">
+          code=#{item.code,jdbcType=VARCHAR},
+        </if>
+        <if test="item.name!=null">
+          name=#{item.name,jdbcType=VARCHAR},
+        </if>
+        <if test="item.useDepName!=null">
+          use_dep_name=#{item.useDepName,jdbcType=VARCHAR},
+        </if>
+        <if test="item.useDepId!=null">
+          use_dep_id=#{item.useDepId,jdbcType=VARCHAR},
+        </if>
+        <if test="item.initiateuserId!=null">
+          initiateuser_id=#{item.initiateuserId,jdbcType=VARCHAR},
+        </if>
+        <if test="item.initiatedeptId!=null">
+          initiatedept_id=#{item.initiatedeptId,jdbcType=VARCHAR},
+        </if>
+        <if test="item.initiateuserName!=null">
+          initiateuser_name=#{item.initiateuserName,jdbcType=VARCHAR},
+        </if>
+        <if test="item.communicateuserId!=null">
+          communicateuser_id=#{item.communicateuserId,jdbcType=VARCHAR},
+        </if>
+        <if test="item.communicateuserName!=null">
+          communicateuser_name=#{item.communicateuserName,jdbcType=VARCHAR},
+        </if>
+        <if test="item.inquiryuserId!=null">
+          inquiryuser_id=#{item.inquiryuserId,jdbcType=VARCHAR},
+        </if>
+        <if test="item.inquiryuserName!=null">
+          inquiryuser_name=#{item.inquiryuserName,jdbcType=VARCHAR},
+        </if>
+        <if test="item.evaluateuserId!=null">
+          evaluateuser_id=#{item.evaluateuserId,jdbcType=VARCHAR},
+        </if>
+        <if test="item.evaluateuserName!=null">
+          evaluateuser_name=#{item.evaluateuserName,jdbcType=VARCHAR},
+        </if>
+        <if test="item.audituserId!=null">
+          audituser_id=#{item.audituserId,jdbcType=VARCHAR},
+        </if>
+        <if test="item.audituserName!=null">
+          audituser_name=#{item.audituserName,jdbcType=VARCHAR},
+        </if>
+        <if test="item.decisionuserId!=null">
+          decisionuser_id=#{item.decisionuserId,jdbcType=VARCHAR},
+        </if>
+        <if test="item.decisionuserName!=null">
+          decisionuser_name=#{item.decisionuserName,jdbcType=VARCHAR},
+        </if>
+        <if test="item.initiateTime!=null">
+          initiate_time=#{item.initiateTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.communicateTime!=null">
+          communicate_time=#{item.communicateTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.inquiryTime!=null">
+          inquiry_time=#{item.inquiryTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.evaluateTime!=null">
+          evaluate_time=#{item.evaluateTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.auditTime!=null">
+          audit_time=#{item.auditTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.decisionTime!=null">
+          decision_time=#{item.decisionTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.inquiryPrice!=null">
+          inquiry_price=#{item.inquiryPrice,jdbcType=DECIMAL},
+        </if>
+        <if test="item.initiateRemark!=null">
+          initiate_remark=#{item.initiateRemark,jdbcType=VARCHAR},
+        </if>
+        <if test="item.communicateRemark!=null">
+          communicate_remark=#{item.communicateRemark,jdbcType=VARCHAR},
+        </if>
+        <if test="item.evaluateRemark!=null">
+          evaluate_remark=#{item.evaluateRemark,jdbcType=VARCHAR},
+        </if>
+        <if test="item.auditRemark!=null">
+          audit_remark=#{item.auditRemark,jdbcType=VARCHAR},
+        </if>
+        <if test="item.step!=null">
+          step=#{item.step,jdbcType=INTEGER},
+        </if>
+        <if test="item.evaluateResult!=null">
+          evaluate_result=#{item.evaluateResult,jdbcType=INTEGER},
+        </if>
+        <if test="item.auditResult!=null">
+          audit_result=#{item.auditResult,jdbcType=INTEGER},
+        </if>
+        <if test="item.decisionResult!=null">
+          decision_result=#{item.decisionResult,jdbcType=INTEGER},
+        </if>
+        <if test="item.lifeStatus!=null">
+          life_status=#{item.lifeStatus,jdbcType=INTEGER},
+        </if>
+        <if test="item.status!=null">
+          status=#{item.status,jdbcType=INTEGER},
+        </if>
+        <if test="item.updateTime!=null">
+          update_time=#{item.updateTime,jdbcType=TIMESTAMP},
+        </if>
+      </set>
+      where 
+      id = #{item.id,jdbcType=VARCHAR}
+    </foreach>
+  </update>
+</mapper>

@@ -1,0 +1,602 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ddsh.util.service.dao.PurPurchaseOrderGoodsMapper">
+  <resultMap id="BaseResultMap" type="com.ddsh.util.service.api.model.PurPurchaseOrderGoods">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="purchase_inquiry_id" jdbcType="VARCHAR" property="purchaseInquiryId" />
+    <result column="goods_id" jdbcType="VARCHAR" property="goodsId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="brand" jdbcType="VARCHAR" property="brand" />
+    <result column="colour" jdbcType="VARCHAR" property="colour" />
+    <result column="unit" jdbcType="VARCHAR" property="unit" />
+    <result column="norm" jdbcType="VARCHAR" property="norm" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="unit_price" jdbcType="DECIMAL" property="unitPrice" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="quantity" jdbcType="INTEGER" property="quantity" />
+    <result column="instore_num" jdbcType="INTEGER" property="instoreNum" />
+    <result column="supplier" jdbcType="VARCHAR" property="supplier" />
+    <result column="arrival_time" jdbcType="TIMESTAMP" property="arrivalTime" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    <if test="fields == null">
+      id, purchase_inquiry_id, goods_id, name, code, type, brand, colour, unit, norm, remark, 
+      unit_price, price, quantity, instore_num, supplier, arrival_time, status
+    </if>
+    <if test="fields != null">
+      ${fields}
+    </if>
+  </sql>
+  <select id="selectByExample" parameterType="com.ddsh.util.service.api.model.PurPurchaseOrderGoodsCriteria" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from pur_purchase_order_goods
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="startRow != null">
+      limit #{startRow} , #{pageSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    id,purchase_inquiry_id,goods_id,name,code,type,brand,colour,unit,norm,remark,unit_price,price,quantity,instore_num,supplier,arrival_time,status
+    from pur_purchase_order_goods
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from pur_purchase_order_goods
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ddsh.util.service.api.model.PurPurchaseOrderGoodsCriteria">
+    delete from pur_purchase_order_goods
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ddsh.util.service.api.model.PurPurchaseOrderGoods">
+    insert into pur_purchase_order_goods (id, purchase_inquiry_id, goods_id, 
+      name, code, type, brand, 
+      colour, unit, norm, 
+      remark, unit_price, price, 
+      quantity, instore_num, supplier, 
+      arrival_time, status)
+    values (#{id,jdbcType=VARCHAR}, #{purchaseInquiryId,jdbcType=VARCHAR}, #{goodsId,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{brand,jdbcType=VARCHAR}, 
+      #{colour,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, #{norm,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{unitPrice,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, 
+      #{quantity,jdbcType=INTEGER}, #{instoreNum,jdbcType=INTEGER}, #{supplier,jdbcType=VARCHAR}, 
+      #{arrivalTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ddsh.util.service.api.model.PurPurchaseOrderGoods">
+    insert into pur_purchase_order_goods
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="purchaseInquiryId != null">
+        purchase_inquiry_id,
+      </if>
+      <if test="goodsId != null">
+        goods_id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="brand != null">
+        brand,
+      </if>
+      <if test="colour != null">
+        colour,
+      </if>
+      <if test="unit != null">
+        unit,
+      </if>
+      <if test="norm != null">
+        norm,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="unitPrice != null">
+        unit_price,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="quantity != null">
+        quantity,
+      </if>
+      <if test="instoreNum != null">
+        instore_num,
+      </if>
+      <if test="supplier != null">
+        supplier,
+      </if>
+      <if test="arrivalTime != null">
+        arrival_time,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="purchaseInquiryId != null">
+        #{purchaseInquiryId,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsId != null">
+        #{goodsId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="brand != null">
+        #{brand,jdbcType=VARCHAR},
+      </if>
+      <if test="colour != null">
+        #{colour,jdbcType=VARCHAR},
+      </if>
+      <if test="unit != null">
+        #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="norm != null">
+        #{norm,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="unitPrice != null">
+        #{unitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="quantity != null">
+        #{quantity,jdbcType=INTEGER},
+      </if>
+      <if test="instoreNum != null">
+        #{instoreNum,jdbcType=INTEGER},
+      </if>
+      <if test="supplier != null">
+        #{supplier,jdbcType=VARCHAR},
+      </if>
+      <if test="arrivalTime != null">
+        #{arrivalTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ddsh.util.service.api.model.PurPurchaseOrderGoodsCriteria" resultType="java.lang.Long">
+    select count(*) from pur_purchase_order_goods
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update pur_purchase_order_goods
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.purchaseInquiryId != null">
+        purchase_inquiry_id = #{record.purchaseInquiryId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.goodsId != null">
+        goods_id = #{record.goodsId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.code != null">
+        code = #{record.code,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null">
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.brand != null">
+        brand = #{record.brand,jdbcType=VARCHAR},
+      </if>
+      <if test="record.colour != null">
+        colour = #{record.colour,jdbcType=VARCHAR},
+      </if>
+      <if test="record.unit != null">
+        unit = #{record.unit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.norm != null">
+        norm = #{record.norm,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null">
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.unitPrice != null">
+        unit_price = #{record.unitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.price != null">
+        price = #{record.price,jdbcType=DECIMAL},
+      </if>
+      <if test="record.quantity != null">
+        quantity = #{record.quantity,jdbcType=INTEGER},
+      </if>
+      <if test="record.instoreNum != null">
+        instore_num = #{record.instoreNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.supplier != null">
+        supplier = #{record.supplier,jdbcType=VARCHAR},
+      </if>
+      <if test="record.arrivalTime != null">
+        arrival_time = #{record.arrivalTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update pur_purchase_order_goods
+    set id = #{record.id,jdbcType=VARCHAR},
+      purchase_inquiry_id = #{record.purchaseInquiryId,jdbcType=VARCHAR},
+      goods_id = #{record.goodsId,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      code = #{record.code,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=VARCHAR},
+      brand = #{record.brand,jdbcType=VARCHAR},
+      colour = #{record.colour,jdbcType=VARCHAR},
+      unit = #{record.unit,jdbcType=VARCHAR},
+      norm = #{record.norm,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      unit_price = #{record.unitPrice,jdbcType=DECIMAL},
+      price = #{record.price,jdbcType=DECIMAL},
+      quantity = #{record.quantity,jdbcType=INTEGER},
+      instore_num = #{record.instoreNum,jdbcType=INTEGER},
+      supplier = #{record.supplier,jdbcType=VARCHAR},
+      arrival_time = #{record.arrivalTime,jdbcType=TIMESTAMP},
+      status = #{record.status,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ddsh.util.service.api.model.PurPurchaseOrderGoods">
+    update pur_purchase_order_goods
+    <set>
+      <if test="purchaseInquiryId != null">
+        purchase_inquiry_id = #{purchaseInquiryId,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsId != null">
+        goods_id = #{goodsId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="brand != null">
+        brand = #{brand,jdbcType=VARCHAR},
+      </if>
+      <if test="colour != null">
+        colour = #{colour,jdbcType=VARCHAR},
+      </if>
+      <if test="unit != null">
+        unit = #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="norm != null">
+        norm = #{norm,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="unitPrice != null">
+        unit_price = #{unitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="quantity != null">
+        quantity = #{quantity,jdbcType=INTEGER},
+      </if>
+      <if test="instoreNum != null">
+        instore_num = #{instoreNum,jdbcType=INTEGER},
+      </if>
+      <if test="supplier != null">
+        supplier = #{supplier,jdbcType=VARCHAR},
+      </if>
+      <if test="arrivalTime != null">
+        arrival_time = #{arrivalTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ddsh.util.service.api.model.PurPurchaseOrderGoods">
+    update pur_purchase_order_goods
+    set purchase_inquiry_id = #{purchaseInquiryId,jdbcType=VARCHAR},
+      goods_id = #{goodsId,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      brand = #{brand,jdbcType=VARCHAR},
+      colour = #{colour,jdbcType=VARCHAR},
+      unit = #{unit,jdbcType=VARCHAR},
+      norm = #{norm,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      unit_price = #{unitPrice,jdbcType=DECIMAL},
+      price = #{price,jdbcType=DECIMAL},
+      quantity = #{quantity,jdbcType=INTEGER},
+      instore_num = #{instoreNum,jdbcType=INTEGER},
+      supplier = #{supplier,jdbcType=VARCHAR},
+      arrival_time = #{arrivalTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <insert id="insertBatchSelective" parameterType="java.util.List">
+    insert into pur_purchase_order_goods
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="list[0].id!=null">
+        id,
+      </if>
+      <if test="list[0].purchaseInquiryId!=null">
+        purchase_inquiry_id,
+      </if>
+      <if test="list[0].goodsId!=null">
+        goods_id,
+      </if>
+      <if test="list[0].name!=null">
+        name,
+      </if>
+      <if test="list[0].code!=null">
+        code,
+      </if>
+      <if test="list[0].type!=null">
+        type,
+      </if>
+      <if test="list[0].brand!=null">
+        brand,
+      </if>
+      <if test="list[0].colour!=null">
+        colour,
+      </if>
+      <if test="list[0].unit!=null">
+        unit,
+      </if>
+      <if test="list[0].norm!=null">
+        norm,
+      </if>
+      <if test="list[0].remark!=null">
+        remark,
+      </if>
+      <if test="list[0].unitPrice!=null">
+        unit_price,
+      </if>
+      <if test="list[0].price!=null">
+        price,
+      </if>
+      <if test="list[0].quantity!=null">
+        quantity,
+      </if>
+      <if test="list[0].instoreNum!=null">
+        instore_num,
+      </if>
+      <if test="list[0].supplier!=null">
+        supplier,
+      </if>
+      <if test="list[0].arrivalTime!=null">
+        arrival_time,
+      </if>
+      <if test="list[0].status!=null">
+        status,
+      </if>
+    </trim>
+     values 
+    <foreach collection="list" index="index" item="item" separator=",">
+      <trim prefix=" (" suffix=")" suffixOverrides=",">
+        <if test="item.id!=null">
+          #{item.id,jdbcType=VARCHAR},
+        </if>
+        <if test="item.purchaseInquiryId!=null">
+          #{item.purchaseInquiryId,jdbcType=VARCHAR},
+        </if>
+        <if test="item.goodsId!=null">
+          #{item.goodsId,jdbcType=VARCHAR},
+        </if>
+        <if test="item.name!=null">
+          #{item.name,jdbcType=VARCHAR},
+        </if>
+        <if test="item.code!=null">
+          #{item.code,jdbcType=VARCHAR},
+        </if>
+        <if test="item.type!=null">
+          #{item.type,jdbcType=VARCHAR},
+        </if>
+        <if test="item.brand!=null">
+          #{item.brand,jdbcType=VARCHAR},
+        </if>
+        <if test="item.colour!=null">
+          #{item.colour,jdbcType=VARCHAR},
+        </if>
+        <if test="item.unit!=null">
+          #{item.unit,jdbcType=VARCHAR},
+        </if>
+        <if test="item.norm!=null">
+          #{item.norm,jdbcType=VARCHAR},
+        </if>
+        <if test="item.remark!=null">
+          #{item.remark,jdbcType=VARCHAR},
+        </if>
+        <if test="item.unitPrice!=null">
+          #{item.unitPrice,jdbcType=DECIMAL},
+        </if>
+        <if test="item.price!=null">
+          #{item.price,jdbcType=DECIMAL},
+        </if>
+        <if test="item.quantity!=null">
+          #{item.quantity,jdbcType=INTEGER},
+        </if>
+        <if test="item.instoreNum!=null">
+          #{item.instoreNum,jdbcType=INTEGER},
+        </if>
+        <if test="item.supplier!=null">
+          #{item.supplier,jdbcType=VARCHAR},
+        </if>
+        <if test="item.arrivalTime!=null">
+          #{item.arrivalTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.status!=null">
+          #{item.status,jdbcType=INTEGER},
+        </if>
+      </trim>
+    </foreach>
+  </insert>
+  <update id="updateBatchByPrimaryKeySelective" parameterType="java.util.List">
+    <foreach collection="list" index="index" item="item" separator=";">
+      update pur_purchase_order_goods
+      <set>
+        <if test="item.purchaseInquiryId!=null">
+          purchase_inquiry_id=#{item.purchaseInquiryId,jdbcType=VARCHAR},
+        </if>
+        <if test="item.goodsId!=null">
+          goods_id=#{item.goodsId,jdbcType=VARCHAR},
+        </if>
+        <if test="item.name!=null">
+          name=#{item.name,jdbcType=VARCHAR},
+        </if>
+        <if test="item.code!=null">
+          code=#{item.code,jdbcType=VARCHAR},
+        </if>
+        <if test="item.type!=null">
+          type=#{item.type,jdbcType=VARCHAR},
+        </if>
+        <if test="item.brand!=null">
+          brand=#{item.brand,jdbcType=VARCHAR},
+        </if>
+        <if test="item.colour!=null">
+          colour=#{item.colour,jdbcType=VARCHAR},
+        </if>
+        <if test="item.unit!=null">
+          unit=#{item.unit,jdbcType=VARCHAR},
+        </if>
+        <if test="item.norm!=null">
+          norm=#{item.norm,jdbcType=VARCHAR},
+        </if>
+        <if test="item.remark!=null">
+          remark=#{item.remark,jdbcType=VARCHAR},
+        </if>
+        <if test="item.unitPrice!=null">
+          unit_price=#{item.unitPrice,jdbcType=DECIMAL},
+        </if>
+        <if test="item.price!=null">
+          price=#{item.price,jdbcType=DECIMAL},
+        </if>
+        <if test="item.quantity!=null">
+          quantity=#{item.quantity,jdbcType=INTEGER},
+        </if>
+        <if test="item.instoreNum!=null">
+          instore_num=#{item.instoreNum,jdbcType=INTEGER},
+        </if>
+        <if test="item.supplier!=null">
+          supplier=#{item.supplier,jdbcType=VARCHAR},
+        </if>
+        <if test="item.arrivalTime!=null">
+          arrival_time=#{item.arrivalTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.status!=null">
+          status=#{item.status,jdbcType=INTEGER},
+        </if>
+      </set>
+      where 
+      id = #{item.id,jdbcType=VARCHAR}
+    </foreach>
+  </update>
+</mapper>
