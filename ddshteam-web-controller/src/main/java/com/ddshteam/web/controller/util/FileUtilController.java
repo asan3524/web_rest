@@ -20,6 +20,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -134,6 +135,12 @@ public class FileUtilController extends BaseController {
 		String fileName = upload.getOriginalFilename();
 		fileData.setFileName(fileName);
 		File file = new File(getRealPath(fileData));
+		
+		File fileFolder = new File(getRealPathFolder(fileData));
+		if(!fileFolder.exists())
+		{
+			file.mkdirs();
+		}
 		try {
 			upload.transferTo(file);
 		} catch (IllegalStateException e) {
@@ -165,7 +172,7 @@ public class FileUtilController extends BaseController {
 	@ApiOperation(value = "文件下载", notes = "文件下载")
 	@PostMapping(value = { "/download" })
 	@RequiresPermissions(UtilContants.Permission.PERMISSION_FILE_DOWNLOAD)
-	public Object filedownload(@RequestParam FileUploadReqData reqdata, HttpServletResponse respone) {
+	public Object filedownload(@RequestBody FileUploadReqData reqdata, HttpServletResponse respone) {
 		logger.debug("FileUtilController.filedownload()");
 		File file = new File(getRealPath(reqdata));
 		if (!file.exists()) {
@@ -186,7 +193,7 @@ public class FileUtilController extends BaseController {
 	@ApiOperation(value = "图片预览", notes = "图片预览")
 	@PostMapping(value = { "/view" })
 	@RequiresPermissions(UtilContants.Permission.PERMISSION_FILE_DOWNLOAD)
-	public Object view(@RequestParam FileUploadReqData reqdata, HttpServletResponse respone) {
+	public Object view(@RequestBody FileUploadReqData reqdata, HttpServletResponse respone) {
 		logger.debug("FileUtilController.view()");
 		File file = new File(getRealPath(reqdata));
 		if (!file.exists()) {
@@ -209,7 +216,7 @@ public class FileUtilController extends BaseController {
 	@ApiOperation(value = "文件预览", notes = "文件预览")
 	@PostMapping(value = { "/appview" })
 	@RequiresPermissions(UtilContants.Permission.PERMISSION_FILE_DOWNLOAD)
-	public Object appview(@RequestParam FileUploadReqData reqdata, HttpServletResponse respone) {
+	public Object appview(@RequestBody FileUploadReqData reqdata, HttpServletResponse respone) {
 		logger.debug("FileUtilController.appview()");
 		File file = new File(getRealPath(reqdata));
 		if (!file.exists()) {
@@ -232,7 +239,7 @@ public class FileUtilController extends BaseController {
 	@ApiOperation(value = "获取文件列表", notes = "获取文件列表")
 	@PostMapping(value = { "/fileinolist" })
 	@RequiresPermissions(UtilContants.Permission.PERMISSION_FILE_LIST)
-	public Object fileList(@RequestParam FileInfo FileInfo, @PageableDefault(page = 1, size = 10) Pageable pageable,
+	public Object fileList(@RequestBody FileInfo FileInfo, @PageableDefault(page = 1, size = 10) Pageable pageable,
 			BindingResult errors) {
 		logger.debug("FileUtilController.fileList()");
 		if (errors.hasErrors()) {
@@ -285,5 +292,10 @@ public class FileUtilController extends BaseController {
 	private String getRealPath(FileUploadReqData reqdata) {
 		return UtilContants.Sysset.UPLOAD_ROOT_PATH + File.separator + reqdata.getType() + File.separator
 				+ reqdata.getBussnessObjId() + File.separator + reqdata.getFileName();
+	}
+	
+	private String getRealPathFolder(FileUploadReqData reqdata) {
+		return UtilContants.Sysset.UPLOAD_ROOT_PATH + File.separator + reqdata.getType() + File.separator
+				+ reqdata.getBussnessObjId();
 	}
 }
