@@ -118,7 +118,6 @@ public class ExcelUtilController extends BaseController {
 		}
 
 		if (!fileName.toLowerCase().endsWith(UtilContants.ExcelExport.EXPORT_EXT))
-			;
 		{
 			fileName = fileName + UtilContants.ExcelExport.EXPORT_EXT;
 		}

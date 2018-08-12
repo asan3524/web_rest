@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.ddsh.util.service.api.IFileService;
 import com.ddsh.util.service.api.constant.UtilContants;
 import com.ddsh.util.service.api.data.FileInfo;
@@ -117,8 +118,10 @@ public class FileUtilController extends BaseController {
 			return getResponse(HttpCode.BAD_REQUEST, false);
 		}
 		
-		FileUploadReqData fileData = (FileUploadReqData) JSON.parse(reqdata);
+        JSONObject obj = (JSONObject) JSON.parse(reqdata);
+        FileUploadReqData fileData=obj.toJavaObject(FileUploadReqData.class);
 
+        
 		Subject subject = SecurityUtils.getSubject();
 		SysUserInfo user = (SysUserInfo) subject.getPrincipals().getPrimaryPrincipal();
 
@@ -170,6 +173,52 @@ public class FileUtilController extends BaseController {
 			return getResponse(HttpCode.NOT_FOUND, false, "文件不存在!");
 		}
 
+		try {
+			respone.getOutputStream().write(FileUtils.readFileToByteArray(file));
+		} catch (IOException e) {
+			logger.error(e.getMessage());
+			return getResponse(HttpCode.INTERNAL_SERVER_ERROR, false, e.getMessage());
+		}
+
+		return getResponse(HttpCode.OK, true);
+	}
+	
+	@ApiOperation(value = "图片预览", notes = "图片预览")
+	@PostMapping(value = { "/view" })
+	@RequiresPermissions(UtilContants.Permission.PERMISSION_FILE_DOWNLOAD)
+	public Object view(@RequestParam FileUploadReqData reqdata, HttpServletResponse respone) {
+		logger.debug("FileUtilController.view()");
+		File file = new File(getRealPath(reqdata));
+		if (!file.exists()) {
+			logger.error("文件不存在!");
+			return getResponse(HttpCode.NOT_FOUND, false, "文件不存在!");
+		}
+
+		String[]  path=file.getPath().split("\\.");
+		respone.setContentType("image/"+path[path.length-1]); // 设置返回的文件类型
+		try {
+			respone.getOutputStream().write(FileUtils.readFileToByteArray(file));
+		} catch (IOException e) {
+			logger.error(e.getMessage());
+			return getResponse(HttpCode.INTERNAL_SERVER_ERROR, false, e.getMessage());
+		}
+
+		return getResponse(HttpCode.OK, true);
+	}
+	
+	@ApiOperation(value = "文件预览", notes = "文件预览")
+	@PostMapping(value = { "/appview" })
+	@RequiresPermissions(UtilContants.Permission.PERMISSION_FILE_DOWNLOAD)
+	public Object appview(@RequestParam FileUploadReqData reqdata, HttpServletResponse respone) {
+		logger.debug("FileUtilController.appview()");
+		File file = new File(getRealPath(reqdata));
+		if (!file.exists()) {
+			logger.error("文件不存在!");
+			return getResponse(HttpCode.NOT_FOUND, false, "文件不存在!");
+		}
+
+		String[]  path=file.getPath().split("\\.");
+		respone.setContentType("application/"+path[path.length-1]); // 设置返回的文件类型
 		try {
 			respone.getOutputStream().write(FileUtils.readFileToByteArray(file));
 		} catch (IOException e) {
@@ -234,7 +283,7 @@ public class FileUtilController extends BaseController {
 	}
 
 	private String getRealPath(FileUploadReqData reqdata) {
-		return UtilContants.Sysset.UPLOAD_ROOT_PATH + File.pathSeparator + reqdata.getType() + File.pathSeparator
-				+ reqdata.getBussnessObjId() + File.pathSeparator + reqdata.getFileName();
+		return UtilContants.Sysset.UPLOAD_ROOT_PATH + File.separator + reqdata.getType() + File.separator
+				+ reqdata.getBussnessObjId() + File.separator + reqdata.getFileName();
 	}
 }
