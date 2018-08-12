@@ -3,6 +3,7 @@ package com.ddsh.util.service.api;
 import java.util.List;
 
 import com.ddsh.util.service.api.data.FileInfo;
+import com.ddsh.util.service.api.model.AttAttachmentInfo;
 import com.github.pagehelper.PageInfo;
 
 /**
@@ -52,5 +53,6 @@ public interface IFileService {
 	 * @author arpgate
 	 */
 	public String getBasePath();
+    public AttAttachmentInfo getfileinfo(String id);
 
 }

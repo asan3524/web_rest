@@ -33,6 +33,7 @@ import com.ddsh.util.service.api.IFileService;
 import com.ddsh.util.service.api.constant.UtilContants;
 import com.ddsh.util.service.api.data.FileInfo;
 import com.ddsh.util.service.api.data.FileUploadReqData;
+import com.ddsh.util.service.api.model.AttAttachmentInfo;
 import com.ddshteam.web.core.base.BaseController;
 import com.ddshteam.web.core.support.HttpCode;
 import com.ddshteam.web.system.service.api.model.SysUserInfo;
@@ -139,7 +140,7 @@ public class FileUtilController extends BaseController {
 		File fileFolder = new File(getRealPathFolder(fileData));
 		if(!fileFolder.exists())
 		{
-			file.mkdirs();
+			fileFolder.mkdirs();
 		}
 		try {
 			upload.transferTo(file);
@@ -170,11 +171,25 @@ public class FileUtilController extends BaseController {
 	}
 
 	@ApiOperation(value = "文件下载", notes = "文件下载")
-	@PostMapping(value = { "/download" })
+	@GetMapping(value = { "/download/{id}" })
 	@RequiresPermissions(UtilContants.Permission.PERMISSION_FILE_DOWNLOAD)
-	public Object filedownload(@RequestBody FileUploadReqData reqdata, HttpServletResponse respone) {
+	public Object filedownload(@PathVariable("id") String id, HttpServletResponse respone) {
 		logger.debug("FileUtilController.filedownload()");
-		File file = new File(getRealPath(reqdata));
+		
+		if (StringUtils.isEmpty(id)) {
+			logger.error("id is null.");
+			return getResponse(HttpCode.BAD_REQUEST, false);
+		}
+		
+		AttAttachmentInfo fileinfo=fileService.getfileinfo(id);
+		
+		if(fileinfo==null)
+		{
+			logger.error("文件不存在!");
+			return getResponse(HttpCode.NOT_FOUND, false, "文件不存在!");
+		}
+		File file = new File(fileinfo.getPath());
+		
 		if (!file.exists()) {
 			logger.error("文件不存在!");
 			return getResponse(HttpCode.NOT_FOUND, false, "文件不存在!");
@@ -191,11 +206,25 @@ public class FileUtilController extends BaseController {
 	}
 	
 	@ApiOperation(value = "图片预览", notes = "图片预览")
-	@PostMapping(value = { "/view" })
+	@GetMapping(value = { "/view/{id}" })
 	@RequiresPermissions(UtilContants.Permission.PERMISSION_FILE_DOWNLOAD)
-	public Object view(@RequestBody FileUploadReqData reqdata, HttpServletResponse respone) {
+	public Object view(@PathVariable("id") String id, HttpServletResponse respone) {
 		logger.debug("FileUtilController.view()");
-		File file = new File(getRealPath(reqdata));
+		
+		if (StringUtils.isEmpty(id)) {
+			logger.error("id is null.");
+			return getResponse(HttpCode.BAD_REQUEST, false);
+		}
+		
+		AttAttachmentInfo fileinfo=fileService.getfileinfo(id);
+		
+		if(fileinfo==null)
+		{
+			logger.error("文件不存在!");
+			return getResponse(HttpCode.NOT_FOUND, false, "文件不存在!");
+		}
+		File file = new File(fileinfo.getPath());
+		
 		if (!file.exists()) {
 			logger.error("文件不存在!");
 			return getResponse(HttpCode.NOT_FOUND, false, "文件不存在!");
@@ -214,11 +243,26 @@ public class FileUtilController extends BaseController {
 	}
 	
 	@ApiOperation(value = "文件预览", notes = "文件预览")
-	@PostMapping(value = { "/appview" })
+	@GetMapping(value = { "/appview/{id}" })
 	@RequiresPermissions(UtilContants.Permission.PERMISSION_FILE_DOWNLOAD)
-	public Object appview(@RequestBody FileUploadReqData reqdata, HttpServletResponse respone) {
+	public Object appview(@PathVariable("id") String id, HttpServletResponse respone) {
 		logger.debug("FileUtilController.appview()");
-		File file = new File(getRealPath(reqdata));
+		
+		if (StringUtils.isEmpty(id)) {
+			logger.error("id is null.");
+			return getResponse(HttpCode.BAD_REQUEST, false);
+		}
+		
+		AttAttachmentInfo fileinfo=fileService.getfileinfo(id);
+		
+		if(fileinfo==null)
+		{
+			logger.error("文件不存在!");
+			return getResponse(HttpCode.NOT_FOUND, false, "文件不存在!");
+		}
+		File file = new File(fileinfo.getPath());
+		
+		
 		if (!file.exists()) {
 			logger.error("文件不存在!");
 			return getResponse(HttpCode.NOT_FOUND, false, "文件不存在!");
@@ -263,7 +307,6 @@ public class FileUtilController extends BaseController {
 		}
 
 		FileInfo fileInfo = fileService.getFileInfoByid(objid);
-
 		return getResponse(fileInfo);
 	}
 
