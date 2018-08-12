@@ -78,7 +78,30 @@ public class UtilContants {
 		public static final int WW_REC= 5;
 
 	}
-	
+	@ConstantDescription(desc="询价单节点")
+	public static final class Inquirystep
+	{
+		@ConstantDescription(desc="全部")
+		public static final int ALL=0;
+		
+		@ConstantDescription(desc="待沟通")
+		public static final int PRE_COMMUNICATE=1;
+		
+		@ConstantDescription(desc="待询价")
+		public static final int PRE_INITIATE=2;
+		
+		@ConstantDescription(desc="待评估")
+		public static final int PRE_EVALUATE=3;
+		
+		@ConstantDescription(desc="待审核")
+		public static final int PRE_AUDIT=4;
+		
+		@ConstantDescription(desc="待决策")
+		public static final int PRE_DECISION=5;
+		
+		@ConstantDescription(desc="已完成")
+		public static final int COMPLETED=6;
+	}
 	
 	@ConstantDescription(desc = "系统配置")
 	public static final class Sysset {
