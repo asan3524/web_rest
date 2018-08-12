@@ -142,8 +142,6 @@ public class FileServiceImpl implements IFileService {
 		PageHelper.startPage(pageNum, pageSize);
 		AttAttachmentInfoCriteria attAttachmentInfoCriteria=new AttAttachmentInfoCriteria();
 		
-		attAttachmentInfoCriteria.setPageNo(pageNum);
-		attAttachmentInfoCriteria.setPageSize(pageSize);
 		attAttachmentInfoCriteria.setOrderByClause("update_time desc");
 		
 		List<FileInfo> fileInfos=new ArrayList<FileInfo>();
@@ -230,5 +228,10 @@ public class FileServiceImpl implements IFileService {
 			return UtilContants.Sysset.BASE_W_ROOT;
 		}
 	}
+    @Override
+    public AttAttachmentInfo getfileinfo(String id) {
+        return attAttachmentInfoMapper.selectByPrimaryKey(id);
+    }
+
 
 }
