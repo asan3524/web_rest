@@ -8,6 +8,7 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.ddsh.util.service.api.IImageService;
 import com.ddsh.util.service.api.constant.UtilContants;
 import com.ddsh.util.service.api.data.GoodsPrintLablelReqData;
+import com.ddsh.util.service.util.OSUtil;
 import com.ddsh.util.service.util.labelprinter.JaxbXmlUtil;
 import com.ddsh.util.service.util.labelprinter.LabelUtil;
 import com.ddsh.util.service.util.labelprinter.weiwen.LabelData;
@@ -21,10 +22,10 @@ public class ImageServiceImpl implements IImageService {
 	 String path="";
 
    	 JaxbXmlUtil jaxbXmlUtil=new JaxbXmlUtil();
-   	 String  value=jaxbXmlUtil.readFileForXml(UtilContants.Sysset.LABLE_PATH+UtilContants.Sysset.LABLE_MODEL_NAME);
+     String  value=jaxbXmlUtil.readFileForXml(OSUtil.getBasePath()+UtilContants.Sysset.MODEL_PATH+UtilContants.Sysset.LABLE_MODEL_NAME);
    	 try {
 			LabelData labelData=jaxbXmlUtil.convertToJavaBean(value, LabelData.class);
-			File file = new File(UtilContants.Sysset.LABLE_PATH+labelData.getGoodsid()+".jpg");  
+            File file = new File(UtilContants.Sysset.MODEL_PATH+labelData.getGoodsid()+".jpg");  
 			if(file.exists())
 			{
 				return file.getPath();

@@ -89,11 +89,14 @@ public class UtilContants {
 		public static final String LABLE_PRINTER_PPATH = "D:\\project_file\\temp\\";*/
 		
 		
-		@ConstantDescription(desc = "物资标签模型存放路径")
-		public static final String LABLE_PATH = "/root/data/model/";
-		
-		@ConstantDescription(desc = "物资标签存放路径")
-		public static final String LABLE_PRINTER_PPATH = "/root/data/source/";
+        @ConstantDescription(desc = "询价模板")
+        public static final String INQUIRY_MODEL = "/inquiry_model_compomnet.docx";
+        
+        @ConstantDescription(desc = "采购模板")
+        public static final String PURCHASE_MODEL = "/purchase_model_compomnet.docx";
+        
+        @ConstantDescription(desc = "物资标签模型存放路径")
+        public static final String MODEL_PATH = "/model/";
 		
 		@ConstantDescription(desc = "模型文件名称")
 		public static final String LABLE_MODEL_NAME = "P30-60.xml";
@@ -105,7 +108,7 @@ public class UtilContants {
 		public static final String BASE_L_ROOT= "/root/data/";
 
 		@ConstantDescription(desc = "上传文件根路径")
-		public static final String UPLOAD_ROOT_PATH = "/root/data/upload/";
+        public static final String UPLOAD_ROOT_PATH = "/upload/";
 		
 	}
 	
