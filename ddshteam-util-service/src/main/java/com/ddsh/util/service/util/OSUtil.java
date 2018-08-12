@@ -30,5 +30,19 @@ public class OSUtil {
 		
 		return os;
 	}
+	
+    
+    
+    public static String getBasePath() {
+        if(OSUtil.getSystemType()==UtilContants.OSType.LINUX)
+        {
+            return UtilContants.Sysset.BASE_L_ROOT;
+        }
+        else
+        {
+            return UtilContants.Sysset.BASE_W_ROOT;
+        }
+    }
+
 
 }

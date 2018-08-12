@@ -13,6 +13,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import com.ddsh.util.service.api.constant.UtilContants;
+import com.ddsh.util.service.util.OSUtil;
 import com.ddsh.util.service.util.labelprinter.weiwen.LabelData;
 import com.ddsh.util.service.util.labelprinter.weiwen.View;
 import com.google.zxing.WriterException;
@@ -34,7 +35,7 @@ public class LabelUtil {
 	}
 
 	public String drawLabel() throws IOException, WriterException {
-		 File file = new File(UtilContants.Sysset.LABLE_PATH+labelData.getGoodsid()+".jpg");  
+        File file = new File(OSUtil.getBasePath()+UtilContants.Sysset.MODEL_PATH+labelData.getGoodsid()+".jpg");  
 		int width = labelData.getRealValue(labelData.getWidth());
 		int height = labelData.getRealValue(labelData.getHeight());
 		BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);

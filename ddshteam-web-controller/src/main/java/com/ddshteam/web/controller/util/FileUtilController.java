@@ -289,13 +289,14 @@ public class FileUtilController extends BaseController {
 		return getResponse(fileInfo);
 	}
 
-	private String getRealPath(FileUploadReqData reqdata) {
-		return UtilContants.Sysset.UPLOAD_ROOT_PATH + File.separator + reqdata.getType() + File.separator
-				+ reqdata.getBussnessObjId() + File.separator + reqdata.getFileName();
+	private String getRealPath(FileUploadReqData reqdata) { 
+		
+		return fileService.getBasePath()+UtilContants.Sysset.UPLOAD_ROOT_PATH + File.separator + reqdata.getType() + File.separator
+            + reqdata.getBussnessObjId() + File.separator + reqdata.getFileName();
 	}
 	
 	private String getRealPathFolder(FileUploadReqData reqdata) {
-		return UtilContants.Sysset.UPLOAD_ROOT_PATH + File.separator + reqdata.getType() + File.separator
-				+ reqdata.getBussnessObjId();
+		return fileService.getBasePath()+UtilContants.Sysset.UPLOAD_ROOT_PATH + File.separator + reqdata.getType() + File.separator
+	            + reqdata.getBussnessObjId();
 	}
 }
