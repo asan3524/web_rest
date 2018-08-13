@@ -25,6 +25,7 @@ import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.apache.xmlbeans.XmlCursor;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTRow;
 
 import com.ddsh.util.service.api.constant.UtilContants;
 import com.ddsh.util.service.api.data.word.IWordExportMapper;
@@ -74,7 +75,7 @@ public class ExportWord {
 						}
 						sb.append(text);
 					}
-
+					System.out.println(text);
 					if (sb != null && runindex == runs.size() - 1) {
 						text = sb.toString();
 						boolean isSetText = false;
@@ -113,6 +114,8 @@ public class ExportWord {
 								String text = cell.getText();
 								boolean isSetText = false;
 
+								System.out.println("text----->:"+text);
+								System.out.println("key----->:"+param.getKey());
 								String key = param.getKey();
 								if (text.indexOf(key) != -1) {
 									isSetText = true;
@@ -241,26 +244,37 @@ public class ExportWord {
 	}
 
 	public static  Boolean addRows(XWPFTable table, List<List<String>> values) {
-		table.addNewRowBetween(0, values.size() - 1);
 
+		XWPFTableRow header=table.getRow(1);
+		for(XWPFTableCell cell: header.getTableCells())
+		{
+			cell.removeParagraph(0);
+		}
+    	for(int ci=1;ci<values.size();ci++)
+		{
+			table.createRow();
+		}
+		
 		for (int row_index = 0; row_index < values.size(); row_index++) {
-			XWPFTableRow row = table.getRow(row_index + 1);
+			XWPFTableRow row=null;
+			row=table.getRow(row_index+1);
+
 			List<String> value = values.get(row_index);
 			for (int col_index = 0; col_index < value.size(); col_index++) {
 				row.getCell(col_index).setText(value.get(col_index));
 			}
 		}
-
 		return true;
 	}
 
+	@SuppressWarnings({ "unchecked", "static-access" })
 	public static void generalMedia(IWordExportMapper mapper) throws IOException {
 		XWPFDocument doc = null;
 		if (mapper.getValue() == null || mapper.getValue().size() < 1) {
 			return;
 		}
 		File file = new File(mapper.getModelpath());
-		if (file.exists()) {
+		if (!file.exists()) {
 			return;
 		}
 		FileChannel input = new FileInputStream(mapper.getModelpath()).getChannel();
@@ -292,6 +306,7 @@ public class ExportWord {
 				{
 					addRows(table, rows);
 				}
+				
 				
 				break;
 

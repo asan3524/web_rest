@@ -29,6 +29,8 @@ public class ExportPdf extends Export {
 		loading();
 
 		PdfOptions options = PdfOptions.create();
+		
+		
 		XWPFDocument document = new XWPFDocument(inStream);
 
 		// 支持中文字体
@@ -51,7 +53,12 @@ public class ExportPdf extends Export {
 
 		});
 		processing();
-		PdfConverter.getInstance().convert(document, outStream, options);
+		try
+		{
+			PdfConverter.getInstance().convert(document, outStream, options);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
 		finished();
 	}
 

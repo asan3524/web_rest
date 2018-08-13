@@ -233,5 +233,20 @@ public class FileServiceImpl implements IFileService {
         return attAttachmentInfoMapper.selectByPrimaryKey(id);
     }
 
+    @Override
+    public boolean delFiles(String objid, String objsubid) {
+        AttAttachmentInfoCriteria attAttachmentInfoCriteria=new AttAttachmentInfoCriteria();
+        com.ddsh.util.service.api.model.AttAttachmentInfoCriteria.Criteria criteria=attAttachmentInfoCriteria.createCriteria();
+        criteria.andObjIdEqualTo(objid);
+        criteria.andObjSubIdEqualTo(objsubid);
+        int result=attAttachmentInfoMapper.deleteByExample(attAttachmentInfoCriteria);
+        if(result>0)
+        {
+            return true;
+        }
+        return false;
+    }
+
+
 
 }
