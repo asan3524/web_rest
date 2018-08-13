@@ -1,7 +1,9 @@
 package com.ddsh.util.service.api.data.word;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("serial")
@@ -32,6 +34,8 @@ public abstract class IWordExportMapper  implements Serializable {
 	 * @Fields exportpath
 	 */
 	protected String exportpath;
+	
+	protected List<String> deletes=null;
 
 	public static Map<String, Integer> getTypeMapper() {
 		if(TypeMapper==null)
@@ -82,6 +86,18 @@ public abstract class IWordExportMapper  implements Serializable {
 
 	public void setExportpath(String exportpath) {
 		this.exportpath = exportpath;
+	}
+
+	public List<String> getDeletes() {
+		if(deletes==null)
+		{
+			deletes=new ArrayList<String>();
+		}
+		return deletes;
+	}
+
+	public void setDeletes(List<String> deletes) {
+		this.deletes = deletes;
 	}
 	
 	

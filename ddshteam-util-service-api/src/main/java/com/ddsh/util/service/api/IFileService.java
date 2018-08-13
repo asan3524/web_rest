@@ -42,7 +42,8 @@ public interface IFileService {
 	public PageInfo<FileInfo> getFileInfo(FileInfo fileInfo,int pageNum, int pageSize);
 	
 	public boolean delFile(String id);
-	
+    public boolean delFiles(String objid,String objsubid);
+
 	
 	/**
 	 * 获取基础地址
