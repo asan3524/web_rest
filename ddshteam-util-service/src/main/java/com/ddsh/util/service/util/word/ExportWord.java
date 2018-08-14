@@ -17,7 +17,6 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.usermodel.BreakType;
-import org.apache.poi.xwpf.usermodel.Document;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
@@ -25,7 +24,6 @@ import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.apache.xmlbeans.XmlCursor;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTRow;
 
 import com.ddsh.util.service.api.constant.UtilContants;
 import com.ddsh.util.service.api.data.word.IWordExportMapper;
@@ -75,7 +73,7 @@ public class ExportWord {
 						}
 						sb.append(text);
 					}
-					System.out.println(text);
+					//System.out.println(text);
 					if (sb != null && runindex == runs.size() - 1) {
 						text = sb.toString();
 						boolean isSetText = false;
@@ -108,26 +106,31 @@ public class ExportWord {
 					for (XWPFTableRow row : xwpftable.getRows()) {
 
 						List<XWPFTableCell> cells = row.getTableCells();
-
+						StringBuilder sb = null;
 						if (cells != null && cells.size() > 0) {
 							for (XWPFTableCell cell : cells) {
 								String text = cell.getText();
 								boolean isSetText = false;
 
-								System.out.println("text----->:"+text);
-								System.out.println("key----->:"+param.getKey());
+								if (text != null) {
+									if (sb == null) {
+										sb = new StringBuilder();
+									}
+									sb.append(text);
+								}
 								String key = param.getKey();
-								if (text.indexOf(key) != -1) {
+								if (sb.indexOf(key) != -1) {
 									isSetText = true;
 									Object value = param.getValue();
 									if (value instanceof String) {// 文本替换
-										text = text.replace(key, value.toString());
+										sb=new StringBuilder(sb.toString().replace(key, value.toString()));
+										 //text= text.replace(key, value.toString());
 									}
 								}
 							
 								if (isSetText) {
 									cell.removeParagraph(0);
-									cell.setText(text);
+									cell.setText(sb.toString());
 								}
 							}
 
@@ -169,27 +172,6 @@ public class ExportWord {
 							XmlCursor cursor = paragraph.getCTP().newCursor();
 
 							XWPFTable tableOne = doc2.insertNewTbl(cursor);// ---这个是关键
-							// XWPFTable tableOne =
-							// paragraph.getDocument().createTable();
-							XWPFTableRow tableOneRowOne = tableOne.getRow(0);
-							tableOneRowOne.getCell(0).setText("一行一列");
-							XWPFTableCell cell12 = tableOneRowOne.createCell();
-							cell12.setText("一行二列");
-							// tableOneRowOne.addNewTableCell().setText("第1行第2列");
-
-							// tableOneRowOne.addNewTableCell().setText("第1行第3列");
-
-							// tableOneRowOne.addNewTableCell().setText("第1行第4列");
-
-							XWPFTableRow tableOneRowTwo = tableOne.createRow();
-							tableOneRowTwo.getCell(0).setText("第二行第一列");
-							tableOneRowTwo.getCell(1).setText("第二行第二列");
-							// tableOneRowTwo.getCell(2).setText("第2行第3列");
-							XWPFTableRow tableOneRow3 = tableOne.createRow();
-							// ---顺序增加行后，忽略第1、2单元格，直接插入3、4
-							tableOneRow3.addNewTableCell().setText("第三行第3列");
-							tableOneRow3.addNewTableCell().setText("第三行第4列");
-
 						}
 
 					}
@@ -248,7 +230,10 @@ public class ExportWord {
 		XWPFTableRow header=table.getRow(1);
 		for(XWPFTableCell cell: header.getTableCells())
 		{
-			cell.removeParagraph(0);
+			for(int pi=cell.getParagraphs().size()-1;pi>=0;pi--)
+			{
+				cell.removeParagraph(pi);
+			}
 		}
     	for(int ci=1;ci<values.size();ci++)
 		{
@@ -281,7 +266,16 @@ public class ExportWord {
 		String modelpath = file.getParent() + File.separator + System.currentTimeMillis() + file.getName();
 		FileChannel output = new FileOutputStream(modelpath).getChannel();
 		output.transferFrom(input, 0, input.size());
-
+		
+		if(input!=null)
+		{
+			input.close();
+		}
+		
+		if(output!=null)
+		{
+			output.close();
+		}
 		OPCPackage ocpModel = POIXMLDocument.openPackage(modelpath);
 		FileOutputStream fileExp = new FileOutputStream(mapper.getExportpath());
 		doc = new XWPFDocument(ocpModel);
@@ -299,14 +293,13 @@ public class ExportWord {
 				}
 				break;
 			case UtilContants.WordMediaType.MEDIA_TABLE:
-				String rows_key = (String) mapper.getFlowMapper().get(entry.getKey());
-				List<List<String>> rows = (List<List<String>>) mapper.getValue().get(rows_key);
-				XWPFTable table=getTableByKey(doc,rows_key);
+				//String rows_key = (String) mapper.getFlowMapper().get(entry.getKey());
+				List<List<String>> rows = (List<List<String>>) mapper.getValue().get(entry.getKey());
+				XWPFTable table=getTableByKey(doc,entry.getKey());
 				if(table!=null&&rows!=null&&rows.size()>0)
 				{
 					addRows(table, rows);
 				}
-				
 				
 				break;
 
@@ -318,9 +311,53 @@ public class ExportWord {
 			}
 
 		}
+		
+		if(mapper.getDeletes()!=null&&mapper.getDeletes().size()>0)
+		{
+			for(String key:mapper.getDeletes())
+			{
+				removeTableByKey(doc, key);
+			}
+		}
 		doc.write(fileExp);
+		
+		if(ocpModel!=null)
+		{
+			ocpModel.close();
+		}
+		
+		File mfile=new File(modelpath);
+		if(mfile.exists())
+		{
+			mfile.delete();
+		}
 	}
 
+	
+	
+	public static void removeTableByKey(XWPFDocument document, String key) {
+		for (XWPFTable table : document.getTables()) {
+			for(XWPFTableRow row:table.getRows())
+			{
+				for(XWPFTableCell cell:row.getTableCells())
+				{
+					for(XWPFTable ctable:cell.getTables())
+					{
+						if (ctable.getText().contains(key)) {
+							for(int rowIndex=ctable.getRows().size()-1;rowIndex>=0;rowIndex--)
+							{
+								ctable.removeRow(rowIndex);
+							}
+							row.setHeight(0);
+							cell.setText("");
+							return;
+						}
+					}
+				}
+			}
+		}
+	}
+	
 	public static XWPFTable getTableByKey(XWPFDocument document, String key) {
 		XWPFTable xtable = null;
 		for (XWPFTable table : document.getTables()) {
@@ -328,84 +365,24 @@ public class ExportWord {
 				xtable = table;
 				break;
 			}
+			
+			for(XWPFTableRow row:table.getRows())
+			{
+				for(XWPFTableCell cell:row.getTableCells())
+				{
+					for(XWPFTable ctable:cell.getTables())
+					{
+						if (ctable.getText().contains(key)) {
+							xtable = ctable;
+							break;
+						}
+					}
+					
+				}
+			}
 		}
 		return xtable;
 	}
 
-	/**
-	
-	* 测试用方法
-	
-	*/
-
-	public static void main(String[] args) throws Exception {
-
-		Map<String, Object> param = new HashMap<String, Object>();
-
-		param.put("${name}", "哈哈哈哈");
-		param.put("${age}", "信息管理与信息系统");
-		param.put("${sex}", "男");
-		param.put("${code}", "大学");
-		param.put("${mobile}", "大学");
-		param.put("${phone}", "大学");
-		param.put("${birth}", "大学");
-		param.put("${birthside}", "大学");
-		param.put("${home}", "大学");
-		param.put("${remark}", "2016-09-21");
-		param.put("${personInfo}", "2016-09-21");
-		param.put("${test}", new Date().toString());
-
-		Map<String, Object> twocode = new HashMap<String, Object>();
-		twocode.put("width", 300);
-
-		twocode.put("height", 300);
-
-		twocode.put("type", "png");
-
-		// XWPFDocument doc = ExportWord.generateWordText(param,
-		// "D:\\project_file\\资料\\采购库存\\model\\example\\inquiry_model_compomnet_exp.docx");
-		// FileOutputStream fopts = new
-		// FileOutputStream("D:\\project_file\\tt\\"+UUID.randomUUID().toString()+".docx");
-		// doc.write(fopts);
-		OPCPackage pack = POIXMLDocument
-				.openPackage("D:\\project_file\\资料\\采购库存\\model\\example\\inquiry_model_compomnet_exp.docx");
-		XWPFDocument doc = new XWPFDocument(pack);
-		for (XWPFTable table : doc.getTables()) {
-			if (table.getText().contains("INQUIRY_INQUIRY_DETAILS")) {
-				System.out.println(table.getText());
-			}
-		}
-
-		File file = new File("D:\\project_file\\资料\\采购库存\\model\\example\\123.txt");
-		System.out.println(file.getParent());
-		System.out.println(file.getName());
-		System.out.println(File.separator);
-
-		FileChannel input = new FileInputStream("D:\\project_file\\资料\\采购库存\\model\\example\\123.txt").getChannel();
-		FileChannel output = new FileOutputStream("D:\\project_file\\资料\\采购库存\\model\\example\\123456789.txt")
-				.getChannel();
-		output.transferFrom(input, 0, input.size());
-
-		/*
-		 * ExportWord.insertTab("${table}", doc); // /----------创建表
-		 * 
-		 * ExportWord.insertImage("${image}", doc); // /----------创建图
-		 * 
-		 * // ------替换多余的标志位----//
-		 * 
-		 * param = new HashMap<String, Object>();
-		 * 
-		 * param.put("${test}", "下一个段落");
-		 * 
-		 * param.put("${table}", "");
-		 * 
-		 * param.put("${image}", "");
-		 * 
-		 * ExportWord.processParagraphs(doc.getParagraphs(), param, doc);
-		 * FileOutputStream fopts = new
-		 * FileOutputStream("D:\\project_file\\tt\\template-2.docx");
-		 * doc.write(fopts);
-		 */
-
-	}
+ 
 }
