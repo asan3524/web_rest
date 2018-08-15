@@ -36,6 +36,9 @@ public abstract class IWordExportMapper  implements Serializable {
 	protected String exportpath;
 	
 	protected List<String> deletes=null;
+	
+	protected List<String> clear=null;
+
 
 	public static Map<String, Integer> getTypeMapper() {
 		if(TypeMapper==null)
@@ -98,6 +101,18 @@ public abstract class IWordExportMapper  implements Serializable {
 
 	public void setDeletes(List<String> deletes) {
 		this.deletes = deletes;
+	}
+
+	public List<String> getClear() {
+		if(clear==null)
+		{
+			clear=new ArrayList<String>();
+		}
+		return clear;
+	}
+
+	public void setClear(List<String> clear) {
+		this.clear = clear;
 	}
 	
 	
