@@ -2,13 +2,10 @@ package com.ddsh.pdf.service.util.pdf;
 
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ResourceBundle;
 
 import org.apache.poi.xwpf.converter.pdf.PdfConverter;
 import org.apache.poi.xwpf.converter.pdf.PdfOptions;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 
 import com.ddsh.pdf.service.constant.PDFContants;
 import com.ddsh.pdf.service.util.OSUtil;
@@ -22,7 +19,7 @@ import java.awt.Color;
 
 
 public class ExportPdf extends Export {
-	String ttf=	OSUtil.getBasePath()+PDFContants.Sysset.FONTS_PATH+"simsun.ttf";
+	String font=OSUtil.getBasePath()+PDFContants.Sysset.FONTS_PATH+"simsun.ttf";
 	public ExportPdf(InputStream inStream, OutputStream outStream, boolean showMessages,
 			boolean closeStreamsWhenComplete) {
 		super(inStream, outStream, showMessages, closeStreamsWhenComplete);
@@ -41,10 +38,10 @@ public class ExportPdf extends Export {
 			public Font getFont(String familyName, String encoding, float size, int style, Color color) {
 				try {
 					
-					Resource fileRource = new ClassPathResource(ttf);
-					String path = fileRource.getFile().getAbsolutePath();
+					//Resource fileRource = new ClassPathResource("simsun.ttf");
+					//String path = fileRource.getFile().getAbsolutePath();
 
-					BaseFont bfChinese = BaseFont.createFont(path, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+					BaseFont bfChinese = BaseFont.createFont(font, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
 					Font fontChinese = new Font(bfChinese, size, style, color);
 					if (familyName != null)
 						fontChinese.setFamily(familyName);
