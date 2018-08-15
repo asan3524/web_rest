@@ -1,16 +1,16 @@
 package com.ddsh.util.service.util.word;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
+
+import javax.imageio.ImageIO;
 
 import org.apache.poi.POIXMLDocument;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -18,6 +18,7 @@ import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.usermodel.BreakType;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFHeader;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
@@ -29,12 +30,29 @@ import com.ddsh.util.service.api.constant.UtilContants;
 import com.ddsh.util.service.api.data.word.IWordExportMapper;
 
 public class ExportWord {
+	
+	/**
+	 * Ò³Ã¼²Ù×÷
+	 * @Title: generateWordTopText
+	 * @param param
+	 * @param doc
+	 * @return XWPFDocument
+	 * @see 
+	 * @throws
+	 * @author arpgate
+	 */
+	public static XWPFDocument generateWordTopText(Entry<String, Object> param, XWPFDocument doc)
+	{
+        XWPFHeader header = doc.getHeaderList().get(0);
+		processParagraphs(header.getParagraphs(), param, doc);
+		return doc;
+	}
 
 	public static XWPFDocument generateWordText(Entry<String, Object> param, XWPFDocument doc) {
 		try {
 			if (param != null) {
 				List<XWPFParagraph> paragraphList = doc.getParagraphs();
-				processParagraphs(paragraphList, param, doc);
+				//processParagraphs(paragraphList, param, doc);
 				processTables(doc.getTables(), param, doc);
 			}
 		} catch (Exception e) {
@@ -47,14 +65,14 @@ public class ExportWord {
 	}
 
 	/**
-	* å¤„ç†æ®µè½ä¸­æ–‡æœ¬ï¼Œæ›¿æ¢æ–‡æœ¬ä¸­å®šä¹‰çš„å˜é‡ï¼›
+	* ´¦Àí¶ÎÂäÖĞÎÄ±¾£¬Ìæ»»ÎÄ±¾ÖĞ¶¨ÒåµÄ±äÁ¿£»
 	* 
 	* @param paragraphList
-	*            æ®µè½åˆ—è¡¨
+	*            ¶ÎÂäÁĞ±í
 	* @param param
-	*            éœ€è¦æ›¿æ¢çš„å˜é‡åŠå˜é‡å€¼
+	*            ĞèÒªÌæ»»µÄ±äÁ¿¼°±äÁ¿Öµ
 	* @param doc
-	*            éœ€è¦æ›¿æ¢çš„DOC
+	*            ĞèÒªÌæ»»µÄDOC
 	*/
 	public static void processParagraphs(List<XWPFParagraph> paragraphList, Entry<String, Object> param,
 			XWPFDocument doc) {
@@ -73,17 +91,18 @@ public class ExportWord {
 						}
 						sb.append(text);
 					}
-					//System.out.println(text);
 					if (sb != null && runindex == runs.size() - 1) {
 						text = sb.toString();
 						boolean isSetText = false;
 						run.setText(text, 0);
 						String key = param.getKey();
+						//System.out.println(text);
 						if (text.indexOf(key) != -1) {
 							isSetText = true;
 							Object value = param.getValue();
-							if (value instanceof String) {// æ–‡æœ¬æ›¿æ¢
+							if (value instanceof String) {// ÎÄ±¾Ìæ»»
 								text = text.replace(key, value.toString());
+								//System.out.println("key:"+key+"value:"+value);
 							}
 						}
 						if (isSetText) {
@@ -100,38 +119,14 @@ public class ExportWord {
 	public static void processTables(List<XWPFTable> xWPFTableList,Entry<String, Object> param, XWPFDocument doc) {
 		if (xWPFTableList != null && xWPFTableList.size() > 0) {
 			for (XWPFTable xwpftable : xWPFTableList) {
-
 				List<XWPFTableRow> rows = xwpftable.getRows();
 				if (rows != null && rows.size() > 0) {
 					for (XWPFTableRow row : xwpftable.getRows()) {
 
 						List<XWPFTableCell> cells = row.getTableCells();
-						StringBuilder sb = null;
 						if (cells != null && cells.size() > 0) {
 							for (XWPFTableCell cell : cells) {
-								String text = cell.getText();
-								boolean isSetText = false;
-
-								if (text != null) {
-									if (sb == null) {
-										sb = new StringBuilder();
-									}
-									sb.append(text);
-								}
-								String key = param.getKey();
-								if (sb.indexOf(key) != -1) {
-									isSetText = true;
-									Object value = param.getValue();
-									if (value instanceof String) {// æ–‡æœ¬æ›¿æ¢
-										sb=new StringBuilder(sb.toString().replace(key, value.toString()));
-										 //text= text.replace(key, value.toString());
-									}
-								}
-							
-								if (isSetText) {
-									cell.removeParagraph(0);
-									cell.setText(sb.toString());
-								}
+								processParagraphs(cell.getParagraphs(),param,doc);
 							}
 
 						}
@@ -141,14 +136,23 @@ public class ExportWord {
 			}
 		}
 	}
+	
+	
+	
+	private static void removeParagraphs(XWPFTableCell cell) {
+		for(int p_index=cell.getParagraphs().size()-1;p_index>=0;p_index--)
+		{
+			cell.removeParagraph(p_index);
+		}
+	}
 
 	/**
-	* åœ¨å®šä½çš„ä½ç½®æ’å…¥è¡¨æ ¼ï¼›
+	* ÔÚ¶¨Î»µÄÎ»ÖÃ²åÈë±í¸ñ£»
 	* 
 	* @param key
-	*            å®šä½çš„å˜é‡å€¼
+	*            ¶¨Î»µÄ±äÁ¿Öµ
 	* @param doc
-	*            éœ€è¦æ›¿æ¢çš„DOC
+	*            ĞèÒªÌæ»»µÄDOC
 	*/
 
 	public static void insertTab(String key, XWPFDocument doc2) {
@@ -171,7 +175,7 @@ public class ExportWord {
 
 							XmlCursor cursor = paragraph.getCTP().newCursor();
 
-							XWPFTable tableOne = doc2.insertNewTbl(cursor);// ---è¿™ä¸ªæ˜¯å…³é”®
+							XWPFTable tableOne = doc2.insertNewTbl(cursor);// ---Õâ¸öÊÇ¹Ø¼ü
 						}
 
 					}
@@ -183,9 +187,27 @@ public class ExportWord {
 		}
 
 	}
-
-	public static void insertImage(String key, List<String> param,XWPFDocument doc) {
-		List<XWPFParagraph> paragraphList = doc.getParagraphs();
+  
+	public static void generalImage(String key, List<String> param,XWPFDocument doc)
+	{
+		for(XWPFTable table:doc.getTables())
+		{
+			for(XWPFTableRow row:table.getRows())
+			{
+				for(XWPFTableCell cell:row.getTableCells())
+				{
+					if(insertImage(key,param,cell.getParagraphs(),table.getWidth()/20))
+					{
+ 						return;
+ 						
+					}
+				}
+			}
+		}
+	}
+	
+	public static boolean insertImage(String key, List<String> param,List<XWPFParagraph> paragraphList,int width) {
+		boolean hasdo=false;
 		try {
 			if (paragraphList != null && paragraphList.size() > 0) {
 				for (XWPFParagraph paragraph : paragraphList) {
@@ -194,18 +216,33 @@ public class ExportWord {
 						String text = run.getText(0);
 						if (text != null) {
 							if (text.indexOf(key) >= 0) {
+								run.setText("",0);
 								run.addBreak();
-								
+								hasdo=true;
 								for(String path:param)
 								{
+									
+									  File picture = new File(path);
+									  if(!picture.exists())
+									  {
+										  return true;
+									  }
+									  
+							        BufferedImage sourceImg =ImageIO.read(new FileInputStream(picture)); 
+							        int scale=sourceImg.getWidth()/(width-100);
+							        if(scale<=0)
+							        {
+							        	scale=1;
+							        }
 									String ext[]=path.split("\\.");
 									run.addPicture(new FileInputStream(path),
 											UtilContants.WordImageType.cache.get(ext[ext.length-1]), path,
-											Units.toEMU(200), Units.toEMU(200)); 
+											Units.toEMU(sourceImg.getWidth()/scale), Units.toEMU(sourceImg.getHeight()/scale)); 
 								}
-																				// pixels
 								run.addBreak(BreakType.PAGE);
+								return true;
 							}
+							
 						}
 
 					}
@@ -223,6 +260,7 @@ public class ExportWord {
 
 		}
 
+		return hasdo;
 	}
 
 	public static  Boolean addRows(XWPFTable table, List<List<String>> values) {
@@ -287,13 +325,12 @@ public class ExportWord {
 			switch (mapper.getTypeMapper().get(entry.getKey())) {
 			case UtilContants.WordMediaType.MEDIA_IMAGE:
 				List<String> images = (List<String>) entry.getValue();
-				if(images!=null&&images.size()>0)
+				if(images!=null)
 				{
-					insertImage(entry.getKey(), images, doc);
+					generalImage(entry.getKey(), images, doc);
 				}
 				break;
 			case UtilContants.WordMediaType.MEDIA_TABLE:
-				//String rows_key = (String) mapper.getFlowMapper().get(entry.getKey());
 				List<List<String>> rows = (List<List<String>>) mapper.getValue().get(entry.getKey());
 				XWPFTable table=getTableByKey(doc,entry.getKey());
 				if(table!=null&&rows!=null&&rows.size()>0)
@@ -304,7 +341,15 @@ public class ExportWord {
 				break;
 
 			case UtilContants.WordMediaType.MEDIA_TEXT:
-				generateWordText(entry, doc);
+				if(mapper.getFlowMapper().containsKey(entry.getKey())&&((int)mapper.getFlowMapper().get(entry.getKey()))==UtilContants.WordBodyType.TOP)
+				{
+					generateWordTopText(entry, doc);
+				}
+				else
+				{
+					generateWordText(entry, doc);
+				}
+
 				break;
 			default:
 				break;
@@ -357,6 +402,19 @@ public class ExportWord {
 			}
 		}
 	}
+	
+	public static void clearValueBykey(XWPFDocument document, String key) {
+		for (XWPFTable table : document.getTables()) {
+			for(XWPFTableRow row:table.getRows())
+			{
+				for(XWPFTableCell cell:row.getTableCells())
+				{
+					if(cell.getText().contains(key))
+					   cell.removeParagraph(0);
+					}
+				}
+			}
+		}
 	
 	public static XWPFTable getTableByKey(XWPFDocument document, String key) {
 		XWPFTable xtable = null;

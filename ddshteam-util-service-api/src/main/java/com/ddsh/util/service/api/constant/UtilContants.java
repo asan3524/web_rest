@@ -323,7 +323,16 @@ public class UtilContants {
 		@ConstantDescription(desc = "表格")
 		public static final int MEDIA_TABLE = 3;
 	}
-	
+	@ConstantDescription(desc = "word消息体类型")
+	public static final class WordBodyType
+	{
+		@ConstantDescription(desc = "页眉")
+		public static final int TOP= 1;
+		@ConstantDescription(desc = "正文")
+		public static final int BODY = 2;
+		@ConstantDescription(desc = "页脚")
+		public static final int FOOTER = 3;
+	}
 	
 	@ConstantDescription(desc = "符号")
 	public static final class Symbol

@@ -17,47 +17,47 @@ public class InquiryWordMapper extends IWordExportMapper{
 	 * 使用单位,如:嘉祥锦江校区
 	 * 
 	 */
-	public final static String I_D_1 ="I_D_1"; 
+	public final static String I_D_31 ="I_D_31"; 
 	/**
 	 * 询价单标题，如：联想ThinkPad笔记本询价单
 	 * 
 	 */
-	public final static String I_D_2 ="I_D_2"; 
+	public final static String I_D_32 ="I_D_32"; 
 	/**
 	 * 询价申请,状态,申请通过为:【√】,未通过为:【X】,未执行状态为:【】
 	 * 
 	 */
-	public final static String I_D_3 ="I_D_3";  
+	public final static String I_D_33 ="I_D_33";  
 	/**
 	 * 详情沟通,状态,申请通过为:【√】,未通过为:【X】,未执行状态为:【】
 	 * 
 	 */
-	public final static String I_D_4 ="I_D_4";  
+	public final static String I_D_34 ="I_D_34";  
 	/**
 	 * 物资询价,状态,申请通过为:【√】,未通过为:【X】,未执行状态为:【】
 	 * 
 	 */
-	public final static String I_D_5 ="I_D_5";  
+	public final static String I_D_35 ="I_D_35";  
 	/**
 	 * 现场评估,状态,申请通过为:【√】,未通过为:【X】,未执行状态为:【】
 	 * 
 	 */
-	public final static String I_D_6 ="I_D_6";  
+	public final static String I_D_36 ="I_D_36";  
 	/**
 	 * 报告审核,状态,申请通过为:【√】,未通过为:【X】,未执行状态为:【】
 	 * 
 	 */
-	public final static String I_D_7 ="I_D_7";  
+	public final static String I_D_37 ="I_D_37";  
 	/**
 	 * 采购决策,状态,申请通过为:【√】,未通过为:【X】,未执行状态为:【】
 	 * 
 	 */
-	public final static String I_D_8 ="I_D_8"; 
+	public final static String I_D_38 ="I_D_38"; 
 	/**
 	 * 询价申请详单，表格
 	 * 
 	 */ 
-	public final static String I_D_9 ="I_D_9";  
+	public final static String I_D_39 ="I_D_39";  
 	/**
 	 * 询价说明
 	 * 
@@ -267,15 +267,15 @@ public class InquiryWordMapper extends IWordExportMapper{
 
 	static
 	{
-		getTypeMapper().put(I_D_1 , UtilContants.WordMediaType.MEDIA_TEXT);
-		getTypeMapper().put(I_D_2 , UtilContants.WordMediaType.MEDIA_TEXT);
-		getTypeMapper().put(I_D_3 , UtilContants.WordMediaType.MEDIA_TEXT);
-		getTypeMapper().put(I_D_4 , UtilContants.WordMediaType.MEDIA_TEXT);
-		getTypeMapper().put(I_D_5 , UtilContants.WordMediaType.MEDIA_TEXT);
-		getTypeMapper().put(I_D_6 , UtilContants.WordMediaType.MEDIA_TEXT);
-		getTypeMapper().put(I_D_7 , UtilContants.WordMediaType.MEDIA_TEXT);
-		getTypeMapper().put(I_D_8 , UtilContants.WordMediaType.MEDIA_TEXT);
-		getTypeMapper().put(I_D_9 , UtilContants.WordMediaType.MEDIA_TABLE);
+		getTypeMapper().put(I_D_31 , UtilContants.WordMediaType.MEDIA_TEXT);
+		getTypeMapper().put(I_D_32 , UtilContants.WordMediaType.MEDIA_TEXT);
+		getTypeMapper().put(I_D_33 , UtilContants.WordMediaType.MEDIA_TEXT);
+		getTypeMapper().put(I_D_34 , UtilContants.WordMediaType.MEDIA_TEXT);
+		getTypeMapper().put(I_D_35 , UtilContants.WordMediaType.MEDIA_TEXT);
+		getTypeMapper().put(I_D_36 , UtilContants.WordMediaType.MEDIA_TEXT);
+		getTypeMapper().put(I_D_37 , UtilContants.WordMediaType.MEDIA_TEXT);
+		getTypeMapper().put(I_D_38 , UtilContants.WordMediaType.MEDIA_TEXT);
+		getTypeMapper().put(I_D_39 , UtilContants.WordMediaType.MEDIA_TABLE);
 		getTypeMapper().put(I_D_10, UtilContants.WordMediaType.MEDIA_TEXT);
 		getTypeMapper().put(I_D_11, UtilContants.WordMediaType.MEDIA_TEXT);
 		getTypeMapper().put(I_D_12, UtilContants.WordMediaType.MEDIA_TEXT);
@@ -299,7 +299,6 @@ public class InquiryWordMapper extends IWordExportMapper{
 
 		
 
-		
 
 		//INQUIRY_APPLICTION_DETAILS
 		getTypeMapper().put(I_A_D_1, UtilContants.WordMediaType.MEDIA_TEXT);
@@ -325,7 +324,6 @@ public class InquiryWordMapper extends IWordExportMapper{
 		getTypeMapper().put(I_I_D_10, UtilContants.WordMediaType.MEDIA_TEXT);
 		//INQUIRY_INQUIRY_DETAILS
 
-		getFlowMapper().put(I_D_9, INQUIRY_APPLICTION_DETAILS);
-		getFlowMapper().put(I_D_16, INQUIRY_INQUIRY_DETAILS);
+		getFlowMapper().put(I_D_31, UtilContants.WordBodyType.TOP);
 	}
 }
