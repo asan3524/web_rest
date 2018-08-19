@@ -247,6 +247,34 @@ public class FileServiceImpl implements IFileService {
         return false;
     }
 
+	@Override
+	public void updateAttachmentInfo(AttAttachmentInfo info) {
+		attAttachmentInfoMapper.updateByPrimaryKeySelective(info);
+	}
+
+	@Override
+	public void insertAttachmentInfo(AttAttachmentInfo info) {
+		attAttachmentInfoMapper.insert(info);
+		
+	}
+
+	@Override
+	public AttAttachmentInfo getAttachmentInfo(String objid, String objsubid) {
+	      AttAttachmentInfoCriteria attAttachmentInfoCriteria=new AttAttachmentInfoCriteria();
+	      com.ddsh.util.service.api.model.AttAttachmentInfoCriteria.Criteria criteria=attAttachmentInfoCriteria.createCriteria();
+	      criteria.andObjIdEqualTo(objid);
+	      criteria.andObjSubIdEqualTo(objsubid);
+	      
+	      List<AttAttachmentInfo>  atts=attAttachmentInfoMapper.selectByExample(attAttachmentInfoCriteria);
+	      
+	      if(atts!=null&&atts.size()>0)
+	      {
+	    	  return atts.get(0);
+	      }
+	      
+	      return null;
+	}
+
 
 
 }

@@ -55,5 +55,8 @@ public interface IFileService {
 	 */
 	public String getBasePath();
     public AttAttachmentInfo getfileinfo(String id);
+    public void  updateAttachmentInfo(AttAttachmentInfo info);
+    public void  insertAttachmentInfo(AttAttachmentInfo info);
+    public AttAttachmentInfo  getAttachmentInfo(String objid,String objsubid);
 
 }
