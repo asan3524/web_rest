@@ -21,6 +21,6 @@ public interface IPDFService {
 	 * @throws
 	 * @author arpgate
 	 */
-	void exportWordToPDf(String inpath,String outpath);
+	void exportWordToPDf(String orderid,String inpath,String outpath);
 
 }

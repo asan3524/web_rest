@@ -103,6 +103,36 @@ public class UtilContants {
 		public static final int COMPLETED=6;
 	}
 	
+	@ConstantDescription(desc="采购节点")
+	public static final class Purchasestep
+	{
+		@ConstantDescription(desc="全部")
+		public static final int ALL=0;
+		
+		@ConstantDescription(desc="待审核")
+		public static final int PRE_AUDIT=1;
+		
+		@ConstantDescription(desc="待审批")
+		public static final int PRE_DECISION=2;
+		
+		@ConstantDescription(desc="待采购")
+		public static final int PRE_PURCHASE=3;
+		
+		@ConstantDescription(desc="待入库")
+		public static final int PRE_STOCK=4;
+		
+		@ConstantDescription(desc="入库中")
+		public static final int ING_STOCK=5;
+		
+		@ConstantDescription(desc="已完成")
+		public static final int COMPLETED=6;
+		
+		@ConstantDescription(desc="无预算")
+		public static final int NO_BUDGET=7;
+		
+		@ConstantDescription(desc="未批准")
+		public static final int NO_PRIM=8;
+	}
 	@ConstantDescription(desc = "系统配置")
 	public static final class Sysset {
 /*		@ConstantDescription(desc = "物资标签模型存放路径")

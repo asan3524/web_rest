@@ -244,6 +244,31 @@ CREATE TABLE `sys_op_logs` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='操作日志表';
 
+DROP TABLE IF EXISTS `att_attachment_info`;
+CREATE TABLE `att_attachment_info` (
+	`id` VARCHAR(64) NOT NULL,
+	`table_name` VARCHAR(64) NULL DEFAULT NULL COMMENT '附件关联业务表',
+	`type` VARCHAR(32) NULL DEFAULT NULL COMMENT '附件类型',
+	`obj_id` VARCHAR(64) NOT NULL COMMENT '附件关联业务ID',
+	`obj_sub_id` VARCHAR(64) NOT NULL COMMENT '附件关联业务附属性ID',
+	`path` VARCHAR(2000) NOT NULL COMMENT '附件相对路径',
+	`update_time` DATETIME NOT NULL COMMENT '更新时间',
+	`upload_userId` VARCHAR(64) NULL DEFAULT NULL COMMENT '上传用户id',
+	`upload_userName` VARCHAR(64) NULL DEFAULT NULL COMMENT '上传用户名称',
+	`status` INT(11) NULL DEFAULT '1' COMMENT '状态，1可用，0不可用',
+	`file_name` VARCHAR(100) NULL DEFAULT NULL COMMENT '文件名称',
+	`file_type` VARCHAR(20) NULL DEFAULT NULL COMMENT '文件类型，1:图片、2:动图、3:视频、4:文档、5、应用包、6:压缩包',
+	`file_size` INT(11) NULL DEFAULT NULL COMMENT '文件大小，单位：兆<M>',
+	`remark` VARCHAR(2000) NULL DEFAULT NULL COMMENT '文件备注',
+	`name` VARCHAR(100) NULL DEFAULT NULL COMMENT '文件中文别名',
+	PRIMARY KEY (`id`)
+)
+COMMENT='系统附件表'
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB
+;
+
+
 -- ----------------------------
 -- Function structure for `dept_check_parent`
 -- 查询当前部门及其子部门所属的用户语句为：select * from  sys_user_info where dept_check_parent('当前部门ID', dep_id) or dep_id='当前部门ID';

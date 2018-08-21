@@ -1,4 +1,4 @@
-package com.ddsh.util.service.dao;
+package com.ddsh.pdf.service.dao;
 
 import com.ddsh.pdf.service.api.model.AttAttachmentInfo;
 import com.ddsh.pdf.service.api.model.AttAttachmentInfoCriteria;
