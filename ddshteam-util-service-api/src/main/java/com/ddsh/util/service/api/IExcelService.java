@@ -2,7 +2,7 @@ package com.ddsh.util.service.api;
 
 import com.ddsh.util.service.api.data.ExcelImportReqData;
 import com.ddsh.util.service.api.data.ExcelImportRespData;
-import com.ddsh.util.service.api.data.FileInfo;
+import com.ddsh.util.service.api.model.AttAttachmentInfo;
 
 public interface IExcelService {
 	
@@ -15,6 +15,5 @@ public interface IExcelService {
 	 * @throws
 	 * @author arpgate
 	 */
-	ExcelImportRespData importExcel(FileInfo fileinfo,ExcelImportReqData data);
-
+	ExcelImportRespData importExcel(AttAttachmentInfo fileinfo,ExcelImportReqData data);
 }
