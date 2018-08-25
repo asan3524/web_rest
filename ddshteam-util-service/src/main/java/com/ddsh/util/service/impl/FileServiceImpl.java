@@ -86,7 +86,12 @@ public class FileServiceImpl implements IFileService {
 	private AttAttachmentInfo convertFileInfoToAtt(FileInfo fileInfo)
 	{
 		AttAttachmentInfo attAttachmentInfo=new AttAttachmentInfo();
-		attAttachmentInfo.setId(UUID.randomUUID().toString());
+		
+		if(attAttachmentInfo.getId()==null)
+		{
+			attAttachmentInfo.setId(UUID.randomUUID().toString());
+		}
+		
 		attAttachmentInfo.setFileName(fileInfo.getFilename());
 		attAttachmentInfo.setFileSize(fileInfo.getFileSize().intValue());
 		attAttachmentInfo.setFileType(fileInfo.getFileType());
@@ -110,7 +115,7 @@ public class FileServiceImpl implements IFileService {
         fileInfo.setBussnessObjId(attAttachmentInfo.getObjId());
         fileInfo.setBussnessobjSubId(attAttachmentInfo.getObjSubId());
         fileInfo.setFilename(attAttachmentInfo.getFileName());
-        fileInfo.setFileSize(attAttachmentInfo.getFileSize().longValue());
+        fileInfo.setFileSize(attAttachmentInfo.getFileSize()!=null?attAttachmentInfo.getFileSize().longValue():0);
         fileInfo.setFileType(attAttachmentInfo.getFileType());
         fileInfo.setStatus(attAttachmentInfo.getStatus());
         fileInfo.setUserid(attAttachmentInfo.getUploadUserid());
@@ -127,7 +132,7 @@ public class FileServiceImpl implements IFileService {
 		fileInfo.setBussnessObjId(attAttachmentInfo.getObjId());
         fileInfo.setBussnessobjSubId(attAttachmentInfo.getObjSubId());
 		fileInfo.setFilename(attAttachmentInfo.getFileName());
-		fileInfo.setFileSize(attAttachmentInfo.getFileSize().longValue());
+		fileInfo.setFileSize(attAttachmentInfo.getFileSize()!=null?attAttachmentInfo.getFileSize().longValue():0);
 		fileInfo.setFileType(attAttachmentInfo.getFileType());
 		fileInfo.setStatus(attAttachmentInfo.getStatus());
 		fileInfo.setUserid(attAttachmentInfo.getUploadUserid());
@@ -157,6 +162,8 @@ public class FileServiceImpl implements IFileService {
 		if(fileInfo.getBussnessObjId()!=null&&!fileInfo.getBussnessObjId().trim().equals(""))
 		{
 			criteria.andObjIdEqualTo(fileInfo.getBussnessObjId());
+			criteria.andObjSubIdNotEqualTo("docx");
+			criteria.andObjSubIdNotEqualTo("pdf");
 		}
 		if(fileInfo.getBussnessobjSubId()!=null&&!fileInfo.getBussnessobjSubId().trim().equals(""))
 		{
