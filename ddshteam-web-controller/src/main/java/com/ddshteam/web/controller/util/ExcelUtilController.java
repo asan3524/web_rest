@@ -12,8 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.dubbo.config.annotation.Reference;
@@ -24,7 +24,7 @@ import com.ddsh.util.service.api.IFileService;
 import com.ddsh.util.service.api.constant.UtilContants;
 import com.ddsh.util.service.api.data.ExcelImportReqData;
 import com.ddsh.util.service.api.data.ExcelImportRespData;
-import com.ddsh.util.service.api.data.FileInfo;
+import com.ddsh.util.service.api.model.AttAttachmentInfo;
 import com.ddshteam.web.core.base.BaseController;
 import com.ddshteam.web.core.support.HttpCode;
 
@@ -60,7 +60,7 @@ public class ExcelUtilController extends BaseController {
 	@ApiOperation(value = "excel文件导入", notes = "excel文件导入")
 	@PostMapping(value = { "/import" })
 	@RequiresPermissions(UtilContants.Permission.PERMISSION_EXCEL_IMPORT_FILE)
-	public Object importExcel(@RequestParam ExcelImportReqData reqdata, BindingResult errors) {
+	public Object importExcel(@RequestBody ExcelImportReqData reqdata, BindingResult errors) {
 		logger.debug("ExcelUtilController.importExcel()");
 
 		if (errors.hasErrors()) {
@@ -73,7 +73,7 @@ public class ExcelUtilController extends BaseController {
 			return getResponse(HttpCode.BAD_REQUEST, false);
 		}
 		
-		FileInfo fileinfo=fileService.getFileInfoByid(reqdata.getFileid());
+		AttAttachmentInfo fileinfo=fileService.getfileinfo(reqdata.getFileid());
 		if(fileinfo==null)
 		{
 			logger.error("fileinfo query is null.");

@@ -36,6 +36,7 @@ import com.ddsh.util.service.api.data.FileUploadReqData;
 import com.ddsh.util.service.api.model.AttAttachmentInfo;
 import com.ddshteam.web.core.base.BaseController;
 import com.ddshteam.web.core.support.HttpCode;
+import com.ddshteam.web.core.util.IdUtil;
 import com.ddshteam.web.system.service.api.model.SysUserInfo;
 import com.github.pagehelper.PageInfo;
 
@@ -90,6 +91,7 @@ public class FileUtilController extends BaseController {
 				}
 
 				FileInfo fileInfo = new FileInfo();
+				fileInfo.setId(IdUtil.generateId().toString());
 				fileInfo.setBussnessObjId(fileData.getBussnessObjId());
 				fileInfo.setBussnessobjSubId(fileData.getBussnessObjSubId());
 				fileInfo.setFilename(fileName);

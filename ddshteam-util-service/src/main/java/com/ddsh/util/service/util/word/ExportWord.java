@@ -32,7 +32,7 @@ import com.ddsh.util.service.api.data.word.IWordExportMapper;
 public class ExportWord {
 	
 	/**
-	 * Ò³Ã¼²Ù×÷
+	 * Ò³Ã¼ï¿½ï¿½ï¿½ï¿½
 	 * @Title: generateWordTopText
 	 * @param param
 	 * @param doc
@@ -65,14 +65,14 @@ public class ExportWord {
 	}
 
 	/**
-	* ´¦Àí¶ÎÂäÖÐÎÄ±¾£¬Ìæ»»ÎÄ±¾ÖÐ¶¨ÒåµÄ±äÁ¿£»
+	* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½ï¿½æ»»ï¿½Ä±ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½
 	* 
 	* @param paragraphList
-	*            ¶ÎÂäÁÐ±í
+	*            ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½
 	* @param param
-	*            ÐèÒªÌæ»»µÄ±äÁ¿¼°±äÁ¿Öµ
+	*            ï¿½ï¿½Òªï¿½æ»»ï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
 	* @param doc
-	*            ÐèÒªÌæ»»µÄDOC
+	*            ï¿½ï¿½Òªï¿½æ»»ï¿½ï¿½DOC
 	*/
 	public static void processParagraphs(List<XWPFParagraph> paragraphList, Entry<String, Object> param,
 			XWPFDocument doc) {
@@ -100,7 +100,7 @@ public class ExportWord {
 						if (text.indexOf(key) != -1) {
 							isSetText = true;
 							Object value = param.getValue();
-							if (value instanceof String) {// ÎÄ±¾Ìæ»»
+							if (value instanceof String) {// ï¿½Ä±ï¿½ï¿½æ»»
 								text = text.replace(key, value.toString());
 								//System.out.println("key:"+key+"value:"+value);
 							}
@@ -147,12 +147,12 @@ public class ExportWord {
 	}
 
 	/**
-	* ÔÚ¶¨Î»µÄÎ»ÖÃ²åÈë±í¸ñ£»
+	* ï¿½Ú¶ï¿½Î»ï¿½ï¿½Î»ï¿½Ã²ï¿½ï¿½ï¿½ï¿½ï¿½
 	* 
 	* @param key
-	*            ¶¨Î»µÄ±äÁ¿Öµ
+	*            ï¿½ï¿½Î»ï¿½Ä±ï¿½ï¿½ï¿½Öµ
 	* @param doc
-	*            ÐèÒªÌæ»»µÄDOC
+	*            ï¿½ï¿½Òªï¿½æ»»ï¿½ï¿½DOC
 	*/
 
 	public static void insertTab(String key, XWPFDocument doc2) {
@@ -175,7 +175,7 @@ public class ExportWord {
 
 							XmlCursor cursor = paragraph.getCTP().newCursor();
 
-							XWPFTable tableOne = doc2.insertNewTbl(cursor);// ---Õâ¸öÊÇ¹Ø¼ü
+							XWPFTable tableOne = doc2.insertNewTbl(cursor);// ---ï¿½ï¿½ï¿½ï¿½Ç¹Ø¼ï¿½
 						}
 
 					}
