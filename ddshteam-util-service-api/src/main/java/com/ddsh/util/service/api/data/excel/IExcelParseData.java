@@ -5,8 +5,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -100,9 +102,36 @@ public abstract class IExcelParseData implements Serializable {
 		{
 			if(method.getName().equalsIgnoreCase("set"+field))
 			{
-				System.out.println(method.getName()+":"+value);
+				 
 				try {
-					method.invoke(obj, value);
+					switch (method.getParameterTypes()[0].getName()) {
+					case "java.lang.String":
+						method.invoke(this.obj, value);
+						break;
+					case "java.lang.Integer":
+			            method.invoke(this.obj, Integer.valueOf(value.toString()) );
+						break;
+					case "java.util.Date":
+					     try
+				            {
+				              method.invoke(this.obj, new Object[] { this.sdf.parse(value.toString()) });
+				            }
+				            catch (ParseException e) {
+				              try {
+				                int day = Double.valueOf(value.toString()).intValue();
+				                method.invoke(this.obj, new Object[] { new Date(0, 0, day) });
+				              } catch (Exception ee) {
+				                ee.printStackTrace();
+				              }
+				            }
+						break;
+					case "java.math.BigDecimal":
+			            method.invoke(this.obj, new BigDecimal(value.toString()) );
+						break;
+					default:
+						method.invoke(this.obj, value);
+						break;
+					}
 				} catch (IllegalAccessException e) {
 					e.printStackTrace();
 				} catch (IllegalArgumentException e) {
