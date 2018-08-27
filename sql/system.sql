@@ -250,7 +250,7 @@ CREATE TABLE `att_attachment_info` (
 	`table_name` VARCHAR(64) NULL DEFAULT NULL COMMENT '附件关联业务表',
 	`type` VARCHAR(32) NULL DEFAULT NULL COMMENT '附件类型',
 	`obj_id` VARCHAR(64) NOT NULL COMMENT '附件关联业务ID',
-	`obj_sub_id` VARCHAR(64) NOT NULL COMMENT '附件关联业务附属性ID',
+	`obj_sub_id` VARCHAR(64) NULL DEFAULT NULL COMMENT '附件关联业务附属性ID',
 	`path` VARCHAR(2000) NOT NULL COMMENT '附件相对路径',
 	`update_time` DATETIME NOT NULL COMMENT '更新时间',
 	`upload_userId` VARCHAR(64) NULL DEFAULT NULL COMMENT '上传用户id',
@@ -267,6 +267,7 @@ COMMENT='系统附件表'
 COLLATE='utf8_general_ci'
 ENGINE=InnoDB
 ;
+
 
 
 -- ----------------------------
