@@ -30,6 +30,7 @@ public abstract class IExcelParseData implements Serializable {
 	public abstract Map<String, String> getMapper();
 	private Object obj=null;
 	public abstract  Class  getClassType();
+	public abstract Map<String, Map<Object, Object>> getParsevalue();
 
 	public List<String> getHeader() {
 		if(header==null)
