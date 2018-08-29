@@ -31,7 +31,7 @@ public class IdentifierManager {
 
     public static final long MAX_ID = Long.MAX_VALUE - 1;
 
-    public static final long MIN_ID = 0L;
+    public static final long MIN_ID = 1L;
 
     /**
 	 * 
@@ -69,8 +69,8 @@ public class IdentifierManager {
             String message = "upperbound must be less thean or equal " + Long.toString(MAX_ID);
             throw new IllegalArgumentException(message);
         }
-      //  this.lowerbound = lowerbound;
-        this.lowerbound = 0;
+        this.lowerbound = lowerbound;
+       // this.lowerbound = 0;
         this.upperbound = upperbound;
         this.segments = new LinkedList<Segment>();
         segments.add(new Segment(lowerbound, upperbound));
