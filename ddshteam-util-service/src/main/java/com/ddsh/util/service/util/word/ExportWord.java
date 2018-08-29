@@ -229,7 +229,7 @@ public class ExportWord {
 									  }
 									  
 							        BufferedImage sourceImg =ImageIO.read(new FileInputStream(picture)); 
-							        int scale=sourceImg.getWidth()/(width-100);
+							        int scale=sourceImg.getWidth()/(width-200);
 							        if(scale<=0)
 							        {
 							        	scale=1;
@@ -410,7 +410,8 @@ public class ExportWord {
 				for(XWPFTableCell cell:row.getTableCells())
 				{
 					if(cell.getText().contains(key))
-					   cell.removeParagraph(0);
+					   //cell.removeParagraph(0);
+					   cell.getParagraphArray(0).getRuns().get(0).setText("", 0);
 					}
 				}
 			}
