@@ -25,22 +25,18 @@ import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.apache.xmlbeans.XmlCursor;
+import org.apache.xmlbeans.XmlException;
+import org.apache.xmlbeans.XmlToken;
 
 import com.ddsh.util.service.api.constant.UtilContants;
 import com.ddsh.util.service.api.data.word.IWordExportMapper;
+import org.openxmlformats.schemas.drawingml.x2006.wordprocessingDrawing.CTInline;
+import org.openxmlformats.schemas.drawingml.x2006.main.CTPositiveSize2D;
+import org.openxmlformats.schemas.drawingml.x2006.main.CTNonVisualDrawingProps;
 
 public class ExportWord {
 	
-	/**
-	 * ҳü����
-	 * @Title: generateWordTopText
-	 * @param param
-	 * @param doc
-	 * @return XWPFDocument
-	 * @see 
-	 * @throws
-	 * @author arpgate
-	 */
+	 
 	public static XWPFDocument generateWordTopText(Entry<String, Object> param, XWPFDocument doc)
 	{
         XWPFHeader header = doc.getHeaderList().get(0);
@@ -64,16 +60,7 @@ public class ExportWord {
 
 	}
 
-	/**
-	* ����������ı����滻�ı��ж���ı�����
-	* 
-	* @param paragraphList
-	*            �����б�
-	* @param param
-	*            ��Ҫ�滻�ı���������ֵ
-	* @param doc
-	*            ��Ҫ�滻��DOC
-	*/
+ 
 	public static void processParagraphs(List<XWPFParagraph> paragraphList, Entry<String, Object> param,
 			XWPFDocument doc) {
 		if (paragraphList != null && paragraphList.size() > 0) {
@@ -146,14 +133,7 @@ public class ExportWord {
 		}
 	}
 
-	/**
-	* �ڶ�λ��λ�ò�����
-	* 
-	* @param key
-	*            ��λ�ı���ֵ
-	* @param doc
-	*            ��Ҫ�滻��DOC
-	*/
+ 
 
 	public static void insertTab(String key, XWPFDocument doc2) {
 
@@ -196,11 +176,11 @@ public class ExportWord {
 			{
 				for(XWPFTableCell cell:row.getTableCells())
 				{
-					if(insertImage(key,param,cell.getParagraphs(),table.getWidth()/20))
+				   if(insertImage(key,param,cell.getParagraphs(),table.getWidth()/20))
 					{
  						return;
  						
-					}
+					} 
 				}
 			}
 		}
@@ -217,7 +197,7 @@ public class ExportWord {
 						if (text != null) {
 							if (text.indexOf(key) >= 0) {
 								run.setText("",0);
-								run.addBreak();
+								//run.addBreak(BreakType.TEXT_WRAPPING);
 								hasdo=true;
 								for(String path:param)
 								{
@@ -235,6 +215,7 @@ public class ExportWord {
 							        	scale=1;
 							        }
 									String ext[]=path.split("\\.");
+									run.addBreak(BreakType.PAGE);
 									run.addPicture(new FileInputStream(path),
 											UtilContants.WordImageType.cache.get(ext[ext.length-1]), path,
 											Units.toEMU(sourceImg.getWidth()/scale), Units.toEMU(sourceImg.getHeight()/scale)); 
@@ -262,6 +243,124 @@ public class ExportWord {
 
 		return hasdo;
 	}
+	
+	
+	public static boolean insertImageFixed(String key, List<String> param,List<XWPFParagraph> paragraphList,int width) {
+		boolean hasdo=false;
+		try {
+			if (paragraphList != null && paragraphList.size() > 0) {
+				for (XWPFParagraph paragraph : paragraphList) {
+					List<XWPFRun> runs = paragraph.getRuns();
+					for (XWPFRun run : runs) {
+						String text = run.getText(0);
+						if (text != null) {
+							if (text.indexOf(key) >= 0) {
+								run.setText("",0);
+								hasdo=true;
+								for(String path:param)
+								{
+									
+									  File picture = new File(path);
+									  if(!picture.exists())
+									  {
+										  return true;
+									  }
+									  
+							        BufferedImage sourceImg =ImageIO.read(new FileInputStream(picture)); 
+							        int scale=sourceImg.getWidth()/(width-200);
+							        if(scale<=0)
+							        {
+							        	scale=1;
+							        }
+									String ext[]=path.split("\\.");
+									run.addBreak(BreakType.PAGE);
+ 									
+ 									String ind = run.getDocument().addPictureData(new FileInputStream(path), UtilContants.WordImageType.cache.get(ext[ext.length-1]));
+ 									int id =  run.getDocument().getNextPicNameNumber(UtilContants.WordImageType.cache.get(ext[ext.length-1]));
+ 									createPicture(ind, id, Units.toEMU(sourceImg.getWidth()/scale), Units.toEMU(sourceImg.getHeight()/scale),paragraph); 
+								}
+								run.addBreak(BreakType.PAGE);
+								return true;
+							}
+							
+						}
+
+					}
+					paragraph.setPageBreak(true);
+				}
+			}
+
+		} catch (InvalidFormatException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+
+		}
+
+		return hasdo;
+	}
+	
+	
+	
+	public static void createPicture(String blipId, int id, int width, int height,XWPFParagraph paragraph) {  
+        final int EMU = 9525;  
+        width *= EMU;  
+        height *= EMU;  
+        //String blipId = getAllPictures().get(id).getPackageRelationship().getId();  
+        CTInline inline = paragraph.createRun().getCTR().addNewDrawing().addNewInline();  
+
+        String picXml = "" +  
+                "<a:graphic xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\">" +  
+                "   <a:graphicData uri=\"http://schemas.openxmlformats.org/drawingml/2006/picture\">" +  
+                "      <pic:pic xmlns:pic=\"http://schemas.openxmlformats.org/drawingml/2006/picture\">" +  
+                "         <pic:nvPicPr>" +  
+                "            <pic:cNvPr id=\"" + id + "\" name=\"Generated\"/>" +  
+                "            <pic:cNvPicPr/>" +  
+                "         </pic:nvPicPr>" +  
+                "         <pic:blipFill>" +  
+                "            <a:blip r:embed=\"" + blipId + "\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\"/>" +  
+                "            <a:stretch>" +  
+                "               <a:fillRect/>" +  
+                "            </a:stretch>" +  
+                "         </pic:blipFill>" +  
+                "         <pic:spPr>" +  
+                "            <a:xfrm>" +  
+                "               <a:off x=\"0\" y=\"0\"/>" +  
+                "               <a:ext cx=\"" + width + "\" cy=\"" + height + "\"/>" +  
+                "            </a:xfrm>" +  
+                "            <a:prstGeom prst=\"rect\">" +  
+                "               <a:avLst/>" +  
+                "            </a:prstGeom>  " +  
+                "         </pic:spPr>" +  
+                "      </pic:pic>" +  
+                "   </a:graphicData>" +  
+                "</a:graphic>";  
+
+        // CTGraphicalObjectData graphicData =   
+        inline.addNewGraphic().addNewGraphicData();  
+        XmlToken xmlToken = null;  
+        try {  
+            xmlToken = XmlToken.Factory.parse(picXml);  
+        } catch (XmlException xe) {  
+            xe.printStackTrace();  
+        }  
+        inline.set(xmlToken);  
+        inline.setDistT(0);  
+        inline.setDistB(0);  
+        inline.setDistL(0);  
+        inline.setDistR(0);  
+
+        CTPositiveSize2D extent = inline.addNewExtent();  
+        extent.setCx(width);  
+        extent.setCy(height);  
+
+        CTNonVisualDrawingProps docPr = inline.addNewDocPr();  
+        docPr.setId(id);  
+        docPr.setName("Picture" + id);  
+        docPr.setDescr("Generated");  
+    }  
 
 	public static  Boolean addRows(XWPFTable table, List<List<String>> values) {
 
@@ -442,6 +541,5 @@ public class ExportWord {
 		}
 		return xtable;
 	}
-
  
 }
