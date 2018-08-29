@@ -30,6 +30,7 @@ public abstract class IExcelParseData implements Serializable {
 	public abstract Map<String, String> getMapper();
 	private Object obj=null;
 	public abstract  Class  getClassType();
+	public abstract Map<String, Map<Object, Object>> getParsevalue();
 
 	public List<String> getHeader() {
 		if(header==null)
@@ -72,7 +73,6 @@ public abstract class IExcelParseData implements Serializable {
 		try
 		{
 			Field field=this.getClassType().getDeclaredField(this.getMapper().get(this.getHeader().get(index)));
-			System.out.println("fieldType"+field.getType()+",value"+value.getClass());
 			if(field.getType()!=value.getClass())
 			{
 				if(field.getType()==String.class)
@@ -81,7 +81,12 @@ public abstract class IExcelParseData implements Serializable {
 				}
 				else if(field.getType()==Integer.class)
 				{
-					value=Integer.valueOf(value.toString());
+					try
+					{
+						value=Integer.valueOf(value.toString());
+					}catch (Exception e) {
+						value=Double.valueOf(value.toString());
+ 					}
 				}
 				else if(field.getType()==Long.class)
 				{
@@ -95,6 +100,7 @@ public abstract class IExcelParseData implements Serializable {
 	
 		}
 		catch (Exception e) {
+		   e.printStackTrace();
 			return;
 		}
 		String field=this.getMapper().get(this.getHeader().get(index));
@@ -114,13 +120,17 @@ public abstract class IExcelParseData implements Serializable {
 					case "java.util.Date":
 					     try
 				            {
-				              method.invoke(this.obj, new Object[] { this.sdf.parse(value.toString()) });
+				              method.invoke(this.obj,  this.sdf.parse(value.toString()) );
 				            }
 				            catch (ParseException e) {
 				              try {
-				                int day = Double.valueOf(value.toString()).intValue();
-				                method.invoke(this.obj, new Object[] { new Date(0, 0, day) });
-				              } catch (Exception ee) {
+				                int   day= Double.valueOf(value.toString()).intValue()-1;
+				                if(day<0)
+				                {
+				                	continue;
+				                }
+				                method.invoke(this.obj,  new Date(0, 0, day));
+				              } catch (Exception ee) { 
 				                ee.printStackTrace();
 				              }
 				            }

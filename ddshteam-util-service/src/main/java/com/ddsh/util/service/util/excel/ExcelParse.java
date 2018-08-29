@@ -234,7 +234,12 @@ public class ExcelParse {
 			value = cell.getCellFormula();
 			break;
 		case NUMERIC:
-			value = cell.getNumericCellValue();
+			try
+			{
+				value = Double.valueOf(cell.getNumericCellValue()).intValue();
+			}catch (Exception e) {
+				value = cell.getNumericCellValue();
+			}
 			break;
 		case STRING:
 			value = cell.getStringCellValue();
