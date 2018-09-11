@@ -3,6 +3,7 @@ package com.ddshteam.web.system.service.api;
 import java.util.List;
 
 import com.ddshteam.web.system.service.api.data.SysUserInfoResp;
+import com.ddshteam.web.system.service.api.model.SysRoleToUser;
 import com.ddshteam.web.system.service.api.model.SysUserInfo;
 import com.github.pagehelper.PageInfo;
 
@@ -144,4 +145,15 @@ public interface SysUserService {
 	 * @author arpgate
 	 */
 	public SysUserInfo getUserinfoByUserid(String userid);
+	
+	/**
+	 *  根据权限标识获取用户列表
+	 * @Title: getUsersByPerMId
+	 * @param permId
+	 * @return List<SysUserInfo>
+	 * @see 
+	 * @throws
+	 * @author arpgate
+	 */
+	public  List<SysRoleToUser> getUsersByPerMId(String permId);
 }
