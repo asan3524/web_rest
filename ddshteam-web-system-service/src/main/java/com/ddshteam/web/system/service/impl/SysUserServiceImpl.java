@@ -1,5 +1,6 @@
 package com.ddshteam.web.system.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +10,17 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.ddshteam.web.system.service.api.SysUserService;
 import com.ddshteam.web.system.service.api.constant.SystemContants;
 import com.ddshteam.web.system.service.api.data.SysUserInfoResp;
+import com.ddshteam.web.system.service.api.model.SysMenuInfo;
+import com.ddshteam.web.system.service.api.model.SysMenuInfoCriteria;
+import com.ddshteam.web.system.service.api.model.SysRoleToMenu;
+import com.ddshteam.web.system.service.api.model.SysRoleToMenuCriteria;
+import com.ddshteam.web.system.service.api.model.SysRoleToUser;
 import com.ddshteam.web.system.service.api.model.SysRoleToUserCriteria;
 import com.ddshteam.web.system.service.api.model.SysUserInfo;
 import com.ddshteam.web.system.service.api.model.SysUserInfoCriteria;
 import com.ddshteam.web.system.service.api.model.SysUserInfoCriteria.Criteria;
+import com.ddshteam.web.system.service.dao.SysMenuInfoMapper;
+import com.ddshteam.web.system.service.dao.SysRoleToMenuMapper;
 import com.ddshteam.web.system.service.dao.SysRoleToUserCustomizeMapper;
 import com.ddshteam.web.system.service.dao.SysRoleToUserMapper;
 import com.ddshteam.web.system.service.dao.SysUserInfoCustomizeMapper;
@@ -35,6 +43,12 @@ public class SysUserServiceImpl implements SysUserService {
 
 	@Autowired
 	private SysRoleToUserCustomizeMapper sysRoleToUserCustomizeDao;
+	
+	@Autowired
+	private SysMenuInfoMapper sysMenuInfoDao;
+	
+	@Autowired
+	private SysRoleToMenuMapper sysRoleToMenuDao;
 
 	@Override
 	public PageInfo<SysUserInfoResp> getUserList(int pageNum, int pageSize, String name, String[] depIds) {
@@ -199,6 +213,60 @@ public class SysUserServiceImpl implements SysUserService {
 	public SysUserInfo getUserinfoByUserid(String userid) {
 		SysUserInfo SysUserInfo = sysUserInfoInfoDao.selectByPrimaryKey(userid);
 		return SysUserInfo;
+	}
+
+	@Override
+	public List<SysRoleToUser> getUsersByPerMId(String permId) {
+		
+		SysMenuInfoCriteria sysMenuInfoCriteria=new SysMenuInfoCriteria();
+
+        com.ddshteam.web.system.service.api.model.SysMenuInfoCriteria.Criteria criteria=sysMenuInfoCriteria.createCriteria();
+        criteria.andPermsEqualTo(permId);
+        List<SysMenuInfo> menuinfos=sysMenuInfoDao.selectByExample(sysMenuInfoCriteria);
+        
+        List<String> menuids=new ArrayList<>();
+        
+        if(menuinfos!=null&&menuinfos.size()>0)
+        {
+        	for(SysMenuInfo menu:menuinfos)
+        	{
+        		menuids.add(menu.getId());
+        	}
+         }
+        else
+        {
+        	return null;
+        }
+        
+        List<String> roleids=new ArrayList<>();
+        if(menuids!=null&&menuids.size()>0)
+        { 
+        	SysRoleToMenuCriteria  sysRoleToMenuCriteria=new SysRoleToMenuCriteria();
+        	com.ddshteam.web.system.service.api.model.SysRoleToMenuCriteria.Criteria  srCriteria=sysRoleToMenuCriteria.createCriteria();
+        	srCriteria.andMenuIdIn(menuids);
+        	 List<SysRoleToMenu> rms=sysRoleToMenuDao.selectByExample(sysRoleToMenuCriteria);
+        	 if(rms!=null&&rms.size()>0)
+        	 {
+        		 for(SysRoleToMenu rm:rms)
+        		 {
+        			 roleids.add(rm.getRoleId());
+        		 }
+        		 
+        	 }
+        	 else
+        	 {
+        		 return null;
+        	 }
+        	 
+        	 SysRoleToUserCriteria sysRoleToUserCriteria=new SysRoleToUserCriteria();
+        	 com.ddshteam.web.system.service.api.model.SysRoleToUserCriteria.Criteria ruCriteria=sysRoleToUserCriteria.createCriteria();
+        	 ruCriteria.andRoleIdIn(roleids);
+        	 return sysRoleToUserDao.selectByExample(sysRoleToUserCriteria);
+        }
+        else
+        {
+        	return null;
+        }
 	}
 
 }
