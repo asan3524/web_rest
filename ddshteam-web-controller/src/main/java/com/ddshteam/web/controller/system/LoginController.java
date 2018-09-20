@@ -29,7 +29,9 @@ import com.ddshteam.web.core.support.HttpCode;
 import com.ddshteam.web.core.util.IpUtil;
 import com.ddshteam.web.core.util.SecurityUtil;
 import com.ddshteam.web.dto.system.LoginReqObj;
+import com.ddshteam.web.system.service.api.SysDeptService;
 import com.ddshteam.web.system.service.api.SysUserService;
+import com.ddshteam.web.system.service.api.data.DeptInfoResp;
 import com.ddshteam.web.system.service.api.model.SysUserInfo;
 
 @Api(value = "/", description = "登陆接口")
@@ -38,8 +40,12 @@ import com.ddshteam.web.system.service.api.model.SysUserInfo;
 public class LoginController extends BaseController {
 
 	private final static Logger logger = LoggerFactory.getLogger(LoginController.class);
+	
 	@Reference(version = "1.0.0")
 	private SysUserService sysUserService;
+	
+	@Reference(version = "1.0.0")
+	private SysDeptService sysDeptService;
 	
 	@ApiOperation(value = "登陆")
 	@PostMapping(value = { "/login" })
@@ -70,7 +76,12 @@ public class LoginController extends BaseController {
 			}
 		}
 		SysUserInfo curUser = (SysUserInfo) subject.getPrincipals().getPrimaryPrincipal();
+		DeptInfoResp depinfo=sysDeptService.getSysDeptById(curUser.getDepId());
 		curUser.setPassword(null);
+		if(depinfo!=null)
+		{
+			curUser.setPassword(depinfo.getName());
+		}
 		response.addHeader(JwtTokenUtil.HTTP_HEADER_KEY, JwtTokenUtil.getToken(curUser.getAccount()));
 		return getResponse(HttpCode.OK, curUser, "登陆成功");
 	}
