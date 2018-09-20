@@ -205,10 +205,14 @@ public class ExportWord {
 									  File picture = new File(path);
 									  if(!picture.exists())
 									  {
-										  return true;
+										  continue;
 									  }
 									  
-							        BufferedImage sourceImg =ImageIO.read(new FileInputStream(picture)); 
+							        BufferedImage sourceImg =ImageIO.read(new FileInputStream(picture));
+							        if(sourceImg==null)
+							        {
+							        	continue;
+							        }
 							        int scale=sourceImg.getWidth()/(width-200);
 							        if(scale<=0)
 							        {
@@ -430,7 +434,28 @@ public class ExportWord {
 				}
 				break;
 			case UtilContants.WordMediaType.MEDIA_TABLE:
-				List<List<String>> rows = (List<List<String>>) mapper.getValue().get(entry.getKey());
+				List<List<String>> rows =null;
+				try
+				{
+					rows = (List<List<String>>) mapper.getValue().get(entry.getKey());
+				}catch (Exception e) {
+					e.printStackTrace();
+					try
+					{
+						String obj=(String) mapper.getValue().get(entry.getKey());
+						if(obj!=null)
+						{ 
+							generateWordText(entry, doc);
+						}
+					} catch (Exception ee) {
+						ee.printStackTrace();
+					}
+			
+				}
+				if(rows==null)
+				{
+					continue;
+				}
 				XWPFTable table=getTableByKey(doc,entry.getKey());
 				if(table!=null&&rows!=null&&rows.size()>0)
 				{
