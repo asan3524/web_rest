@@ -5,6 +5,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.ddshteam.web.controller.util.JwtTokenUtil;
 
 import io.netty.buffer.ByteBuf;
@@ -28,10 +31,11 @@ import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshakerFactory;
-import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.CharsetUtil;
 
 public class MessageChannelHandler extends SimpleChannelInboundHandler<Object> {
+
+	private final static Logger logger = LoggerFactory.getLogger(MessageChannelHandler.class);
 
 	public MessageChannelHandler(String url) {
 		// TODO Auto-generated constructor stub
@@ -68,23 +72,24 @@ public class MessageChannelHandler extends SimpleChannelInboundHandler<Object> {
 		context.close();
 	}
 
-	@Override
-	public void userEventTriggered(ChannelHandlerContext context, Object evt) throws Exception {
-		if (evt instanceof IdleStateEvent) {
-			IdleStateEvent stateEvent = (IdleStateEvent) evt;
-			PingWebSocketFrame ping = new PingWebSocketFrame();
-			switch (stateEvent.state()) {
-			case READER_IDLE:
-				context.writeAndFlush(ping);
-				break;
-			case WRITER_IDLE:
-				context.writeAndFlush(ping);
-				break;
-			case ALL_IDLE:
-				break;
-			}
-		}
-	}
+	// @Override
+	// public void userEventTriggered(ChannelHandlerContext context, Object evt)
+	// throws Exception {
+	// if (evt instanceof IdleStateEvent) {
+	// IdleStateEvent stateEvent = (IdleStateEvent) evt;
+	// PingWebSocketFrame ping = new PingWebSocketFrame();
+	// switch (stateEvent.state()) {
+	// case READER_IDLE:
+	// context.writeAndFlush(ping);
+	// break;
+	// case WRITER_IDLE:
+	// context.writeAndFlush(ping);
+	// break;
+	// case ALL_IDLE:
+	// break;
+	// }
+	// }
+	// }
 
 	@Override
 	protected void channelRead0(ChannelHandlerContext context, Object msg) throws Exception {
@@ -99,6 +104,7 @@ public class MessageChannelHandler extends SimpleChannelInboundHandler<Object> {
 	private void doHandlerHttpRequest(ChannelHandlerContext context, FullHttpRequest fullHttpRequest) {
 		if (!fullHttpRequest.decoderResult().isSuccess()
 				|| (!"websocket".equals(fullHttpRequest.headers().get("Upgrade")))) {
+			logger.error(context.channel().id() + " header not exits Upgrade websocket");
 			sendHttpResponse(context, fullHttpRequest,
 					new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.BAD_REQUEST));
 		}
@@ -135,7 +141,15 @@ public class MessageChannelHandler extends SimpleChannelInboundHandler<Object> {
 		if (null == handshaker) {
 			WebSocketServerHandshakerFactory.sendUnsupportedVersionResponse(context.channel());
 		} else {
-			handshaker.handshake(context.channel(), fullHttpRequest);
+			// handshaker.handshake(context.channel(), fullHttpRequest);
+			ChannelFuture channelFuture = handshaker.handshake(context.channel(), fullHttpRequest);
+			// 握手成功之后,业务逻辑 注册
+			if (!channelFuture.isSuccess()) {
+				sendHttpResponse(context, fullHttpRequest,
+						new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.METHOD_NOT_ALLOWED));
+			} else {
+				logger.error(context.channel().id() + " 握手失败!");
+			}
 		}
 	}
 
@@ -149,8 +163,10 @@ public class MessageChannelHandler extends SimpleChannelInboundHandler<Object> {
 			return;
 		}
 		if (webSocketFrame instanceof PongWebSocketFrame) {
-			PingWebSocketFrame ping = new PingWebSocketFrame(webSocketFrame.content().retain());
-			context.channel().writeAndFlush(ping);
+			// PingWebSocketFrame ping = new
+			// PingWebSocketFrame(webSocketFrame.content().retain());
+			// context.channel().writeAndFlush(ping);
+			logger.info("recive client " + context.channel().id() + " pong!");
 			return;
 		}
 		if (!(webSocketFrame instanceof TextWebSocketFrame)) {
@@ -158,9 +174,10 @@ public class MessageChannelHandler extends SimpleChannelInboundHandler<Object> {
 		}
 		// 接收到客户端的数据，直接向所有客户端推送此消息，用于测试环境
 		// 当前业务场景下不需要接收客户端消息，正式环境下应该注释掉
-		String request = ((TextWebSocketFrame) webSocketFrame).text();
-		TextWebSocketFrame textWebSocketFrame = new TextWebSocketFrame(context.channel().id() + ":" + request);
-		NettyConfig.group.writeAndFlush(textWebSocketFrame);
+		// String request = ((TextWebSocketFrame) webSocketFrame).text();
+		// TextWebSocketFrame textWebSocketFrame = new
+		// TextWebSocketFrame(context.channel().id() + ":" + request);
+		// NettyConfig.group.writeAndFlush(textWebSocketFrame);
 	}
 
 	private void sendHttpResponse(ChannelHandlerContext context, FullHttpRequest fullHttpRequest,
