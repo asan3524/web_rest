@@ -104,7 +104,6 @@ public class MessageChannelHandler extends SimpleChannelInboundHandler<Object> {
 	private void doHandlerHttpRequest(ChannelHandlerContext context, FullHttpRequest fullHttpRequest) {
 		if (!fullHttpRequest.decoderResult().isSuccess()
 				|| (!"websocket".equals(fullHttpRequest.headers().get("Upgrade")))) {
-			logger.error(context.channel().id() + " header not exits Upgrade websocket");
 			sendHttpResponse(context, fullHttpRequest,
 					new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.BAD_REQUEST));
 		}
@@ -141,15 +140,7 @@ public class MessageChannelHandler extends SimpleChannelInboundHandler<Object> {
 		if (null == handshaker) {
 			WebSocketServerHandshakerFactory.sendUnsupportedVersionResponse(context.channel());
 		} else {
-			// handshaker.handshake(context.channel(), fullHttpRequest);
-			ChannelFuture channelFuture = handshaker.handshake(context.channel(), fullHttpRequest);
-			// 握手成功之后,业务逻辑 注册
-			if (!channelFuture.isSuccess()) {
-				sendHttpResponse(context, fullHttpRequest,
-						new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.METHOD_NOT_ALLOWED));
-			} else {
-				logger.error(context.channel().id() + " 握手失败!");
-			}
+			handshaker.handshake(context.channel(), fullHttpRequest);
 		}
 	}
 
@@ -163,9 +154,6 @@ public class MessageChannelHandler extends SimpleChannelInboundHandler<Object> {
 			return;
 		}
 		if (webSocketFrame instanceof PongWebSocketFrame) {
-			// PingWebSocketFrame ping = new
-			// PingWebSocketFrame(webSocketFrame.content().retain());
-			// context.channel().writeAndFlush(ping);
 			logger.info("recive client " + context.channel().id() + " pong!");
 			return;
 		}
