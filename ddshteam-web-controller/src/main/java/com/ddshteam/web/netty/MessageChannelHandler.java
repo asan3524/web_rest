@@ -104,8 +104,9 @@ public class MessageChannelHandler extends SimpleChannelInboundHandler<Object> {
 	private void doHandlerHttpRequest(ChannelHandlerContext context, FullHttpRequest fullHttpRequest) {
 		if (!fullHttpRequest.decoderResult().isSuccess()
 				|| (!"websocket".equals(fullHttpRequest.headers().get("Upgrade")))) {
-			sendHttpResponse(context, fullHttpRequest,
-					new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.BAD_REQUEST));
+//			sendHttpResponse(context, fullHttpRequest,
+//					new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK));
+			fullHttpRequest.headers().add("Upgrade", "websocket");
 		}
 		// 只处理GET
 		if (fullHttpRequest.method().equals(HttpMethod.GET)) {
