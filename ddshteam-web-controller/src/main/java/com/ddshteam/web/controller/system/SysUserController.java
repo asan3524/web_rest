@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +53,7 @@ public class SysUserController extends BaseController {
 
 	@ApiOperation(value = "用户列表", notes = "可指定参数: name(用户姓名), depId(指定部门ID)")
 	@PostMapping(value = { "/list" })
-	@RequiresPermissions(SystemContants.Permission.PERMISSION_USER_LIST)
+	@RequiresPermissions(logical = Logical.OR, value = {SystemContants.Permission.PERMISSION_MENU_TREE2USER,SystemContants.Permission.PERMISSION_USER_LIST})
 	public Object getUserList(@RequestBody UserSearchReq userSearchReq,
 			@PageableDefault(page = 1, size = 10, sort = "createTime,asc") Pageable pageable, BindingResult errors) {
 		logger.debug("SysUserController.getUserList()");
@@ -90,7 +91,7 @@ public class SysUserController extends BaseController {
 
 	@ApiOperation(value = "根据用户id获取用户", notes = "")
 	@GetMapping(value = { "/id/{id}" })
-	@RequiresPermissions(SystemContants.Permission.PERMISSION_USER_INFO)
+	@RequiresPermissions(logical = Logical.OR, value = {SystemContants.Permission.PERMISSION_MENU_TREE2USER,SystemContants.Permission.PERMISSION_USER_INFO})
 	public Object getUserById(@PathVariable("id") String id) {
 		logger.debug("SysUserController.getUserById()");
 
@@ -106,7 +107,7 @@ public class SysUserController extends BaseController {
 
 	@ApiOperation(value = "添加用户(不指定角色)", notes = "添加时不指定角色")
 	@PostMapping(value = { "/save" })
-	@RequiresPermissions(SystemContants.Permission.PERMISSION_USER_SAVE)
+	@RequiresPermissions(logical = Logical.OR, value = {SystemContants.Permission.PERMISSION_MENU_TREE2USER,SystemContants.Permission.PERMISSION_USER_SAVE})
 	public Object saveUserNoRole(@Valid @RequestBody UserReqBase userReqBase, BindingResult errors) {
 		logger.debug("SysUserController.saveUserNoRole()");
 
@@ -147,7 +148,7 @@ public class SysUserController extends BaseController {
 
 	@ApiOperation(value = "添加用户(指定角色)", notes = "添加时指定角色")
 	@PostMapping(value = { "/save/v2" })
-	@RequiresPermissions(SystemContants.Permission.PERMISSION_USER_SAVE)
+	@RequiresPermissions(logical = Logical.OR, value = {SystemContants.Permission.PERMISSION_MENU_TREE2USER,SystemContants.Permission.PERMISSION_USER_SAVE})
 	public Object saveUser$Role(@Valid @RequestBody UserReq userReq, BindingResult errors) {
 		logger.debug("SysUserController.saveUser$Role()");
 
@@ -184,7 +185,7 @@ public class SysUserController extends BaseController {
 
 	@ApiOperation(value = "更新用户(不更新角色)", notes = "更新用户时不更新角色")
 	@PutMapping(value = { "/update/{id}" })
-	@RequiresPermissions(SystemContants.Permission.PERMISSION_USER_UPDATE)
+	@RequiresPermissions(logical = Logical.OR, value = {SystemContants.Permission.PERMISSION_MENU_TREE2USER,SystemContants.Permission.PERMISSION_USER_UPDATE})
 	public Object updateUser(@Valid @RequestBody UserReqBase userReqBase, @PathVariable("id") String id, BindingResult errors) {
 		logger.debug("UserController.updateUser()");
 
@@ -225,7 +226,7 @@ public class SysUserController extends BaseController {
 
 	@ApiOperation(value = "更新用户(需更新角色时)", notes = "更新时更新角色")
 	@PutMapping(value = { "/update/v2/{id}" })
-	@RequiresPermissions(SystemContants.Permission.PERMISSION_USER_UPDATE)
+	@RequiresPermissions(logical = Logical.OR, value = {SystemContants.Permission.PERMISSION_MENU_TREE2USER,SystemContants.Permission.PERMISSION_USER_UPDATE})
 	public Object updateUser$Role(@Valid @RequestBody UserReq userReq, @PathVariable("id") String id, BindingResult errors) {
 		logger.debug("UserController.updateUser$Role()");
 
@@ -268,7 +269,7 @@ public class SysUserController extends BaseController {
 
 	@ApiOperation(value = "重置用户密码", notes = "重置用户密码")
 	@PutMapping(value = { "/update/pwd" })
-	@RequiresPermissions(SystemContants.Permission.PERMISSION_USER_PWD)
+	@RequiresPermissions(logical = Logical.OR, value = {SystemContants.Permission.PERMISSION_MENU_TREE2USER,SystemContants.Permission.PERMISSION_USER_PWD})
 	public Object updatePassword(@Valid @RequestBody ChangePswReq changePswReq, BindingResult errors) {
 		logger.debug("UserController.updatePassword()");
 
@@ -289,7 +290,7 @@ public class SysUserController extends BaseController {
 
 	@ApiOperation(value = "修改用户密码", notes = "修改用户密码,修改密码必需传入新的密码")
 	@PutMapping(value = { "/update/changepwd" })
-	@RequiresPermissions(SystemContants.Permission.PERMISSION_USER_CHANGEPWD)
+	@RequiresPermissions(logical = Logical.OR, value = {SystemContants.Permission.PERMISSION_MENU_TREE2USER,SystemContants.Permission.PERMISSION_USER_CHANGEPWD})
 	public Object chagePassword(@Valid @RequestBody ChangePswReq changePswReq, BindingResult errors) {
 		logger.debug("UserController.chagePassword()");
 
@@ -317,7 +318,7 @@ public class SysUserController extends BaseController {
 
 	@ApiOperation(value = "删除用户", notes = "内置/admin/自己不能删除(暂不调用)")
 	@DeleteMapping(value = { "/delete/{id}" })
-	@RequiresPermissions(SystemContants.Permission.PERMISSION_USER_DELETE)
+	@RequiresPermissions(logical = Logical.OR, value = {SystemContants.Permission.PERMISSION_MENU_TREE2USER,SystemContants.Permission.PERMISSION_USER_DELETE})
 	public Object deleteUser(@PathVariable("id") String id) {
 		logger.debug("UserController.deleteUser()");
 
@@ -345,7 +346,7 @@ public class SysUserController extends BaseController {
 
 	@ApiOperation(value = "批量删除用户", notes = "批量删除用户，内置/admin/自己不能删除(暂不调用)")
 	@PostMapping(value = { "/delete/ids" })
-	@RequiresPermissions(SystemContants.Permission.PERMISSION_USER_DELETES)
+	@RequiresPermissions(logical = Logical.OR, value = {SystemContants.Permission.PERMISSION_MENU_TREE2USER,SystemContants.Permission.PERMISSION_USER_DELETES})
 	public Object deleteUsers(@RequestBody List<String> userids) {
 		logger.debug("UserController.deleteUsers()");
 

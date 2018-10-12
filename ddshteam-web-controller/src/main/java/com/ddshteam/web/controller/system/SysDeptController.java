@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
@@ -50,7 +51,7 @@ public class SysDeptController extends BaseController {
 
 	@ApiOperation(value = "部门列表", notes = "")
 	@GetMapping(value = { "/list" })
-	@RequiresPermissions(SystemContants.Permission.PERMISSION_DEPT_LIST)
+	@RequiresPermissions(logical = Logical.OR, value = {SystemContants.Permission.PERMISSION_MENU_TREE2USER,SystemContants.Permission.PERMISSION_DEPT_LIST})
 	public Object getDeptList(HttpServletRequest request, HttpServletResponse response) {
 		logger.debug("SysDeptController.getDeptList()");
 
@@ -72,7 +73,7 @@ public class SysDeptController extends BaseController {
 
 	@ApiOperation(value = "部门树(当前用户)", notes = "当前登录用户的部门及子部门")
 	@GetMapping(value = { "/tree2user" })
-	@RequiresPermissions(SystemContants.Permission.PERMISSION_DEPT_TREE2USER)
+	@RequiresPermissions(logical = Logical.OR, value = {SystemContants.Permission.PERMISSION_MENU_TREE2USER,SystemContants.Permission.PERMISSION_DEPT_TREE2USER})
 	public Object getDeptTreeByUser() {
 		logger.debug("SysDeptController.getDeptTreeByUser()");
 
@@ -94,7 +95,7 @@ public class SysDeptController extends BaseController {
 
 	@ApiOperation(value = "获取直接子部门", notes = "")
 	@GetMapping(value = { "/tree/{deptId}" })
-	@RequiresPermissions(SystemContants.Permission.PERMISSION_DEPT_TREE)
+	@RequiresPermissions(logical = Logical.OR, value = {SystemContants.Permission.PERMISSION_MENU_TREE2USER,SystemContants.Permission.PERMISSION_DEPT_TREE})
 	public Object getChildrenDept(@PathVariable("deptId") String deptId, HttpServletRequest request,
 			HttpServletResponse response) {
 		logger.debug("SysDeptController.getChildrenDept()");
@@ -112,7 +113,7 @@ public class SysDeptController extends BaseController {
 
 	@ApiOperation(value = "获取部门详情", notes = "")
 	@GetMapping(value = { "/id/{deptId}" })
-	@RequiresPermissions(SystemContants.Permission.PERMISSION_DEPT_INFO)
+	@RequiresPermissions(logical = Logical.OR, value = {SystemContants.Permission.PERMISSION_MENU_TREE2USER,SystemContants.Permission.PERMISSION_DEPT_INFO})
 	public Object getSysDeptById(@PathVariable("deptId") String deptId, HttpServletRequest request,
 			HttpServletResponse response) {
 		logger.debug("SysDeptController.getSysDeptById()");
@@ -129,7 +130,7 @@ public class SysDeptController extends BaseController {
 
 	@ApiOperation(value = "添加部门", notes = "")
 	@PostMapping(value = { "/save" })
-	@RequiresPermissions(SystemContants.Permission.PERMISSION_DEPT_SAVE)
+	@RequiresPermissions(logical = Logical.OR, value = {SystemContants.Permission.PERMISSION_MENU_TREE2USER,SystemContants.Permission.PERMISSION_DEPT_SAVE})
 	public Object saveDept(@Valid @RequestBody DeptReq deptReq, BindingResult errors) {
 		logger.debug("SysDeptController.saveDept()");
 
@@ -156,7 +157,7 @@ public class SysDeptController extends BaseController {
 
 	@ApiOperation(value = "更新部门", notes = "")
 	@PutMapping(value = { "/update/{deptId}" })
-	@RequiresPermissions(SystemContants.Permission.PERMISSION_DEPT_UPDATE)
+	@RequiresPermissions(logical = Logical.OR, value = {SystemContants.Permission.PERMISSION_MENU_TREE2USER,SystemContants.Permission.PERMISSION_DEPT_UPDATE})
 	public Object updateDept(@Valid @RequestBody DeptReq deptReq, @PathVariable("deptId") String deptId,
 			BindingResult errors) {
 		logger.debug("SysDeptController.updateDept()");
@@ -185,7 +186,7 @@ public class SysDeptController extends BaseController {
 
 	@ApiOperation(value = "删除部门", notes = "")
 	@DeleteMapping(value = { "/delete/{deptId}" })
-	@RequiresPermissions(SystemContants.Permission.PERMISSION_DEPT_DELETE)
+	@RequiresPermissions(logical = Logical.OR, value = {SystemContants.Permission.PERMISSION_MENU_TREE2USER,SystemContants.Permission.PERMISSION_DEPT_DELETE})
 	public Object deleteDept(@PathVariable("deptId") String deptId) {
 		logger.debug("SysDeptController.deleteDept()");
 
@@ -211,7 +212,7 @@ public class SysDeptController extends BaseController {
 
 	@ApiOperation(value = "增加部门类型", notes = "增加部门类型")
 	@PostMapping(value = { "/type/save" })
-	@RequiresPermissions(SystemContants.Permission.PERMISSION_DEPTTYPE_SAVE)
+	@RequiresPermissions(logical = Logical.OR, value = {SystemContants.Permission.PERMISSION_MENU_TREE2USER,SystemContants.Permission.PERMISSION_DEPTTYPE_SAVE})
 	public Object addDeptType(@Valid @RequestBody SysDeptypeInfo typeinfo, BindingResult errors) {
 		logger.debug("SysDeptController.addDeptType()");
 
@@ -233,7 +234,7 @@ public class SysDeptController extends BaseController {
 
 	@ApiOperation(value = "增加部门类型", notes = "")
 	@PutMapping(value = { "/type/update" })
-	@RequiresPermissions(SystemContants.Permission.PERMISSION_DEPTTYPE_UPDATE)
+	@RequiresPermissions(logical = Logical.OR, value = {SystemContants.Permission.PERMISSION_MENU_TREE2USER,SystemContants.Permission.PERMISSION_DEPTTYPE_UPDATE})
 	public Object updateDeptType(@Valid @RequestBody SysDeptypeInfo typeinfo, BindingResult errors) {
 		logger.debug("SysDeptController.updateDeptType()");
 
@@ -254,7 +255,7 @@ public class SysDeptController extends BaseController {
 
 	@ApiOperation(value = "根据部门类型id获取部门详情", notes = "根据部门类型id获取部门详情")
 	@GetMapping(value = { "/type/{depttypeid}" })
-	@RequiresPermissions(SystemContants.Permission.PERMISSION_DEPTTYPE_INFO)
+	@RequiresPermissions(logical = Logical.OR, value = {SystemContants.Permission.PERMISSION_MENU_TREE2USER,SystemContants.Permission.PERMISSION_DEPTTYPE_INFO})
 	public Object getDeptTypeByid(@PathVariable("depttypeid") String depttypeid) {
 		logger.debug("SysDeptController.getDeptTypeByid()");
 
@@ -269,7 +270,7 @@ public class SysDeptController extends BaseController {
 
 	@ApiOperation(value = "查看部门类型列表", notes = "查看部门类型列表")
 	@GetMapping(value = { "/type/list" })
-	@RequiresPermissions(SystemContants.Permission.PERMISSION_DEPTTYPE_LIST)
+	@RequiresPermissions(logical = Logical.OR, value = {SystemContants.Permission.PERMISSION_MENU_TREE2USER,SystemContants.Permission.PERMISSION_DEPTTYPE_LIST})
 	public Object listDeptType() {
 		logger.debug("SysDeptController.listDeptType()");
 		return getResponse(sysDeptService.ListType());
@@ -277,7 +278,7 @@ public class SysDeptController extends BaseController {
 
 	@ApiOperation(value = "删除部门类型", notes = "根据id删除部门类型")
 	@DeleteMapping(value = { "/type/delete/{depttypeid}" })
-	@RequiresPermissions(SystemContants.Permission.PERMISSION_DEPTTYPE_DELETE)
+	@RequiresPermissions(logical = Logical.OR, value = {SystemContants.Permission.PERMISSION_MENU_TREE2USER,SystemContants.Permission.PERMISSION_DEPTTYPE_DELETE})
 	public Object deleteTypeinfoByid(@PathVariable("depttypeid") String depttypeid) {
 		logger.debug("SysDeptController.deleteTypeinfoByid()");
 		boolean result = sysDeptService.deleteTypeByid(depttypeid);

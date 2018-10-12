@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +50,7 @@ public class SysRoleController extends BaseController {
 
 	@ApiOperation(value = "角色列表", notes = "")
 	@PostMapping(value = { "/list" })
-	@RequiresPermissions(SystemContants.Permission.PERMISSION_ROLE_LIST)
+	@RequiresPermissions(logical = Logical.OR, value = {SystemContants.Permission.PERMISSION_MENU_TREE2USER,SystemContants.Permission.PERMISSION_ROLE_LIST})
 	public Object getRoleList(@RequestBody RoleListReq req,
 			@PageableDefault(page = 1, size = 10, sort = "createTime,asc") Pageable pageable, BindingResult errors) {
 		logger.debug("SysRoleController.getRoleList()");
@@ -64,7 +65,7 @@ public class SysRoleController extends BaseController {
 
 	@ApiOperation(value = "获取角色详情", notes = "")
 	@GetMapping(value = { "/id/{roleId}" })
-	@RequiresPermissions(SystemContants.Permission.PERMISSION_ROLE_INFO)
+	@RequiresPermissions(logical = Logical.OR, value = {SystemContants.Permission.PERMISSION_MENU_TREE2USER,SystemContants.Permission.PERMISSION_ROLE_INFO})
 	public Object getRoleById(@PathVariable("roleId") String roleId, HttpServletRequest request, HttpServletResponse response) {
 		logger.debug("SysRoleController.getRoleById()");
 
@@ -79,7 +80,7 @@ public class SysRoleController extends BaseController {
 
 	@ApiOperation(value = "添加角色", notes = "")
 	@PostMapping(value = { "/save" })
-	@RequiresPermissions(SystemContants.Permission.PERMISSION_ROLE_SAVE)
+	@RequiresPermissions(logical = Logical.OR, value = {SystemContants.Permission.PERMISSION_MENU_TREE2USER,SystemContants.Permission.PERMISSION_ROLE_SAVE})
 	public Object saveRole(@Valid @RequestBody RoleReq roleReq, BindingResult errors) {
 		logger.debug("SysRoleController.saveRole()");
 
@@ -111,7 +112,7 @@ public class SysRoleController extends BaseController {
 
 	@ApiOperation(value = "更新角色", notes = "")
 	@PutMapping(value = { "/update/{roleId}" })
-	@RequiresPermissions(SystemContants.Permission.PERMISSION_ROLE_UPDATE)
+	@RequiresPermissions(logical = Logical.OR, value = {SystemContants.Permission.PERMISSION_MENU_TREE2USER,SystemContants.Permission.PERMISSION_ROLE_UPDATE})
 	public Object updateRole(@Valid @RequestBody RoleReq roleReq, @PathVariable String roleId, BindingResult errors) {
 		logger.debug("SysRoleController.updateRole()");
 
@@ -147,7 +148,7 @@ public class SysRoleController extends BaseController {
 
 	@ApiOperation(value = "删除角色", notes = "")
 	@DeleteMapping(value = { "/delete/{roleId}" })
-	@RequiresPermissions(SystemContants.Permission.PERMISSION_ROLE_DELETE)
+	@RequiresPermissions(logical = Logical.OR, value = {SystemContants.Permission.PERMISSION_MENU_TREE2USER,SystemContants.Permission.PERMISSION_ROLE_DELETE})
 	public Object deleteRole(@PathVariable String roleId) {
 		logger.debug("SysRoleController.deleteRole()");
 
@@ -166,7 +167,7 @@ public class SysRoleController extends BaseController {
 
 	@ApiOperation(value = "批量删除角色", notes = "批量删除角色")
 	@PostMapping(value = { "/delete/roles" })
-	@RequiresPermissions(SystemContants.Permission.PERMISSION_ROLE_DELETES)
+	@RequiresPermissions(logical = Logical.OR, value = {SystemContants.Permission.PERMISSION_MENU_TREE2USER,SystemContants.Permission.PERMISSION_ROLE_DELETES})
 	public Object deleteRoles(@RequestBody List<String> roles) {
 		logger.debug("SysRoleController.deleteRoles()");
 
@@ -185,7 +186,7 @@ public class SysRoleController extends BaseController {
 
 	@ApiOperation(value = "为角色设置菜单权限", notes = "")
 	@PostMapping(value = { "/role2menu/{roleId}" })
-	@RequiresPermissions(SystemContants.Permission.PERMISSION_ROLE_ROLE2MENU)
+	@RequiresPermissions(logical = Logical.OR, value = {SystemContants.Permission.PERMISSION_MENU_TREE2USER,SystemContants.Permission.PERMISSION_ROLE_ROLE2MENU})
 	public Object setRole2Menu(@Valid @RequestBody SetRole2MenuReq setRole2MenuReq, @PathVariable String roleId,
 			BindingResult errors) {
 		logger.debug("SysRoleController.setRole2Menu()");

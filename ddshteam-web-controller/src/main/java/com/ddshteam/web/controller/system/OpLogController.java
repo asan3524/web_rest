@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation;
 
 import javax.validation.Valid;
 
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +38,7 @@ public class OpLogController extends BaseController {
 
 	@ApiOperation(value = "日志列表", notes = "可指定参数: name(用户名称), ip(访问IP), 时间范围等")
 	@PostMapping(value = { "/list" })
-	@RequiresPermissions(SystemContants.Permission.PERMISSION_OPLOG_LIST)
+	@RequiresPermissions(logical = Logical.OR, value = {SystemContants.Permission.PERMISSION_MENU_TREE2USER,SystemContants.Permission.PERMISSION_OPLOG_LIST})
 	public Object getOpLogList(@Valid @RequestBody OpLogReq opLogReq,
 			@PageableDefault(page = 1, size = 10, sort = "create_time,desc") Pageable pageable, BindingResult errors) {
 
