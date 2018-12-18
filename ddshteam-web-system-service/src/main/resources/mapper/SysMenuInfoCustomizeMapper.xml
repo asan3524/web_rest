@@ -25,8 +25,11 @@
 		<result column="isLeaf" jdbcType="INTEGER" property="isLeaf" />
 	</resultMap>
 	<select id="getMenusByUser" resultMap="BaseResultMap">
-		select
+		select distinct 
 		<include refid="Base_Column_List" />
+		from sys_menu_info sm1 inner join
+		(select
+		sm.id,sm.parent_id
 		from sys_menu_info sm
 		where sm.type != 3 and sm.id in (
 		select distinct
@@ -37,7 +40,8 @@
 		from sys_role_to_user r2u
 		where r2u.user_id=#{userId}
 		)
-		) order by
+		)) sm2 on sm1.id=sm2.id or sm1.id=sm2.parent_id
+		order by
 		order_num
 	</select>
 	<select id="getPermissionByUser" resultType="java.lang.String">
