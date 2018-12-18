@@ -148,7 +148,7 @@ public class SysRoleController extends BaseController {
 
 	@ApiOperation(value = "删除角色", notes = "")
 	@DeleteMapping(value = { "/delete/{roleId}" })
-	@RequiresPermissions(logical = Logical.OR, value = {SystemContants.Permission.PERMISSION_MENU_TREE2USER,SystemContants.Permission.PERMISSION_ROLE_DELETE})
+	@RequiresPermissions(SystemContants.Permission.PERMISSION_ROLE_DELETE)
 	public Object deleteRole(@PathVariable String roleId) {
 		logger.debug("SysRoleController.deleteRole()");
 
@@ -167,7 +167,7 @@ public class SysRoleController extends BaseController {
 
 	@ApiOperation(value = "批量删除角色", notes = "批量删除角色")
 	@PostMapping(value = { "/delete/roles" })
-	@RequiresPermissions(logical = Logical.OR, value = {SystemContants.Permission.PERMISSION_MENU_TREE2USER,SystemContants.Permission.PERMISSION_ROLE_DELETES})
+	@RequiresPermissions(SystemContants.Permission.PERMISSION_ROLE_DELETES)
 	public Object deleteRoles(@RequestBody List<String> roles) {
 		logger.debug("SysRoleController.deleteRoles()");
 

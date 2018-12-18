@@ -186,7 +186,7 @@ public class SysDeptController extends BaseController {
 
 	@ApiOperation(value = "删除部门", notes = "")
 	@DeleteMapping(value = { "/delete/{deptId}" })
-	@RequiresPermissions(logical = Logical.OR, value = {SystemContants.Permission.PERMISSION_MENU_TREE2USER,SystemContants.Permission.PERMISSION_DEPT_DELETE})
+	@RequiresPermissions(SystemContants.Permission.PERMISSION_DEPT_DELETE)
 	public Object deleteDept(@PathVariable("deptId") String deptId) {
 		logger.debug("SysDeptController.deleteDept()");
 
@@ -278,7 +278,7 @@ public class SysDeptController extends BaseController {
 
 	@ApiOperation(value = "删除部门类型", notes = "根据id删除部门类型")
 	@DeleteMapping(value = { "/type/delete/{depttypeid}" })
-	@RequiresPermissions(logical = Logical.OR, value = {SystemContants.Permission.PERMISSION_MENU_TREE2USER,SystemContants.Permission.PERMISSION_DEPTTYPE_DELETE})
+	@RequiresPermissions(SystemContants.Permission.PERMISSION_DEPTTYPE_DELETE)
 	public Object deleteTypeinfoByid(@PathVariable("depttypeid") String depttypeid) {
 		logger.debug("SysDeptController.deleteTypeinfoByid()");
 		boolean result = sysDeptService.deleteTypeByid(depttypeid);
