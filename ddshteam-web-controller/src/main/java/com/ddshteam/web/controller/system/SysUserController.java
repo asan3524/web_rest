@@ -318,7 +318,7 @@ public class SysUserController extends BaseController {
 
 	@ApiOperation(value = "删除用户", notes = "内置/admin/自己不能删除(暂不调用)")
 	@DeleteMapping(value = { "/delete/{id}" })
-	@RequiresPermissions(logical = Logical.OR, value = {SystemContants.Permission.PERMISSION_MENU_TREE2USER,SystemContants.Permission.PERMISSION_USER_DELETE})
+	@RequiresPermissions(SystemContants.Permission.PERMISSION_USER_DELETE)
 	public Object deleteUser(@PathVariable("id") String id) {
 		logger.debug("UserController.deleteUser()");
 
@@ -346,7 +346,7 @@ public class SysUserController extends BaseController {
 
 	@ApiOperation(value = "批量删除用户", notes = "批量删除用户，内置/admin/自己不能删除(暂不调用)")
 	@PostMapping(value = { "/delete/ids" })
-	@RequiresPermissions(logical = Logical.OR, value = {SystemContants.Permission.PERMISSION_MENU_TREE2USER,SystemContants.Permission.PERMISSION_USER_DELETES})
+	@RequiresPermissions(SystemContants.Permission.PERMISSION_USER_DELETES)
 	public Object deleteUsers(@RequestBody List<String> userids) {
 		logger.debug("UserController.deleteUsers()");
 

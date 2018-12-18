@@ -216,7 +216,7 @@ public class SysMenuController extends BaseController {
 
 	@ApiOperation(value = "删除菜单", notes = "")
 	@DeleteMapping(value = { "/delete/{id}" })
-	@RequiresPermissions(logical = Logical.OR, value = {SystemContants.Permission.PERMISSION_MENU_TREE2USER,SystemContants.Permission.PERMISSION_MENU_DELETE})
+	@RequiresPermissions(SystemContants.Permission.PERMISSION_MENU_DELETE)
 	public Object deleteMenu(@PathVariable("id") String id) {
 		logger.debug("SysMenuController.deleteMenu()");
 
